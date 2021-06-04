@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SnakeJS - Datetime</title>
+
+    <!-- Including the library to the document -->
+    <script src='SnakeJS.js' type='text/javascript'></script>
+</head>
+<body>
+    
+    <h1>Magic happens on the console...</h1>
+
+    <script>
+
+        /**
+        * Current Date
+        * */
+        
+        // Showing result
+        console.log(Datetime.GetDate());
+
+        /**
+        * Current Day
+        * */
+
+        // Showing result
+        console.log(Datetime.GetCurrentDay());
+
+        /**
+        * Current Year 
+        * */
+        
+        // Showing result
+        console.log(Datetime.GetCurrentYear());
+
+        /**
+        * Current Month 
+        * */
+        
+        // Showing result
+        console.log(Datetime.GetCurrentMonth());
+
+        /**
+        * Current Hour
+        * */
+        
+        // Showing result
+        console.log(Datetime.GetCurrentHour());
+
+        /**
+        * Current Minutes
+        * */
+        
+        // Showing result
+        console.log(Datetime.GetCurrentMinutes());
+        
+        /**
+        * Current Seconds
+        * */
+        
+        // Showing result
+        console.log(Datetime.GetCurrentSeconds());
+
+        /**
+        * Date from custom date
+        * */
+        
+        var my_date = Datetime.GetDateFromExistingDate(2018, 11, 24, 10);
+
+        // Uses
+        console.log(my_date.getDay());
+        console.log(my_date.getFullYear());
+        console.log(my_date.getMonth());
+        // etc...
+
+    </script>
+
+</body>
+</html>

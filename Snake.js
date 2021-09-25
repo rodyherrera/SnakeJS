@@ -1,7 +1,15 @@
-/*
- * - SnakeJS - A readable, fast and easy to use JavaScript.
- * [BETA]
-*/
+/***
+ * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root 
+ * for full license information.
+ *
+ * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+ *
+ * For related information - https://github.com/codewithrodi/SnakeJS/
+ *
+ * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+ ****/
+
 class AlgorithmsHandler {
 	MergeList = (list_a, list_b) => Object.assign({}, list_a, list_b);
 	RandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;

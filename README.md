@@ -7,7 +7,7 @@ SnakeJS is a JavaScript library that allows you to use the language in a simpler
 ## Installation
 
 ```bash
-git clone https://github.com/RodiiHernandezz
+git clone https://github.com/codewithrodi/SnakeJS/
 cd SnakeJS
 ```
 

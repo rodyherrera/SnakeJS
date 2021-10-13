@@ -1,0 +1,93 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS - OpenTab</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>OpenTab:</h1>
+            <p id='Container'>In the next 5 seconds a new tab will open with customized content</p>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+
+    // * We use a setTimeout to execute a 
+    // * series of instructions after 5 
+    // * seconds, to put the developer in 
+    // * context and read the message of 
+    // * the paragraph below the title.
+    setTimeout(() =>  {
+
+        // * Using the OpenTab method of the SnakeClient 
+        // * object we will open a new Tab which contains 
+        // * the content that we send to the OpenTab 
+        // * function, it must be HTML.
+        SnakeClient.OpenTab(`
+<!DOCTYPE html />
+<html lang='en' />
+    <head>
+        <title>SnakeJS - OpenTab</title>
+        <style>
+            *{ margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif }
+        </style>
+    </head>
+    <body>
+        <h1>This work!</h1>
+    </body>
+</html>
+`);
+    }, 5000);
+
+
+</script>
+
+</html>

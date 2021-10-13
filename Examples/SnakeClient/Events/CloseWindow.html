@@ -1,0 +1,74 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS - CloseWindow</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>In the next 5 seconds the window will be closed.</h1>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+
+    // * Creating a setTimeout so that after 5 
+    // * seconds that elapse after the client 
+    // * finishes loading the page, the page is closed.
+    setTimeout(() => {
+
+        // * Using the CloseWindow method of the SnakeClient 
+        // * object we can close the page to the client.
+        SnakeClient.CloseWindow();
+    }, 5000);
+
+</script>
+
+</html>

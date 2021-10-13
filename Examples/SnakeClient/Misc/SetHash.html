@@ -1,0 +1,95 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS - SetHash</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>SetHash:</h1>
+            <p id='Container'></p>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+
+    // * Selecting the label to be able to manipulate it later.
+    const Container = $('Container');
+
+    // * We add a Hash to the client's path, this 
+    // * using the AddHash method of the SnakeClient 
+    // * object whose method or function 
+    // * receives the hash to be added as a parameter.
+    SnakeClient.AddHash('Hello-World');
+
+    // * Now as we have previously added a 
+    // * Hash, now what we will do is that with the 
+    // * SetHash method we are going to reestablish 
+    // * the entire series of existing Hash in the 
+    // * path with a new one, a new hash that will 
+    // * be sent as a parameter when calling the 
+    // * SetHash method of the SnakeClient object
+    SnakeClient.SetHash('SnakeJS');
+
+    // * Now that we have reestablished or reset the hash 
+    // * of the path that was previously 
+    // * "Hello-World", now it should only be 
+    // * "SnakeJS", and when calling the 
+    // * GetHash method of the SnakeClient object we should 
+    // * obtain the hash as output, that is "SnakeJS"
+    const Information = SnakeClient.GetHash();
+
+    // * We show the Hash in the 
+    // * previously selected container
+    Container.SetHTML(Information);
+
+</script>
+
+</html>

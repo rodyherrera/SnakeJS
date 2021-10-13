@@ -1,0 +1,84 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS - Alert</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>Alert:</h1>
+            <p id='Container'>An alert will be displayed within the next 5 seconds.</p>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+
+    // * Selecting the label to be able to manipulate it later.
+    const Container = $('Container');
+
+    // * With the help of a setTimeout we 
+    // * will execute the function that will 
+    // * allow us to show an alert, we use the 
+    // * setTimeout to show said alert 5 seconds 
+    // * after the client has finished loading the site.
+    setTimeout(() => {
+
+        // * Using the Alert method of the 
+        // * SnakeClient object we will show the 
+        // * alert to the client, the function 
+        // * receives a parameter that is nothing 
+        // * more than the message or alert that 
+        // * you want to deliver to the user.
+        SnakeClient.Alert('Remember drink water bby <3');
+    }, 5000);
+
+</script>
+
+</html>

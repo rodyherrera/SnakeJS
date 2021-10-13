@@ -1,0 +1,100 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS - OnOnLine</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>Deactivate your internet connection and reactivate.</h1>
+            <p id='Container'></p>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+
+    // * Selecting the label to be able to manipulate it later.
+    const Container = $('Container');
+
+    // * Using the OnOnLine method of the 
+    // * SnakeClient object we can execute an 
+    // * action every time the user reestablishes 
+    // * it after losing the internet connection, for 
+    // * example we can show a message that 
+    // * says "You are connected again!" etc...
+    SnakeClient.OnOnLine(() => {
+
+        // * When it is detected that the connection was 
+        // * re-established after it was lost, a message 
+        // * will be displayed in the previously requested 
+        // * container, the message that it is online again.
+        Container.SetHTML('You are online again!');
+
+        // * Now we will do that after showing the 
+        // * message that the internet connection 
+        // * was re-established, we will wait 3 seconds 
+        // * to re-empty the container that contains 
+        // * the message that the connection was 
+        // * re-established, so that if it is 
+        // * lost again, the message and again after 
+        // * 3 seconds the message will be deleted.
+        setTimeout(() => {
+
+            // * Emptying all the content contained in 
+            // * the previously selected container to 
+            // * notify each time the internet 
+            // * connection was re-established.
+            Container.ClearContent();
+        }, 3000);
+    });
+
+</script>
+
+</html>

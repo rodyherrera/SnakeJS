@@ -1,0 +1,103 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS - DeleteCookie</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>DeleteCookie:</h1>
+            <p id='Container'></p>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+
+    // * Selecting the label to be able to manipulate it later.
+    const Container = $('Container');
+
+    // * We start by creating the cookie and then delete 
+    // * it, you must remember that this only works if 
+    // * it is being executed on a web server, if it 
+    // * is being opened using the .html as such 
+    // * without a server, the Cookie will not 
+    // * be able to be set.
+    SnakeClient.SetCookie('TestCookie', 'Hello-World');
+    
+    // * After creating the Cookie we will proceed 
+    // * to eliminate it, for this we use the 
+    // * DeleteCookie method which will receive 
+    // * as a parameter the name of the Cookie 
+    // * that you want to eliminate.
+    SnakeClient.DeleteCookie('TestCookie');
+
+    // * Then through an if using the GetCookie 
+    // * method of the SnakeClient object, we 
+    // * will verify if the Cookie was eliminated 
+    // * or not, so that when calling the function 
+    // * that receives the name of the Cookie as a 
+    // * parameter, it will return the value of the 
+    // * Cookie, a string value which is "True", so 
+    // * that it would enter the Else instructions, if 
+    // * it gives a Boolean value other than True, the 
+    // * first block of instructions will be 
+    // * executed, in this case as the Cookie 
+    // * was eliminated it will return a False, because 
+    // * it makes a verification that if the Cookie exists 
+    // * or not (If Cookie is equal to a defined, oh it does 
+    // * not exist, return false because there is no value to return)
+    if(!SnakeClient.GetCookie('TestCookie'))
+        Container.SetHTML('Cookie has been deleted.');
+    else
+        Container.SetHTML('Can not delete the Cookie.');
+
+</script>
+
+</html>

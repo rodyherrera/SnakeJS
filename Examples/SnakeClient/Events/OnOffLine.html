@@ -1,0 +1,107 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS - OnOffLine</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>Deactivate your internet connection and reactivate.</h1>
+            <p id='Container'></p>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+
+    // * Selecting the label to be able to manipulate it later.
+    const Container = $('Container');
+
+    // * Using the OnOffLine method of the SnakeClient 
+    // * object we will execute an action every 
+    // * time it is detected that the client lost 
+    // * the connection to the internet, this can 
+    // * be useful to improve the experience of the 
+    // * same and show friendly messages such as 
+    // * "Hey you have lost connection!" etc...
+    SnakeClient.OnOffLine(() => {
+
+        // * Therefore, within the listener, we will 
+        // * make sure that every time the connection 
+        // * is lost in the previously obtained 
+        // * container, we will establish its 
+        // * content with a message advising the 
+        // * user that the connection has been lost.
+        Container.SetHTML('You have lost your internet connection.');
+
+        // * Now so that the message that is established 
+        // * does not remain permanently, we will 
+        // * delete all the content of the previously 
+        // * selected container after 3 seconds, so 
+        // * that every time the user loses the 
+        // * connection, the message that the connection 
+        // * was lost will be shown. connection and after
+        // * 3 seconds the message will be removed.
+        setTimeout(() => {
+
+            // * Now after 3 seconds we are going to 
+            // * execute the ClearContent method that 
+            // * contains the class of the page node, this to 
+            // * eliminate its content and that it does not 
+            // * remain permanently, in this way if the user 
+            // * loses the connection again after having it 
+            // * reestablished we will make that a message 
+            // * of lost connection is shown again.
+            Container.ClearContent();
+        }, 3000);
+    });
+
+</script>
+
+</html>

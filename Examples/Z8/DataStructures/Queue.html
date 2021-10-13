@@ -1,0 +1,100 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS(Z8 DataStructures) - Queue</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>Queue Data Structure (View in console):</h1>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+    // * Creating a Queue that will contain countries
+    const Countries = new Queue();
+
+    // * Adding values ​​to the Queue
+    Countries.EnQueue('Chile');
+    Countries.EnQueue('Russia');
+    Countries.EnQueue('Poland');
+
+    // * Since 3 values ​​have been added to the queue, their length should be 3
+    console.log('Length of queue =>', Countries.Length);
+
+    // * We remove the last element of the cake, its length should now be 2.
+    Countries.DeQueue();
+
+    console.log('Length of queue =>', Countries.Length);
+
+    // * Queue.IsEmpty() checks if the length of the stack is equal to 0, that 
+    // * is, if the stack has no items, this works and it will 
+    // * return a true, otherwise a false.
+    if(Countries.IsEmpty())
+        console.log('Queue is empty.')
+    else
+        console.log('Queue is not empty.');
+
+    // * Queue.Peek() returns the last element of the Queue.
+    console.log('Peek =>', Countries.Peek());
+
+    // * Queue.Clear() Reove all data from the Queue
+    Countries.Clear();
+
+    // * After eliminating if we verify that the Queue is 
+    // * empty, the .Clear method should return true, as if 
+    // * the length of the Queue is verified, it should be 0.
+    if(Countries.IsEmpty())
+        console.log('Queue is empty.')
+    else
+        console.log('Queue is not empty.');
+</script>
+
+</html>

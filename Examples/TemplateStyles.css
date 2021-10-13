@@ -1,0 +1,188 @@
+/***
+ * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root 
+ * for full license information.
+ *
+ * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+ *
+ * For related information - https://github.com/codewithrodi/SnakeJS/
+ *
+ * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+ ****/
+
+
+*{
+    /*
+        ? Declaration of the general 
+        ? styles that the sample templates 
+        ? will contain.
+    */
+    box-sizing: border-box; 
+
+    /*
+        * This property is used so that the user 
+        * cannot select anything on the screen, I think 
+        * it gives a better experience.
+
+        * It is probable that in future example 
+        * files, since not all the functions are 
+        * explained, text will have to be 
+        * selected, the property will be applied 
+        * directly to the node to make it selectable, since 
+        * not all of them will always be.
+    */
+    user-select: none; 
+
+    /*
+        * Reset of properties that come in some nodes 
+        * by default, this since in some occasions I 
+        * will resort to putting custom styles to these 
+        * nodes, I do not need the spacing and the edges 
+        * either, these things are done separately.
+    */
+    margin: 0; 
+    padding: 0;
+    list-style-type: none; 
+    text-decoration: none; 
+    border: none;
+    outline: none;
+}
+
+::-webkit-scrollbar{
+    /*
+        * Disabling the client's scroll bar, this 
+        * since it will not scroll, the text itself 
+        * will be centered on the screen also the 
+        * scroll bar in my opinion is rubbish, better
+        * if in it, although in the same way I can 
+        * customize it but not necessary for templates.
+    */
+    display: none; 
+}
+
+p{
+    /*
+        ? Best performance in animations
+    */
+    will-change: transform;
+
+    /*
+        * Giving a little more width to 
+        * the text that the labels contain p.
+    */
+    font-weight: 450;
+}
+
+p:hover{
+    /*
+       * When any label p has the mouse over 
+       * it, its color will change to lighter, this 
+       * makes a richer experience for the developer 
+       * who is viewing the example template.
+    */
+    color: #4e4e4e;
+}
+
+h1{
+    /*
+        ? Best performance in animations
+    */
+    will-change: transform;
+}
+
+h1:hover{
+    /*
+       * When any label h1 has the mouse over 
+       * it, its color will change to lighter, this 
+       * makes a richer experience for the developer 
+       * who is viewing the example template.
+    */
+    color: #3d3d3d;
+}
+
+a{
+    /*
+        * Setting the main color for 
+        * link labels to black
+    */
+    color: #000000;
+
+    /*
+        ? Best performance in animations
+    */
+    will-change: transform;
+}
+
+a:hover{
+    /*
+        * When the mouse is over any link the 
+        * opacity without depending on the 
+        * specific color that the label has, the 
+        * opacity will decrease only a little but 
+        * giving a pleasant effect to the eye.
+    */
+    opacity: .7;
+}
+
+body{
+    /*
+        ? Styles that the body of 
+        ? the page will have
+    */
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale;
+
+    /*
+        * Loading different fonts in case the 
+        * computer or device from which the 
+        * client is accessing the template does not 
+        * have an specific font.
+
+        * I do not charge sources of external services 
+        * to which it is probable that the developer 
+        * does not have an internet connection.
+
+        * Simply a sans-serif will never hurt <3.
+    */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; 
+
+    /*
+        * I assign it a rgba color so that 
+        * the site has a nice sense of transparency.
+    */
+    background-color: rgba(237, 237, 237, 1); 
+}
+
+main{
+    /*
+        ? Declaration of styles for 
+        ? the main container of the template
+    */
+    /*
+        * Giving a separation to the height of the 
+        * letters for a better graphic sensation 
+        * towards the client
+    */
+    line-height: 1.7rem;
+
+    /*
+        * Applying the necessary style configuration 
+        * to center all the content that the main 
+        * container contains using flex box, that is 
+        * why it is assigned the maximum height and width.
+    */
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    /*
+        * Since we have centered the 
+        * entire container ...why leave the text behind?
+    */
+    text-align: center;
+}

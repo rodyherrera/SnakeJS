@@ -1,2699 +1,2715 @@
 /***
  * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root
+ * Licensed under the MIT license. See LICENSE file in the project root 
  * for full license information.
  *
  * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
  *
  * For related information - https://github.com/codewithrodi/SnakeJS/
- *
+ * 
+ * SnakeJS -> A new way to write HTML and JavaScript, write 
+ * less and do more, leaving the standard of the initial 
+ * javascript programming style.
+ * 
+ * Examples -> Templates that contain example code to be 
+ * able to use different functionalities that the library 
+ * contains, not all the functionalities are available but 
+ * if you take the time to review each function definition 
+ * seeing how the library is written or looking explicitly for
+ *  obvious names using (CTRL + F) names of functions to be able 
+ * to use them, SnakeJS is designed in such a way that every developer
+ *  can infer and understand how this works without having to comment 
+ * because each byte being frontend will affect the load of the site.
+ * 
+ * Just a beta version of the library.
+ * 
+ * Remember to drink water, you son of a bitch.
+ * 
  * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
  ****/
 
-class AlgorithmsHandler {
-	MergeList = (list_a, list_b) => Object.assign({}, list_a, list_b);
-	RandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-	RandomNumber = (min, max) => Math.random() * (max - min) + min;
+class Stack{
+    #Items = [];
+    Push = (Item) => this.#Items.unshift(Item);
+    Pop = () => this.#Items.shift();
+    Peek = () => this.#Items[0];
+    IsEmpty = () => this.#Items.length === 0;
+    Clear = () => this.#Items.length = 0;
 
-	StringGenerator = (len = 8, characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') => {
-		let str = '',
-			i = 0;
-		for (i; i < len; i++) str += characters.charAt(Math.floor(Math.random() * len));
-		return str;
-	}
+    get Length(){
+        return this.#Items.length;
+    }
+};
 
-	BinarySearch = (value, list) => {
-		let first = 0,
-			last = list.length - 1,
-			pos = -1,
-			found = false,
-			mid;
-		while (found == false && first <= last) {
-			mid = Math.floor((first + last) / 2);
-			if (list[mid] == value) found = true, pos = mid;
-			else if (list[mid] > value) last = mid - 1;
-			else first = mid + 1;
+class Queue{
+    #Items = [];
+    EnQueue = (Item) => this.#Items.push(Item);
+    DeQueue = () => this.#Items.shift();
+    Peek = () => this.#Items[0];
+    IsEmpty = () => this.#Items.length === 0;
+    Clear = () => this.#Items.length = 0;
+
+    get Length(){
+        return this.#Items.length;
+    }
+};
+
+const SnakeAlgorithms = {
+	Fibonacci: (MaxIteration) => {
+		const Sequence = [1];
+		let CurrentValue = 1, PreviousValue = 0, Iterator = 0;
+		if(MaxIteration === 1)
+			return Sequence;
+		while(Iterator < MaxIteration){
+			CurrentValue += PreviousValue;
+			PreviousValue = CurrentValue - PreviousValue;
+			Sequence.push(CurrentValue);
+			Iterator++;
 		}
-		return pos;
-	}
+		return Sequence;
+	},
 
-	LinearSearch = (value, list) => {
-		let len = list.length,
-			i = 0;
-		for (i; i < len; i++)
-			if (list[i] == value) return i;
+	PrimeFactors: (Integer) => {
+		let CloneOfInteger = Integer, Factors = [];
+		for(let Iterator = 2; Iterator <= Math.sqrt(CloneOfInteger); Iterator++)
+			while(CloneOfInteger % Iterator === 0){
+				CloneOfInteger /= Iterator;
+				Factors.push(Iterator);
+			}
+		if(CloneOfInteger !== 1)
+			Factors.push(CloneOfInteger);
+		return Factors;
+	},
+
+	IsPrime: (Integer) => {
+		const Boundary = Math.floor(Math.sqrt(Integer));
+		for(let Iterator = 2; Integer <= Boundary; Iterator++)
+			if(Integer % Iterator == 0)
+				return false;
+		return Integer >= 2;
+	},
+
+	SubStringCount: (BaseString, SubString) => {
+		let Counter = 0, Iterator = 0;
+		while(true){
+			const Result = BaseString.indexOf(SubString, Iterator);
+			if(Result !== -1)
+				[Counter, Iterator] = [Counter + 1, Result + 1];
+			else
+				return Counter;
+		}
+	},
+
+	HammingDistance: (BaseString, StringToCompare) => {
+		if(BaseString.length !== StringToCompare.length)
+			throw new Error('Strings must be of the same length!');
+		let Distance = 0;
+		for(let Iterator = 0; Iterator < BaseString.length; Iterator++)
+			if(BaseString[Iterator] !== StringToCompare[Iterator])
+				Distance += 1;
+		return Distance;
+	},
+
+	Factorial: (PositiveNumber) => PositiveNumber < 0 ? (() => {
+		throw new TypeError('Negative numbers are not allowed!');
+	})() : PositiveNumber <= 1 ? 1 : PositiveNumber * SnakeAlgorithms.Factorial(PositiveNumber - 1),
+
+    MergeObject: (BaseObject, ExtensionObject) => 
+        Object.assign({}, BaseObject, ExtensionObject),
+
+	MergeList: (BaseList, ExtensionList) =>
+		[...BaseList, ...ExtensionList],
+    
+    RandomInteger: (MinimumValue, MaximumValue) =>
+        Math.floor(Math.random() * (MaximumValue - MinimumValue + 1)) + MinimumValue,
+    
+    RandomNumber: (MinimumValue, MaximumValue) =>
+        Math.random() * (MaximumValue - MinimumValue) + MinimumValue,
+
+    StringGenerator: (Length = 8, Characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') => {
+        let StringToReturn = '';
+        for(let Iterator = 0; Iterator < Length; Iterator++)
+            StringToReturn += Characters.charAt(Math.floor(Math.random() * Length));
+        return StringToReturn;
+    },
+
+    BinarySearch: (Value, List) => {
+		let Start = 0, End = List.length -1;
+		while(Start <= End){
+			let Middle = Math.floor((Start + End) / 2);
+			if(Value === List[Middle])
+				return Middle;
+			else if(Value > List[Middle])
+				Start = Middle + 1;
+			else if(Value < List[Middle])
+				End = Middle - 1;
+		}
 		return -1;
-	}
+    },
 
-	InsertionSort = (list) => {
-		let len = list.length,
-			i = 1;
-		for (i; i < len; i++) {
-			let value = list[i],
-				aux = i - 1;
-			while (aux >= 0 && list[aux] > value) list[aux + 1] = list[aux], aux = aux - 1;
-			list[aux + 1] = value;
+	Average: (List) => List.reduce((Accumulator, Value) => Accumulator + Value) / List.length,
+
+	MaximumValue: (List) => Math.max(...List),
+
+	MinimumValue: (List) => Math.min(...List),
+
+	InterpolationSearch: (Value, List) => {
+		let
+			LeftIndex = 0,
+			RightIndex = List.length - 1;
+		while(LeftIndex <= RightIndex){
+			const
+				RangeDelta = List[RightIndex] - List[LeftIndex],
+				IndexDelta = RightIndex - LeftIndex,
+				ValueDelta = Value - List[LeftIndex];
+			if(ValueDelta < 0)
+				return -1;
+			if(!RangeDelta)
+				return List[LeftIndex] === Value ? LeftIndex : -1;
+			const MiddleIndex = LeftIndex + Math.floor((ValueDelta * IndexDelta) / RangeDelta);
+			if(List[MiddleIndex] === Value)
+				return MiddleIndex;
+			if(List[MiddleIndex] < Value)
+				LeftIndex = MiddleIndex + 1;
+			else
+				RightIndex = MiddleIndex - 1;
 		}
-		return list;
-	}
+	},
 
-	QuickSort = (list) => {
-		let len = list.length,
-			pivot = list[0],
-			left = [],
-			right = [],
-			i = 1;
-		if (len <= 1) return list;
-		for (i; i < len; i++) list[i] < pivot ? left.push(list[i]) : right.push(list[i]);
-		return this.QuickSort(left).concat(pivot, this.QuickSort(right));
-	}
+    LinearSearch: (Value, List) => {
+        for(let Iterator = 0; Iterator < List.length; Iterator++)
+            if(List[Iterator] == Value)
+                return Iterator;
+        return -1;
+    },
 
-	SelectionSort = (list) => {
-		let len = list.length,
-			i = 0;
-		for (i; i < len; i++) {
-			let min = i,
-				j = i + 1;
-			for (j; j < len; j++)
-				if (list[j] < list[min]) min = j;
-			if (min != i) {
-				let tmp = list[i];
-				list[i] = list[min];
-				list[min] = tmp;
-			}
+    InsertionSort: (List) => {
+		for(let Iterator = 0; Iterator < List.length; Iterator++)
+			for(let SubIterator = Iterator - 1; SubIterator > -1; SubIterator--)
+				if(List[SubIterator + 1] < List[SubIterator])
+					[List[SubIterator + 1], List[SubIterator]] = [List[SubIterator], List[SubIterator + 1]];
+		return List;
+    },
+
+    SelectionSort: (List) => {
+        for(let Iterator = 0; Iterator < List.length; Iterator++){
+            let Minimum = Iterator;
+            for(let SubIterator = Iterator + 1; SubIterator < List.length; SubIterator++)
+                if(List[SubIterator] < List[Minimum])
+                    Minimum = SubIterator;
+            if(Minimum != Iterator){
+                let Buffer = List[Iterator];
+                List[Iterator] = List[Minimum];
+                List[Minimum] = Buffer;
+            }
+        }
+        return List;
+    },
+
+	Shuffle: (List) => {
+		let Length = List.length;
+		while(Length){
+			const Index = Math.floor(Math.random() * Length--);
+			[List[Length], List[Index]] = [List[Index], List[Length]];
 		}
-		return list;
-	}
-
-	MergeSort = (list) => {
-		let len = list.length,
-			mid = parseInt(list.length / 2) | 0,
-			left = list.slice(0, mid),
-			right = list.slice(mid);
-		if (len < 2) return list;
-
-		function merge(left, right) {
-			let l_it = 0,
-				r_it = 0,
-				l_len = left.length,
-				r_len = right.length,
-				result = [];
-			while (l_it < l_len && r_it < r_len) result.push((left[l_it] < right[r_it]) ? left[l_it++] : right[r_it++]);
-
-			return [...result, ...left.slice(l_it), ...right.slice(r_it)];
-		}
-		return merge(this.MergeSort(left), this.MergeSort(right));
-	}
-}
-
-const Algorithms = new AlgorithmsHandler();
-
-raise = (msg, type = 'undefined') => {
-	switch (type.toLowerCase()) {
-		case 'error':
-			console.error(msg);
-			break;
-		case 'log':
-			console.log(msg);
-			break;
-		case 'warn':
-			console.warn(msg);
-			break;
-		default:
-			console.error(msg);
-	}
-}
-
-class DateHandler {
-	GetDate = () => new Date();
-	GetCurrentDay = () => new Date().getDay();
-	GetCurrentYear = () => new Date().getFullYear();
-	GetCurrentMonth = () => new Date().getMonth();
-	GetCurrentHour = () => new Date().getHours();
-	GetCurrentMinutes = () => new Date().getMinutes();
-	GetCurrentSeconds = () => new Date().getSeconds();
-	GetDateFromExistingDate = (date) => new Date(date);
-}
-
-const Datetime = new DateHandler();
-
-class Form {
-	constructor(NodeInstance) {
-		this.i = NodeInstance;
-		this.e = NodeInstance.GetInstance();
-	}
-
-	OnReset = (a) => this.e.addEventListener('reset', a);
-	Submit = () => this.e.submit();
-	OnSubmit = (action) => this.e.addEventListener('submit', action);
-	Reset = () => this.e.reset();
-	GetAction = () => this.e.action;
-	GetEnctype = () => this.e.enctype;
-	GetElements = () => this.e.length;
-	GetMethod = () => this.e.method;
-	GetTarget = () => this.e.target;
-	GetName = () => this.e.name;
-}
-
-class Input {
-	constructor(NodeInstance) {
-		this.i = NodeInstance;
-		this.e = NodeInstance.GetInstance();
-	}
-
-	OnInput = (a) => this.e.addEventListener('input', a);
-	OnInvalid = (a) => this.e.addEventListener('invalid', a);
-	OnSelect = (a) => this.e.addEventListener('select', a);
-	Disable = () => this.e.disabled = true;
-	Enable = () => this.e.disabled = false;
-	HideInput = () => this.i.SetAttribute('hidden');
-	UnHideInput = () => {
-		if (this.i.HasAttribute('hidden')) this.i.RemoveAttribute('hidden');
-	}
-	Reset = () => this.e.value = '';
-	CheckCheckbox = () => this.i.SetAttribute('checked');
-	UnCheckCheckbox = () => {
-		if (this.i.HasAttribute('checked')) this.i.RemoveAttribute('checked');
-	}
-	SetValue = (x) => this.e.value = x;
-	SetRequiredAttribute = () => {
-		if (!this.i.HasAttribute('required')) this.i.SetAttribute('required');
-	}
-	SetType = (x) => this.i.SetAttribute('type', x);
-	SetMaxLength = (x) => this.i.SetAttribute('maxlength', x);
-	SetMinLength = (x) => this.i.SetAttribute('minlength', x);
-	SetMaxRange = (x) => this.i.SetAttribute('max', x);
-	SetMinRange = (x) => this.i.SetAttribute('min', x);
-	SetPlaceholder = (x) => this.i.SetAttribute('placeholder', x);
-	GetType = () => this.i.GetAttribute('type');
-	GetPlaceholder = () => this.i.GetAttribute('placeholder');
-	GetMaxRange = () => this.i.GetAttribute('max');
-	GetMinRange = () => this.i.GetAttribute('min');
-	MultipleSelect = () => this.e.multiple = true;
-	UniqueSelect = () => this.e.multiple = false;
-	RemoveSelectedElement = () => this.e.remove(this.e.selectedIndex);
-	GetName = () => this.e.name;
-	GetMaxLength = () => this.i.GetAttribute('maxlength');
-	GetMinLength = () => this.i.GetAttribute('minlength');
-	IsRequired = () => (this.i.HasAttribute('required')) ? true : false;
-}
-
-class ServerHandler {
-	GetProtocol = () => location.protocol;
-	GetPort = () => location.port;
-	GetOrigin = () => location.origin;
-	GetHostname = () => location.hostname;
-	GetHost = () => location.host;
-	GetLocation = () => location.href;
-	GetDomain = () => document.domain;
-}
-
-const Server = new ServerHandler();
-
-class Node {
-	constructor(element, method = 'id') {
-		this.e = this.GetElement(element, method);
-		this.s = this.e.style;
-		if (this.e == undefined) raise(`The element [<${dom_element}> required using <${method.toUpperCase()}>] was not found in the DOM.`)
-	}
-
-	OnClick = (a) => this.e.addEventListener('click', a);
-	OnMouseOver = (a) => this.e.addEventListener('mouseover', a);
-	OnMouseOut = (a) => this.e.addEventListener('mouseout', a);
-	OnMouseMove = (a) => this.e.addEventListener('mousemove', a);
-	OnMouseLeave = (a) => this.e.addEventListener('mouseleave', a);
-	OnMouseEnter = (a) => this.e.addEventListener('mouseenter', a);
-	OnMouseWheel = (a) => this.e.addEventListener('mousewheel', a);
-	OnMouseUp = (a) => this.e.addEventListener('mouseup', a)
-	OnBlur = (a) => this.e.addEventListener('blur', a);
-	OnContextMenu = (a) => this.e.addEventListener('blur', a);
-	OnChange = (a) => this.e.addEventListener('change', a);
-	OnDoubleClick = (a) => this.e.addEventListener('dblclick', a);
-	OnFocus = (a) => this.e.addEventListener('focus', a);
-	OnKeyDown = (a) => this.e.addEventListener('keydown', a);
-	OnKeyPress = (a) => this.e.addEventListener('keypress', a);
-	OnKeyUp = (a) => this.e.addEventListener('keyup', a);
-	OnLoad = (a) => this.e.addEventListener('load', a);
-	OnMouseDown = (a) => this.e.addEventListener('mousedown', a);
-	OnMouseUp = (a) => this.e.addEventListener('mouseup', a);
-	OnReset = (a) => this.e.addEventListener('reset', a);
-	OnSelect = (a) => this.e.addEventListener('select', a);
-	OnAnimationEnd = (a) => this.e.addEventListener('animationend', a);
-	OnAnimationIteration = (a) => this.e.addEventListener('animationiteration', a);
-	OnAnimationStart = (a) => this.e.addEventListener('animationstart', a);
-	OnDrag = (a) => this.e.addEventListener('drag', a);
-	OnDragEnd = (a) => this.e.addEventListener('dragend', a);
-	OnDragLeave = (a) => this.e.addEventListener('dragleave', a);
-	OnDragOver = (a) => this.e.addEventListener('dragover', a);
-	OnDragStart = (a) => this.e.addEventListener('dragstart', a);
-	OnDrop = (a) => this.e.addEventListener('drop', a);
-	OnDragEnter = (a) => this.e.addEventListener('dragenter', a);
-	OnTouchStart = (a) => this.e.addEventListener('touchstart', a);
-	OnTouchMove = (a) => this.e.addEventListener('touchmove', a);
-	OnTouchEnd = (a) => this.e.addEventListener('touchend', a);
-	OnTouchCancel = (a) => this.e.addEventListener('touchcancel', a);
-	OnReadyStateChange = (a) => this.e.addEventListener('readystatechange', a);
-	OnCopy = (a) => this.e.addEventListener('copy', a);
-	OnCut = (a) => this.e.addEventListener('cut', a);
-	OnPaste = (a) => this.e.addEventListener('paste', a);
-	OnBeforeScriptExecute = (a) => this.e.addEventListener('beforescriptexecute', a);
-	OnAfterScriptExecute = (a) => this.e.addEventListener('afterscriptexecute', a);
-	OnCanPlay = (a) => this.e.addEventListener('canplay', a);
-	OnCanPlayThrough = (a) => this.e.addEventListener('canplaythrough', a);
-	OnDurationChange = (a) => this.e.addEventListener('durationchange', a);
-	OnEmptied = (a) => this.e.addEventListener('emptied', a);
-	OnLoadedData = (a) => this.e.addEventListener('loadeddata', a);
-	OnLoadedMetaData = (a) => this.e.addEventListener('loadedmetadata', a);
-	OnLoadStart = (a) => this.e.addEventListener('loadstart', a);
-	OnPause = (a) => this.e.addEventListener('pause', a);
-	OnPlay = (a) => this.e.addEventListener('play', a);
-	OnPlaying = (a) => this.e.addEventListener('playing', a);
-	OnProgress = (a) => this.e.addEventListener('progress', a);
-	OnRateChange = (a) => this.e.addEventListener('ratechange', a);
-	OnSeeked = (a) => this.e.addEventListener('seeked', a);
-	OnSeeking = (a) => this.e.addEventListener('seeking', a);
-	OnShow = (a) => this.e.addEventListener('show', a);
-	OnStalled = (a) => this.e.addEventListener('stalled', a);
-	OnSuspend = (a) => this.e.addEventListener('suspend', a);
-	OnTimeUpdate = (a) => this.e.addEventListener('timeupdate', a);
-	OnVolumeChange = (a) => this.e.addEventListener('volumechange', a);
-	OnWaiting = (a) => this.e.addEventListener('waiting', a);
-	OnError = (a) => this.e.addEventListener('error', a);
-	OnScroll = (a) => this.e.addEventListener('scroll', a);
-
-	AlignContent = (x) => this.s.alignContent = x;
-	AlignItems = (x) => this.s.alignItems = x;
-	AlignmentBaseLine = (x) => this.s.alignmentBaseLine = x;
-	All = (x) => this.s.all = x;
-	Animation = (x) => this.s.animation = x;
-	AnimationDelay = (x) => this.s.animationDelay = x;
-	AnimationDirection = (x) => this.s.animationDirection = x;
-	AnimationFillMode = (x) => this.s.animatonFillMode = x;
-	AnimationIterationCount = (x) => this.s.animationIterationCount = x;
-	AnimationName = (x) => this.s.animationName = x;
-	AnimationPlayState = (x) => this.s.animationPlayState = x;
-	AnimationTimingFunction = (x) => this.s.animationTimingFunction = x;
-	Appearance = (x) => this.s.appearance = x;
-	AscentOverride = (x) => this.s.ascentOverride = x;
-	AspectRatio = (x) => this.s.aspectRatio = x;
-
-	BackdropFilter = (x) => this.s.backdropFilter = x;
-	BackfaceVisibility = (x) => this.s.backfaceVisibility = x;
-	Background = (x) => this.s.background = x;
-	BackgroundAttachment = (x) => this.s.backgroundAttachment = x;
-	BackgroundBlendMode = (x) => this.s.backgroundBlendMode = x;
-	BackgroundClip = (x) => this.s.backgroundClip = x;
-	BackgroundColor = (x) => this.s.backgroundColor = x;
-	BackgroundImage = (x) => this.s.backgroundImage = x;
-	BackgroundOrigin = (x) => this.s.backgroundOrigin = x;
-	BackgroundPosition = (x) => this.s.backgroundPosition = x;
-	BackgroundPositionX = (x) => this.s.backgroundPositionX = x;
-	BackgroundPositionY = (x) => this.s.backgroundPositionY = x;
-	BackgroundRepeat = (x) => this.s.backgroundRepeat = x;
-	BackgroundRepeatX = (x) => this.s.backgroundRepeatX = x;
-	BackgroundRepeatY = (x) => this.s.backgroundRepeatY = x;
-	BackgroundSize = (x) => this.s.backgroundSize = x;
-	BaselineShift = (x) => this.s.baselineShift = x;
-	BlockSize = (x) => this.s.blockSize = x;
-	Border = (x) => this.s.border = x;
-	BorderBlock = (x) => this.s.borderBlock = x;
-	BorderBlockColor = (x) => this.s.borderBlockColor = x;
-	BorderBlockEnd = (x) => this.s.borderBlockEnd = x;
-	BorderBlockEndColor = (x) => this.s.borderBlockEndColor = x;
-	BorderBlockEndWidth = (x) => this.s.borderBlockEndWidth = x;
-	BorderBlockStart = (x) => this.s.borderBlockStart = x;
-	BorderBlockStartColor = (x) => this.s.borderBlockStartColor = x;
-	BorderBlockStartStyle = (x) => this.s.borderBlockStartStyle = x;
-	BorderBlockStartWidth = (x) => this.s.borderBlockStartWidth = x;
-	BorderBlockStyle = (x) => this.s.borderBlockStyle = x;
-	BorderBlockWidth = (x) => this.s.borderBlockWidth = x;
-	BorderBottom = (x) => this.s.borderBottom = x;
-	BorderBottomColor = (x) => this.s.borderBottomColor = x;
-	BorderBottomLeftRadius = (x) => this.s.borderBottomLeftRadius = x;
-	BorderBottomRightRadius = (x) => this.s.borderBottomRightRadius = x;
-	BorderBottomStyle = (x) => this.s.borderBottomStyle = x;
-	BorderBottomWidth = (x) => this.s.borderBottomWidth = x;
-	BorderCollapse = (x) => this.s.borderCollapse = x;
-	BorderColor = (x) => this.s.borderColor = x;
-	BorderEndEndRadius = (x) => this.s.borderEndEndRadius = x;
-	BorderEndStartRadius = (x) => this.s.borderEndStartRadius = x;
-	BorderImage = (x) => this.s.borderImage = x;
-	BorderImageOutset = (x) => this.s.borderImageOutset = x;
-	BorderImageRepeat = (x) => this.s.borderImageRepeat = x;
-	BorderImageSource = (x) => this.s.borderImageSource = x;
-	BorderImageWidth = (x) => this.s.borderImageWidth = x;
-	BorderInline = (x) => this.s.borderInline = x;
-	BorderInlineColor = (x) => this.s.borderInlineColor = x;
-	BorderInlineEnd = (x) => this.s.borderInlineEnd = x;
-	BorderInlineEndColor = (x) => this.s.borderInlineEndColor = x;
-	BorderInlineEndStyle = (x) => this.s.borderInlineEndStyle = x;
-	BorderInlineWidth = (x) => this.s.borderInlineWidth = x;
-	BorderInlineStart = (x) => this.s.borderInlineStart = x;
-	BorderInlineStartColor = (x) => this.s.borderInlineStartColor = x;
-	BorderInlineStartStyle = (x) => this.s.borderInlineStartStyle = x;
-	BorderInlineStartWidth = (x) => this.s.borderInlineStartWidth = x;
-	BorderInlineStyle = (x) => this.s.borderInlineStyle = x;
-	BorderInlineWidth = (x) => this.s.borderInlineWidth = x;
-	BorderLeft = (x) => this.s.borderLeft = x;
-	BorderLeftColor = (x) => this.s.borderLeftColor = x;
-	BorderLeftStyle = (x) => this.s.borderLeftStyle = x;
-	BorderLeftWidth = (x) => this.s.borderLeftWidth = x;
-	BorderRadius = (x) => this.s.borderRadius = x;
-	BorderRight = (x) => this.s.borderRight = x;
-	BorderRightColor = (x) => this.s.borderRightColor = x;
-	BorderRightStyle = (x) => this.s.borderRightStyle = x;
-	BorderRightWidth = (x) => this.s.borderRightWidth = x;
-	BorderSpacing = (x) => this.s.borderSpacing = x;
-	BorderStartEndRadius = (x) => this.s.borderStartEndRadius = x;
-	BorderStartStartRadius = (x) => this.s.borderStartStartRadius = x;
-	BorderStyle = (x) => this.s.borderStyle = x;
-	BorderTop = (x) => this.s.borderTop = x;
-	BorderTopColor = (x) => this.s.borderTopColor = x;
-	BorderTopLeftRadius = (x) => this.s.borderTopLeftRadius = x;
-	BorderTopRightRadius = (x) => this.s.borderTopRightRadius = x;
-	BorderTopStyle = (x) => this.s.borderTopStyle = x;
-	BorderTopWidth = (x) => this.s.borderTopWidth = x;
-	BorderWidth = (x) => this.s.borderWidth = x;
-	BorderBottom = (x) => this.s.borderBottom = x;
-	BoxShadow = (x) => this.s.boxShadow = x;
-	BoxSizing = (x) => this.s.boxSizing = x;
-	BreakAfter = (x) => this.s.breakAfter = x;
-	BreakBefore = (x) => this.s.breakBefore = x;
-	BreakInside = (x) => this.s.breakInside = x;
-	BufferedRendering = (x) => this.s.bufferedRendering = x;
-
-	CaptionSide = (x) => this.s.captionSide = x;
-	CaretColor = (x) => this.s.caretColor = x;
-	Clear = (x) => this.s.clear = x;
-	Clip = (x) => this.s.clip = x;
-	ClipPath = (x) => this.s.clipPath = x;
-	ClipRule = (x) => this.s.clipRule = x;
-	Color = (x) => this.s.color = x;
-	ColorInterpolation = (x) => this.s.colorInterpolation = x;
-	ColorInterpolationFilters = (x) => this.s.colorInterpolationFilters = x;
-	ColorRendering = (x) => this.s.colorRendering = x;
-	ColorScheme = (x) => this.s.colorScheme = x;
-	ColumnCount = (x) => this.s.columnCount = x;
-	ColumnFill = (x) => this.s.columnFill = x;
-	ColumnGap = (x) => this.s.columnGap = x;
-	ColumnRule = (x) => this.s.columnRule = x;
-	ColumnRuleColor = (x) => this.s.columnRuleColor = x;
-	ColumnRuleStyle = (x) => this.s.columnRuleStyle = x;
-	ColumnRuleWidth = (x) => this.s.columnRuleWidth = x;
-	ColumnSpan = (x) => this.s.columnSpan = x;
-	ColumnWidth = (x) => this.s.columnWidth = x;
-	Columns = (x) => this.s.columns = x;
-	Contain = (x) => this.s.contain = x;
-	ContainIntrinsicSize = (x) => this.s.containIntrinsicSize = x;
-	Content = (x) => this.s.content = x;
-	CounterIncrement = (x) => this.s.counterIncrement = x;
-	ContentVisibility = (x) => this.s.contentVisibility = x;
-	CounterReset = (x) => this.s.counterReset = x;
-	CounterSet = (x) => this.s.counterSet = x;
-	Cursor = (x) => this.s.cursor = x;
-	Cx = (x) => this.s.cx = x;
-	Cy = (x) => this.s.cy = x;
-
-	D = (x) => this.s.d = x;
-	DescentOverride = (x) => this.s.descentOverride = x;
-	Direction = (x) => this.s.direction = x;
-	Display = (x) => this.s.display = x;
-	DominantBaseline = (x) => this.s.dominantBaseline = x;
-
-	EmptyCells = (x) => this.s.emptyCells = x;
-	EpubCaptionSide = (x) => this.s.epubCaptionSide = x;
-	EpubTextCombine = (x) => this.s.epubTextCombine = x;
-	EpubTextEmphasis = (x) => this.s.epubTextEmphasis = x;
-	EpubTextEmphasisColor = (x) => this.s.epubTextEmphasisColor = x;
-	EpubTextOrientation = (x) => this.s.epubTextOrientation = x;
-	EpubTextTransform = (x) => this.s.epubTextTransform = x;
-	EpubWordBreak = (x) => this.s.epubWordBreak = x;
-	EpubWritingMode = (x) => this.s.epubWritingMode = x;
-
-	Fill = (x) => this.s.fill = x;
-	FillOpacity = (x) => this.s.fillOpacity = x;
-	FillRule = (x) => this.s.fillRule = x;
-	Filter = (x) => this.s.filter = x;
-	Flex = (x) => this.s.flex = x;
-	FlexBasis = (x) => this.s.flexBasis = x;
-	FlexDirection = (x) => this.s.flexDirection = x;
-	FlexFlow = (x) => this.s.flexFlow = x;
-	FlexGrow = (x) => this.s.flexGrow = x;
-	FlexWrap = (x) => this.s.flexWrap = x;
-	Float = (x) => this.s.float = x;
-	FloodColor = (x) => this.s.floodColor = x;
-	FloodOpacity = (x) => this.s.floodOpacity = x;
-	Font = (x) => this.s.font = x;
-	FontDisplay = (x) => this.s.fontDisplay = x;
-	FontFamily = (x) => this.s.fontFamily = x;
-	FontFeatureSettings = (x) => this.s.fontFeatureSettings = x;
-	FontKerning = (x) => this.s.fontKerning = x;
-	FontOpticalSizing = (x) => this.s.fontOpticalSizing = x;
-	FontSize = (x) => this.s.fontSize = x;
-	FontStretch = (x) => this.s.fontStretch = x;
-	FontStyle = (x) => this.s.fontStyle = x;
-	FontVariant = (x) => this.s.fontVariant = x;
-	FontVariantCaps = (x) => this.s.fontVariantCaps = x;
-	FontVariantEastAsian = (x) => this.s.fontVariantEastAsian = x;
-	FontVariantLigatures = (x) => this.s.fontVariantLigatures = x;
-	FontVariantNumeric = (x) => this.s.fontVariantNumeric = x;
-	FontVariationSetting = (x) => this.s.fontVariationSetting = x;
-	FontWeight = (x) => this.s.fontWeight = x;
-	ForcedColorAdjust = (x) => this.s.forcedColorAdjust = x;
-
-	Gap = (x) => this.s.gap = x;
-	Grid = (x) => this.s.grid = x;
-	GridArea = (x) => this.s.gridArea = x;
-	GridAutoColumns = (x) => this.s.gridAutoColumns = x;
-	GridAutoFlow = (x) => this.s.gridAutoFlow = x;
-	GridAutoRows = (x) => this.s.gridAutoRows = x;
-	GridColumn = (x) => this.s.gridColumn = x;
-	GridColumnEnd = (x) => this.s.gridColumnEnd = x;
-	GridColumnGap = (x) => this.s.gridColumnGap = x;
-	GridColumnStart = (x) => this.s.gridColumnStart = x;
-	GridGap = (x) => this.s.gridGap = x;
-	GridRow = (x) => this.s.gridRow = x;
-	GridRowEnd = (x) => this.s.gridRowEnd = x;
-	GridRowGap = (x) => this.s.gridRowGap = x;
-	GridRowStart = (x) => this.s.gridRowStart = x;
-	GridTemplate = (x) => this.s.gridTemplate = x;
-	GridTemplateAreas = (x) => this.s.gridTemplateAreas = x;
-	GridTemplateColumns = (x) => this.s.gridTemplateColumns = x;
-	GridTemplateRows = (x) => this.s.gridTemplateRows = x;
-
-	Height = (x) => this.s.height = x;
-	Hyphens = (x) => this.s.hyphens = x;
-
-	ImageOrientation = (x) => this.s.imageOrientation = x;
-	ImageRendering = (x) => this.s.imageRendering = x;
-	Inherits = (x) => this.s.inherits = x;
-	InitialValue = (x) => this.s.initialValue = x;
-	InlineSize = (x) => this.s.inlineSize = x;
-	Inset = (x) => this.s.inset = x;
-	InsetBlock = (x) => this.s.insetBlock = x;
-	InsetBlockEnd = (x) => this.s.insetBlockEnd = x;
-	InsetBlockStart = (x) => this.s.insetBlockStart = x;
-	InsetInline = (x) => this.s.insetInline = x;
-	InsetInlineEnd = (x) => this.s.insetInlineEnd = x;
-	InsetInlineStart = (x) => this.s.insetInlineStart = x;
-	Isolation = (x) => this.s.isolation = x;
-
-	JustifyContent = (x) => this.s.justifyContent = x;
-	JustifyItems = (x) => this.s.justifyItems = x;
-	JustifySelf = (x) => this.s.justifySelf = x;
-
-	Left = (x) => this.s.left = x;
-	LetterSpacing = (x) => this.s.letterSpacing = x;
-	LightingColor = (x) => this.s.lightingColor = x;
-	LineBreak = (x) => this.s.lineBreak = x;
-	LineGapOverride = (x) => this.s.lineGapOverride = x;
-	LineHeight = (x) => this.s.lineHeight = x;
-	ListStyle = (x) => this.s.listStyle = x;
-	ListStyleImage = (x) => this.s.listStyleImage = x;
-	ListStylePosition = (x) => this.s.listStylePosition = x;
-	ListStyleType = (x) => this.s.listStyleType = x;
-
-	Margin = (x) => this.s.margin = x;
-	MarginBlock = (x) => this.s.marginBlock = x;
-	MarginBlockEnd = (x) => this.s.marginBlockEnd = x;
-	MarginBlockStart = (x) => this.s.marginBlockStart = x;
-	MarginBottom = (x) => this.s.marginBottom = x;
-	MarginInline = (x) => this.s.marginInline = x;
-	MarginInlineEnd = (x) => this.s.marginInlineEnd = x;
-	MarginInlineStart = (x) => this.s.marginInlineStart = x;
-	MarginLeft = (x) => this.s.marginLeft = x;
-	MarginRight = (x) => this.s.marginRight = x;
-	MarginTop = (x) => this.s.marginTop = x;
-	Marker = (x) => this.s.marker = x;
-	MarkerEnd = (x) => this.s.markerEnd = x;
-	MarkerMid = (x) => this.s.markerMid = x;
-	MarkerStart = (x) => this.s.markerStart = x;
-	Mask = (x) => this.s.mask = x;
-	MaskType = (x) => this.s.maskType = x;
-	MaxBlockSize = (x) => this.s.maxBlockSize = x;
-	MaxHeight = (x) => this.s.maxHeight = x;
-	MaxInlineSize = (x) => this.s.maxInlineSize = x;
-	MaxWidth = (x) => this.s.maxWidth = x;
-	MaxZoom = (x) => this.s.maxZoom = x;
-	MinBlockSize = (x) => this.s.minBlockSize = x;
-	MinHeight = (x) => this.s.minHeight = x;
-	MinInlineSize = (x) => this.s.minInlineSize = x;
-	MinWidth = (x) => this.s.minWidth = x;
-	MinZoom = (x) => this.s.minZoom = x;
-	MixBlendMode = (x) => this.s.mixBlendMode = x;
-
-	ObjectFit = (x) => this.s.objectFit = x;
-	ObjectPosition = (x) => this.s.objectPosition = x;
-	Offset = (x) => this.s.offset = x;
-	OffsetDistance = (x) => this.s.offsetDistance = x;
-	OffsetPath = (x) => this.s.offsetPath = x;
-	OffsetRotate = (x) => this.s.offsetRotate = x;
-	Opacity = (x) => this.s.opacity = x;
-	Order = (x) => this.s.order = x;
-	Orientation = (x) => this.s.orientation = x;
-	Orphans = (x) => this.s.orphans = x;
-	Outline = (x) => this.s.outline = x;
-	OutlineColor = (x) => this.s.outlineColor = x;
-	OutlineOffset = (x) => this.s.outlineOffset = x;
-	OutlineStyle = (x) => this.s.outlineStyle = x;
-	OutlineWidth = (x) => this.s.outlineWidth = x;
-	Overflow = (x) => this.s.overflow = x;
-	OverflowAnchor = (x) => this.s.overflowAncho = x;
-	OverflowClipMargin = (x) => this.s.overflowClipMargin = x;
-	OverflowWrap = (x) => this.s.overflowWrap = x;
-	OverflowX = (x) => this.s.overflowX = x;
-	OverflowY = (x) => this.s.overflowY = x;
-	OverscrollBehavior = (x) => this.s.overscrollBehavior = x;
-	OverscrollBehaviorBlock = (x) => this.s.overscrollBehaviorBlock = x;
-	OverscrollBehaviorInline = (x) => this.s.overscrollBehaviorInline = x;
-	OverscrollBehaviorX = (x) => this.s.overscrollBehaviorX = x;
-	OverscrollBehaviorY = (x) => this.s.overscrollBehaviorY = x;
-
-	Padding = (x) => this.s.padding = x;
-	PaddingBlock = (x) => this.s.paddingBlock = x;
-	PaddingBlockEnd = (x) => this.s.paddingBlockEnd = x;
-	PaddingBlockStart = (x) => this.s.paddingBlockStart = x;
-	PaddingBottom = (x) => this.s.paddingBottom = x;
-	PaddingInline = (x) => this.s.paddingInline = x;
-	PaddingInlineEnd = (x) => this.s.paddingInlineEnd = x;
-	PaddingInlineStart = (x) => this.s.paddingInlineStart = x;
-	PaddingLeft = (x) => this.s.paddingLeft = x;
-	PaddingRight = (x) => this.s.paddingRight = x;
-	PaddingTop = (x) => this.s.paddingTop = x;
-	Page = (x) => this.s.page = x;
-	PageBreakAfter = (x) => this.s.pageBreakAfter = x;
-	PageBreakBefore = (x) => this.s.pageBreakBefore = x;
-	PageBreakInside = (x) => this.s.pageBreakInside = x;
-	PageOrientation = (x) => this.s.pageOrientation = x;
-	PaintOrder = (x) => this.s.paintOrder = x;
-	Perspective = (x) => this.s.perspective = x;
-	PerspectiveOrigin = (x) => this.s.perspectiveOrigin = x;
-	PlaceContent = (x) => this.s.placeContent = x;
-	PlaceItems = (x) => this.s.placeItems = x;
-	PlaceSelf = (x) => this.s.placeSelf = x;
-	PointerEvents = (x) => this.s.pointerEvents = x;
-	Position = (x) => this.s.position = x;
-	Quotes = (x) => this.s.quotes = x;
-
-	R = (x) => this.s.r = x;
-	Resize = (x) => this.s.resize = x;
-	Right = (x) => this.s.right = x;
-	RowGap = (x) => this.s.rowGap = x;
-	RubyPosition = (x) => this.s.rubyPosition = x;
-	Rx = (x) => this.s.rx = x;
-	Ry = (x) => this.s.ry = x;
-
-	ScrollBehavior = (x) => this.s.scrollBehavior = x;
-	ScrollMargin = (x) => this.s.scrollMargin = x;
-	ScrollMarginBlock = (x) => this.s.scrollMarginBlock = x;
-	ScrollMarginBlockEnd = (x) => this.s.scrollMarginBlockEnd = x;
-	ScrollMarginBlockStart = (x) => this.s.scrollMarginBlockstart = x;
-	ScrollMarginBottom = (x) => this.s.scrollMarginBottom = x;
-	ScrollMarginInline = (x) => this.s.scrollMarginInline = x;
-	ScrollMarginInlineEnd = (x) => this.s.scrollMarginInlineEnd = x;
-	ScrollMarginInlineStart = (x) => this.s.scrollmarginInlineStart = x;
-	ScrollMarginLeft = (x) => this.s.scrollMarginLeft = x;
-	ScrollMarginRight = (x) => this.s.scrollMarginRight = x;
-	ScrollMarginTop = (x) => this.s.scrollMarginTop = x;
-	ScrollPadding = (x) => this.s.scrollPadding = x;
-	ScrollPaddingBlock = (x) => this.s.scrollPaddingBlock = x;
-	ScrollPaddingBlockEnd = (x) => this.s.scrollPaddingBlockEnd = x;
-	ScrollPaddingBlockStart = (x) => this.s.scrollPaddingBlockStart = x;
-	ScrollPaddingBottom = (x) => this.s.scrollPaddingBottom = x;
-	ScrollPaddingInline = (x) => this.s.scrollPaddingInline = x;
-	ScrollPaddingInlineEnd = (x) => this.s.scrollPaddingInlineEnd = x;
-	ScrollPaddingInlineStart = (x) => this.s.scrollPaddingInlineStart = x;
-	ScrollPaddingLeft = (x) => this.s.scrollPaddingLeft = x;
-	ScrollPaddingRight = (x) => this.s.scrollPaddingRight = x;
-	ScrollPaddingTop = (x) => this.s.scrollPaddingTop = x;
-	ScrollSnapAlign = (x) => this.s.scrollSnapAlign = x;
-	ScrollSnapStop = (x) => this.s.scrollSnapStop = x;
-	ScrollSnapType = (x) => this.s.scrollSnapType = x;
-	ShapeImageThreshold = (x) => this.s.shapeImaheThreshold = x;
-	ShapeMargin = (x) => this.s.shapeMargin = x;
-	ShapeOutside = (x) => this.s.shapeOutside = x;
-	ShapeRendering = (x) => this.s.shapeRendering = x;
-	Size = (x) => this.s.size = x;
-	Speak = (x) => this.s.speak = x;
-	Src = (x) => this.s.src = x;
-	StopColor = (x) => this.s.stopColor = x;
-	StopOpacity = (x) => this.s.stopOpacity = x;
-	Stroke = (x) => this.s.stroke = x;
-	StrokeDasharray = (x) => this.s.strokeDasharray = x;
-	StrokeDashoffset = (x) => this.s.strokeDashoffset = x;
-	StrokeLinecap = (x) => this.s.strokeLinecap = x;
-	StrokeLinejoin = (x) => this.s.strokeLinejoin = x;
-	StrokeMiterlimit = (x) => this.s.strokeMiterlimit = x;
-	StrokeOpacity = (x) => this.s.strokeOpacity = x;
-	StrokeWidth = (x) => this.s.strokeWidth = x;
-	Syntax = (x) => this.s.syntax = x;
-
-	TabSize = (x) => this.s.tabSize = x;
-	TableLayout = (x) => this.s.tableLayout = x;
-	TextAlign = (x) => this.s.textAlign = x;
-	TextAlignLast = (x) => this.s.textAlignLast = x;
-	TextAnchor = (x) => this.s.textAnchor = x;
-	TextCombinedUpright = (x) => this.s.textCombinedUpright = x;
-	TextDecoration = (x) => this.s.textDecoration = x;
-	TextDecorationColor = (x) => this.s.textDecorationColor = x;
-	TextDecorationLine = (x) => this.s.textDecorationLine = x;
-	TextDecorationSkipInk = (x) => this.s.textDecorationSkipInk = x;
-	TextDecorationStyle = (x) => this.s.textDecorationStyle = x;
-	TextDecorationThickness = (x) => this.s.textDecorationThickness = x;
-	TextIndent = (x) => this.s.textIndent = x;
-	TextOrientation = (x) => this.s.textOrientation = x;
-	TextOverflow = (x) => this.s.textOverflow = x;
-	TextRendering = (x) => this.s.textRendering = x;
-	TextShadow = (x) => this.s.textShadow = x;
-	TextSizeAdjust = (x) => this.s.textSizeAdjust = x;
-	TextTransform = (x) => this.s.textTransform = x;
-	TextUnderlineOffset = (x) => this.s.textUnderlineOffset = x;
-	TextUnderlinePosition = (x) => this.s.textUnderlinePosition = x;
-	Top = (x) => this.s.top = x;
-	TouchAction = (x) => this.s.touchAction = x;
-	Transform = (x) => this.s.transform = x;
-	TransformBox = (x) => this.s.transformBox = x;
-	TransformOrigin = (x) => this.s.transformOrigin = x;
-	TransformStyle = (x) => this.s.trasnformStyle = x;
-	Transition = (x) => this.s.transition = x;
-	TransitionDelay = (x) => this.s.transitionDelay = x;
-	TransitionDuration = (x) => this.s.transitionDuration = x;
-	TransitionProperty = (x) => this.s.transitionProperty = x;
-	TransitionTimingFunction = (x) => this.s.transitionTimingFunction = x;
-
-	UnicodeBidi = (x) => this.s.unicodeBidi = x;
-	UnicodeRange = (x) => this.s.unicodeRange = x;
-	UserSelect = (x) => this.s.userSelect = x;
-	UserZoom = (x) => this.s.userZoom = x;
-
-	VectorEffect = (x) => this.s.vectorEffect = x;
-	VerticalAlign = (x) => this.s.verticalAlign = x;
-	Visibility = (x) => this.s.visibility = x;
-
-	Width = (x) => this.s.width = x;
-	Widows = (x) => this.s.widows = x;
-	WillChange = (x) => this.s.willChange = x;
-	WordBreak = (x) => this.s.wordBreak = x;
-	WordSpacing = (x) => this.s.wordSpacing = x;
-	WordWrap = (x) => this.s.wordWrap = x;
-	WritingMode = (x) => this.s.writingMode = x;
-
-	X = (x) => this.s.x = x;
-
-	Y = (x) => this.s.y = x;
-
-	Zindex = (x) => this.s.zIndex = x;
-	Zoom = (x) => this.s.zoom = x;
-
-	InsertATag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('a', a, b)));
-	InsertAbbrTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('abbr', a, b)));
-	InsertAcronymTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('acronym', a, b)));
-	InsertAddressTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('address', a, b)));
-	InsertAppletTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('applet', a, b)));
-	InsertAreaTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('area', a, b)));
-	InsertArticleTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('article', a, b)));
-	InsertAsideTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('aside', a, b)));
-	InsertAudioTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('audio', a, b)));
-
-	InsertBTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('b', a, b)));
-	InsertBaseTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('base', a, b)));
-	InsertBaseFontTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('basefont', a, b)));
-	InsertBbTag = (a, attribbutes = []) => $(Dom.CheckNodeID(this.CreateNode('bb', a, b)));
-	InsertBdoTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('bdo', a, b)));
-	InsertBigTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('big', a, b)));
-	InsertBlockQuoteTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('blockquote', a, b)));
-	InsertBodyTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('body', a, b)));
-	InsertBrTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('br', a, b)));
-	InsertButtonTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('button', a, b)));
-
-	InsertCanvasTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('canvas', a, b)));
-	InsertCaptionTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('caption', a, b)));
-	InsertCenterTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('center', a, b)));
-	InsertCiteTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('cite', a, b)));
-	InsertCodeTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('code', a, b)));
-	InsertColTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('col', a, b)));
-	InsertColGroupTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('colgroup', a, b)));
-	InsertCommandTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('command', a, b)));
-
-	InsertDataGridTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('datagrid', a, b)));
-	InsertDataListTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('datalist', a, b)));
-	InsertDdTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('dd', a, b)));
-	InsertDelTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('del', a, b)));
-	InsertDetailsTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('details', a, b)));
-	InsertDfnTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('dfn', a, b)));
-	InsertDialogTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('dialog', a, b)));
-	InsertDirTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('dir', a, b)));
-	InsertDivTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('div', a, b)));
-	InsertDlTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('dl', a, b)));
-	InsertDtTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('dt', a, b)));
-
-	InsertEmTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('em', a, b)));
-	InsertEmbedTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('embed', a, b)));
-	InsertEventSourceTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('eventsource', a, b)));
-
-	InsertFieldsetTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('fieldset', a, b)));
-	InsertFigcaptionTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('figcaption', a, b)));
-	InsertFigureTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('figure', a, b)));
-	InsertFontTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('font', a, b)));
-	InsertFooterTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('footer', a, b)));
-	InsertFormTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('form', a, b)));
-	InsertFrameTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('frame', a, b)));
-	InsertFrameSetTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('frameset', a, b)));
-
-	InsertH1Tag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('h1', a, b)));
-	InsertH2Tag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('h2', a, b)));
-	InsertH3Tag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('h3', a, b)));
-	InsertH4Tag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('h4', a, b)));
-	InsertH5Tag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('h5', a, b)));
-	InsertH6Tag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('h6', a, b)));
-	InsertHeadTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('head', a, b)));
-	InsertHeaderTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('header', a, b)));
-	InsertHgroupTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('hgroup', a, b)));
-	InsertHrTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('hr', a, b)));
-	InsertHtmlTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('html', a, b)));
-
-	InsertITag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('i', a, b)));
-	InsertIframeTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('iframe', a, b)));
-	InsertImgTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('img', a, b)));
-	InsertInputTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('input', a, b)));
-	InsertInsTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('ins', a, b)));
-	InsertIsIndexTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('isindex', a, b)));
-
-	InsertKbdTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('kbd', a, b)));
-	InsertKeygenTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('keygen', a, b)));
-
-	InsertLabelTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('label', a, b)));
-	InsertLegendTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('legend', a, b)));
-	InsertLiTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('li', a, b)));
-	InsertLinkTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('link', a, b)));
-
-	InsertMapTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('map', a, b)));
-	InsertMarkTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('mark', a, b)));
-	InsertMenuTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('menu', a, b)));
-	InsertMetaTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('meta', a, b)));
-	InsertMeterTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('meter', a, b)));
-
-	InsertNavTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('nav', a, b)));
-	InsertNoFramesTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('noframes', a, b)));
-	InsertNoScriptTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('noscript', a, b)));
-
-	InsertObjectTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('object', a, b)));
-	InsertOlTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('ol', a, b)));
-	InsertOptGroupTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('optgroup', a, b)));
-	InsertOptionTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('option', a, b)));
-	InsertOutputTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('output', a, b)));
-
-	InsertPTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('p', a, b)));
-	InsertParamTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('param', a, b)));
-	InsertPreTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('pre', a, b)));
-	InsertProgressTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('progress', a, b)));
-
-	InsertQTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('q', a, b)));
-
-	InsertRpTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('rp', a, b)));
-	InsertRtTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('rt', a, b)));
-	InsertRubyTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('ruby', a, b)));
-
-	InsertSTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('s', a, b)));
-	InsertSampTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('samp', a, b)));
-	InsertScriptTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('script', a, b)));
-	InsertSectionTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('section', a, b)));
-	InsertSelectTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('select', a, b)));
-	InsertSmallTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('small', a, b)));
-	InsertSourceTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('source', a, b)));
-	InsertSpanTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('span', a, b)));
-	InsertStrikeTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('strike', a, b)));
-	InsertStrongTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('strong', a, b)));
-	InsertStyleTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('style', a, b)));
-	InsertSubTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('sub', a, b)));
-	InsertSupTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('sup', a, b)));
-
-	InsertTableTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('table', a, b)));
-	InsertTbodyTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('tbody', a, b)));
-	InsertTdTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('td', a, b)));
-	InsertTextAreaTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('textarea', a, b)));
-	InsertTfootTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('tfoot', a, b)));
-	InsertThTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('th', a, b)));
-	InsertTheadTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('thead', a, b)));
-	InsertTimeTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('time', a, b)));
-	InsertTitleTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('title', a, b)));
-	InsertTrTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('tr', a, b)));
-	InsertTrackTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('track', a, b)));
-	InsertTtTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('tt', a, b)));
-
-	InsertUTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('u', a, b)));
-	InsertUlTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('ul', a, b)));
-
-	InsertVarTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('var', a, b)));
-	InsertVideoTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('video', a, b)));
-
-	InsertWbrTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('wbr', a, b)));
-
-	InsertMainTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('main', a, b)));
-	InsertMenuItemTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('menuitem', a, b)));
-
-	InsertDataListTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('datalist', a, b)));
-	InsertDataTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('data', a, b)));
-
-	InsertRtcTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('rtc', a, b)));
-	InsertSummaryTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('summary', a, b)));
-	InsertTemplateTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('template', a, b)));
-	InsertVideoTag = (a, b = []) => $(Dom.CheckNodeID(this.CreateNode('video', a, b)));
-
-	AddClass = (x) => this.e.classList.add(x);
-	RemoveClass = (x) => this.e.classList.remove(x);
-	ContainClass = (x) => this.e.classList.contains(x);
-	SetHTML = (x) => this.e.innerHTML = x;
-	AddHTML = (x) => this.e.innerHTML += x;
-	GetNodes = () => this.e.childNodes();
-	HasAttribute = (x) => this.e.hasAttribute(x);
-	SetAttribute = (a, b = '') => this.e.setAttribute(a, b)
-	GetAttribute = (x) => this.e.getAttribute(x);
-	ClearContent = () => (!this.e.hasAttribute('immutable')) ? this.e.innerHTML = '' : raise('You are trying clear content a immutable element.');
-	HasAttributes = () => this.e.hasAttributes();
-	GetAttributes = () => this.e.getAttributeNames();
-	RemoveAttribute = (x) => this.e.removeAttribute(x);
-	AddElement = (x) => this.e.appendChild(x);
-	InsertAdjacentElement = (option, element) => this.e.insertAdjacentElement(option.toLowerCase(), element);
-	InsertAdjacentHTML = (option, html) => this.e.insertAdjacentHTML(option.toLowerCase(), html);
-	InsertAdjacentText = (option, text) => this.e.insertAdjacentText(option.toLowerCase(), text);
-	InsertBefore = (new_node, node) => this.e.insertBefore(node, new_node);
-	GetLength = () => this.e.length;
-	RemoveChild = (node) => this.e.removeChild(node);
-	ReplaceChild = (new_node, old_node) => this.e.replaceChild(new_node, old_node);
-	CloneElement = (clone_childs = true) => this.e.cloneNode(clone_childs);
-	GetID = () => this.e.id;
-	AddClassList = (x) => this.e.className = x;
-	RemoveAllClass = () => this.e.className = '';
-	GetClasses = () => this.e.className;
-	GetInlineStyles = () => this.s;
-	AddClassToggle = (x) => this.e.classList.toggle(x);
-	AddClassByExpresion = (stylesheet_class, expresion) => this.e.classList.toggle(stylesheet_class, expresion);
-	ReplaceClass = (old_class, new_class) => this.e.classList.replace(old_class, new_class);
-	GetInstance = () => this.e;
-	AddText = (x) => this.e.textContent = x;
-	AddEventListener = (listen, action) => this.e.addEventListener(listen, action);
-	GetText = () => this.e.textContent;
-	GetContent = () => this.e.innerHTML;
-	OuterHTML = () => this.e.outerHTML;
-	GetChildren = () => this.e.children;
-	GetParent = () => this.e.parentElement;
-	FirstChildren = () => this.e.firstElementChild;
-	LastChildren = () => this.e.lastElementChild;
-	PreviousNode = () => this.e.previousSibling();
-	NextNode = () => this.e.nextSibling();
-	Remove = () => this.e.remove();
-	GetStyles = (style_property = false) => (style_property) ? getComputedStyle(this.e)[style_property] : getComputedStyle(this.e);
-	GetStyleInstance = () => this.s;
-	NodeName = () => this.e.nodeName;
-	GetType = () => this.e.type;
-	SetTimeout = (x, time = 1000) => setTimeout(x(), time);
-	SetInterval = (x, time = 1000) => setInterval(x(), time);
-	IsDraggable = () => this.e.draggable;
-	IsEditable = () => this.e.isContentEditable;
-
-	Styles = (properties) => {
-		let i = 0,
-			keys = Object.keys(properties);
-		for (i; i < keys.length; i++) {
-
-			let key = keys[i].toLowerCase(),
-				x = properties[keys[i]];
-
-			switch (key) {
-				case 'aligncontent':
-					this.AlignContent(x);
-					break;
-				case 'alignitems':
-					this.AlignItems(x);
-					break;
-				case 'alignmentbaseline':
-					this.AlignmentBaseLine(x);
-					break;
-				case 'all':
-					this.All(x);
-					break;
-				case 'animation':
-					this.Animation(x);
-					break;
-				case 'animationdelay':
-					this.AnimationDelay(x);
-					break;
-				case 'animationdirection':
-					this.AnimationDirection(x);
-					break;
-				case 'animationfillmode':
-					this.AnimationFillMode(x);
-					break;
-				case 'animationiterationcount':
-					this.AnimationIterationCount(x);
-					break;
-				case 'animationame':
-					this.AnimationName(x);
-					break;
-				case 'animationplaystate':
-					this.AnimationPlayState(x);
-					break;
-				case 'animationtimingfunction':
-					this.AnimationTimingFunction(x);
-					break;
-				case 'appearance':
-					this.Appearance(x);
-					break;
-				case 'ascentoverride':
-					this.AscentOverride(x);
-					break;
-				case 'aspectratio':
-					this.AspectRatio(x);
-					break;
-
-				case 'backdropfilter':
-					this.BackdropFilter(x);
-					break;
-				case 'backfacevisibility':
-					this.BackfaceVisibility(x);
-					break;
-				case 'background':
-					this.Background(x);
-					break;
-				case 'backgroundattachment':
-					this.BackgroundAttachment(x);
-					break;
-				case 'backgroundblendmode':
-					this.BackgroundBlendMode(x);
-					break;
-				case 'backgroundclip':
-					this.BackgroundClip(x);
-					break;
-				case 'backgroundcolor':
-					this.BackgroundColor(x);
-					break;
-				case 'backgroundimage':
-					this.BackgroundImage(x);
-					break;
-				case 'backgroundorigin':
-					this.BackgroundOrigin(x);
-					break;
-				case 'backgroundposition':
-					this.BackgroundPosition(x);
-					break;
-				case 'backgroundpositiony':
-					this.BackgroundPositionX(x);
-					break;
-				case 'backgroundpositiony':
-					this.BackgroundPositionY(x);
-					break;
-				case 'backgroundrepeat':
-					this.BackgroundRepeat(x);
-					break;
-				case 'backgroundrepeatx':
-					this.BackgroundRepeatX(x);
-					break;
-				case 'backgroundrepeaty':
-					this.BackgroundRepeatY(x);
-					break;
-				case 'backgroundsize':
-					this.BackgroundSize(x);
-					break;
-				case 'baselineshift':
-					this.BaselineShift(x);
-					break;
-				case 'blocksize':
-					this.BlockSize(x);
-					break;
-				case 'border':
-					this.Border(x);
-					break;
-				case 'borderblock':
-					this.BorderBlock(x);
-					break;
-				case 'borderblockcolor':
-					this.BorderBlockColor(x);
-					break;
-				case 'borderblockend':
-					this.BorderBlockEnd(x);
-					break;
-				case 'borderblockendcolor':
-					this.BorderBlockEndColor(x);
-					break;
-				case 'borderblockendwidth':
-					this.BorderBlockEndWidth(x);
-					break;
-				case 'borderblockstart':
-					this.BorderBlockStart(x);
-					break;
-				case 'borderblockstartcolor':
-					this.BorderBlockStartColor(x);
-					break;
-				case 'borderblockstartstyle':
-					this.BorderBlockStartStyle(x);
-					break;
-				case 'borderblockstartwidth':
-					this.BorderBlockStartWidth(x);
-					break;
-				case 'borderblockstyle':
-					this.BorderBlockStyle(x);
-					break;
-				case 'borderblockwidth':
-					this.BorderBlockWidth(x);
-					break;
-				case 'borderbottom':
-					this.BorderBottom(x);
-					break;
-				case 'borderbottomcolor':
-					this.BorderBottomColor(x);
-					break;
-				case 'borderbottomleftradius':
-					this.BorderBottomLeftRadius(x);
-					break;
-				case 'borderbottomrightradius':
-					this.BorderBottomRightRadius(x);
-					break;
-				case 'borderbottomstyle':
-					this.BorderBottomStyle(x);
-					break;
-				case 'borderbottomwidth':
-					this.BorderBottomWidth(x);
-					break;
-				case 'bordercollapse':
-					this.BorderCollapse(x);
-					break;
-				case 'bordercolor':
-					this.BorderColor(x);
-					break;
-				case 'borderendendradius':
-					this.BorderEndEndRadius(x);
-					break;
-				case 'borderendstartradius':
-					this.BorderEndStartRadius(x);
-					break;
-				case 'borderimage':
-					this.BorderImage(x);
-					break;
-				case 'borderimageoutset':
-					this.BorderImageOutset(x);
-					break;
-				case 'borderimagerepeat':
-					this.BorderImageRepeat(x);
-					break;
-				case 'borderimagesource':
-					this.BorderImageSource(x);
-					break;
-				case 'borderimagewidth':
-					this.BorderImageWidth(x);
-					break;
-				case 'borderinline':
-					this.BorderInline(x);
-					break;
-				case 'borderinlinecolor':
-					this.BorderInlineColor(x);
-					break;
-				case 'borderinlineend':
-					this.BorderInlineEnd(x);
-					break;
-				case 'borderinlineendcolor':
-					this.BorderInlineEndColor(x);
-					break;
-				case 'borderinlineendstyle':
-					this.BorderInlineEndStyle(x);
-					break;
-				case 'borderinlinewidth':
-					this.BorderInlineWidth(x);
-					break;
-				case 'borderinlinestart':
-					this.BorderInlineStart(x);
-					break;
-				case 'borderinlinestartcolor':
-					this.BorderInlineStartColor(x);
-					break;
-				case 'borderinlinestartstyle':
-					this.BorderInlineStartStyle(x);
-					break;
-				case 'borderinlinestartwidth':
-					this.BorderInlineStartWidth(x);
-					break;
-				case 'borderinlinestyle':
-					this.BorderInline(x);
-					break;
-				case 'borderinlinewidth':
-					this.BorderInlineWidth(x);
-					break;
-				case 'borderleft':
-					this.BorderLeft(x);
-					break;
-				case 'borderleftcolor':
-					this.BorderLeftColor(x);
-					break;
-				case 'borderleftstyle':
-					this.BorderLeftStyle(x);
-					break;
-				case 'borderleftwidth':
-					this.BorderLeftWidth(x);
-					break;
-				case 'borderradius':
-					this.BorderRadius(x);
-					break;
-				case 'borderright':
-					this.BorderRight(x);
-					break;
-				case 'borderrightcolor':
-					this.BorderRightColor(x);
-					break;
-				case 'borderrightstyle':
-					this.BorderRightStyle(x);
-					break;
-				case 'borderrightwidth':
-					this.BorderRightWidth(x);
-					break;
-				case 'borderspacing':
-					this.BorderSpacing(x);
-					break;
-				case 'borderstartendradius':
-					this.BorderStartEndRadius(x);
-					break;
-				case 'borderstartstartradius':
-					this.BorderStartStartRadius(x);
-					break;
-				case 'borderstyle':
-					this.BorderStyle(x);
-					break;
-				case 'bordertop':
-					this.BorderTop(x);
-					break;
-				case 'bordertopcolor':
-					this.BorderTopColor(x);
-					break;
-				case 'bordertopleftradius':
-					this.BorderTopLeftRadius(x);
-					break;
-				case 'bordertoprightradius':
-					this.BorderTopRightRadius(x);
-					break;
-				case 'bordertopstyle':
-					this.BorderTopStyle(x);
-					break;
-				case 'bordertopwidth':
-					this.BorderTopWidth(x);
-					break;
-				case 'borderwidth':
-					this.BorderWidth(x);
-					break;
-				case 'borderbottom':
-					this.BorderBottom(x);
-					break;
-				case 'boxshadow':
-					this.BoxShadow(x);
-					break;
-				case 'boxsizing':
-					this.BoxSizing(x);
-					break;
-				case 'breakafter':
-					this.BreakAfter(x);
-					break;
-				case 'breakbefore':
-					this.BreakBefore(x);
-					break;
-				case 'breakinside':
-					this.BreakInside(x);
-					break;
-				case 'bufferedrendering':
-					this.BufferedRendering(x);
-					break;
-
-				case 'captionside':
-					this.CaptionSide(x);
-					break;
-				case 'caretcolor':
-					this.CaretColor(x);
-					break;
-				case 'clear':
-					this.Clear(x);
-					break;
-				case 'clip':
-					this.Clip(x);
-					break;
-				case 'clippath':
-					this.ClipPath(x);
-					break;
-				case 'cliprule':
-					this.ClipRule(x);
-					break;
-				case 'color':
-					this.Color(x);
-					break;
-				case 'colorinterpolation':
-					this.ColorInterpolation(x);
-					break;
-				case 'colorinterpolationfilters':
-					this.ColorInterpolationFilters(x);
-					break;
-				case 'colorrendering':
-					this.ColorRendering(x);
-					break;
-				case 'colorscheme':
-					this.ColorScheme(x);
-					break;
-				case 'columncount':
-					this.ColumnCount(x);
-					break;
-				case 'columnfill':
-					this.ColumnFill(x);
-					break;
-				case 'columngap':
-					this.ColumnGap(x);
-					break;
-				case 'columnrule':
-					this.ColumnRule(x);
-					break;
-				case 'columnrulecolor':
-					this.ColumnRuleColor(x);
-					break;
-				case 'columnrulestyle':
-					this.ColumnRuleStyle(x);
-					break;
-				case 'columnRuleWidth':
-					this.ColumnRuleWidth(x);
-					break;
-				case 'columnspan':
-					this.ColumnSpan(x);
-					break;
-				case 'columnwidth':
-					this.ColumnWidth(x);
-					break;
-				case 'columns':
-					this.Columns(x);
-					break;
-				case 'contain':
-					this.Contain(x);
-					break;
-				case 'containintrinsicsize':
-					this.ContainIntrinsicSize(x);
-					break;
-				case 'content':
-					this.Content(x);
-					break;
-				case 'contentvisibility':
-					this.ContentVisibility(x);
-					break;
-				case 'counterincrement':
-					this.CounterIncrement(x);
-					break;
-				case 'counterreset':
-					this.CounterReset(x);
-					break;
-				case 'counterset':
-					this.CounterSet(x);
-					break;
-				case 'cursor':
-					this.Cursor(x);
-					break;
-				case 'cx':
-					this.Cx(x);
-					break;
-				case 'cy':
-					this.Cy(x);
-					break;
-				case 'd':
-					this.D(x);
-					break;
-
-				case 'descentoverride':
-					this.DescentOverride(x);
-					break;
-				case 'direction':
-					this.Direction(x);
-					break;
-				case 'display':
-					this.Display(x);
-					break;
-				case 'dominanbaseline':
-					this.DominantBaseline(x);
-					break;
-				case 'emptycells':
-					this.EmptyCells(x);
-					break;
-
-				case 'epubcaptionside':
-					this.EpubCaptionSide(x);
-					break;
-				case 'epubtextcombine':
-					this.EpubTextCombine(x);
-					break;
-				case 'epubtextemphasis':
-					this.EpubTextEmphasis(x);
-					break;
-				case 'epubtextemphasiscolor':
-					this.EpubTextEmphasisColor(x);
-					break;
-				case 'epubtextorientation':
-					this.EpubTextOrientation(x);
-					break;
-				case 'epubtexttransform':
-					this.EpubTextTransform(x);
-					break;
-				case 'epubwordbreak':
-					this.EpubWordBreak(x);
-					break;
-				case 'epubwritingmode':
-					this.EpubWritingMode(x);
-					break;
-
-				case 'fill':
-					this.Fill(x);
-					break;
-				case 'fillopacity':
-					this.FillOpacity(x);
-					break;
-				case 'fillrule':
-					this.FillRule(x);
-					break;
-				case 'filter':
-					this.Filter(x);
-					break;
-				case 'flex':
-					this.Flex(x);
-					break;
-				case 'flexbasis':
-					this.FlexBasis(x);
-					break;
-				case 'flexdirection':
-					this.FlexDirection(x);
-					break;
-				case 'flexflow':
-					this.FlexFlow(x);
-					break;
-				case 'flexgrow':
-					this.FlexGrow(x);
-					break;
-				case 'flexwrap':
-					this.FlexWrap(x);
-					break;
-				case 'float':
-					this.Float(x);
-					break;
-				case 'floodcolor':
-					this.FloodColor(x);
-					break;
-				case 'floodopacity':
-					this.FloodOpacity(x);
-					break;
-				case 'font':
-					this.Font(x);
-					break;
-				case 'fontdisplay':
-					this.FontDisplay(x);
-					break;
-				case 'fontfamily':
-					this.FontFamily(x);
-					break;
-				case 'fontfeaturesettings':
-					this.FontFeatureSettings(x);
-					break;
-				case 'fontkerning':
-					this.FontKerning(x);
-					break;
-				case 'fontopticalsizing':
-					this.FontOpticalSizing(x);
-					break;
-				case 'fontsize':
-					this.FontSize(x);
-					break;
-				case 'fontstretch':
-					this.FontStretch(x);
-					break;
-				case 'fontstyle':
-					this.FontStyle(x);
-					break;
-				case 'fontvariant':
-					this.FontVariant(x);
-					break;
-				case 'fontvariantcaps':
-					this.FontVariantCaps(x);
-					break;
-				case 'fontvarianteastasian':
-					this.FontVariantEastAsian(x);
-					break;
-				case 'fontvariantligatures':
-					this.FontVariantLigatures(x);
-					break;
-				case 'fontvariantnumeric':
-					this.FontVariantNumeric(x);
-					break;
-				case 'fontvariationsetting':
-					this.FontVariationSetting(x);
-					break;
-				case 'fontweight':
-					this.FontWeight(x);
-					break;
-				case 'forcedcoloradjust':
-					this.ForcedColorAdjust(x);
-					break;
-
-				case 'gap':
-					this.Gap(x);
-					break;
-				case 'grid':
-					this.Grid(x);
-					break;
-				case 'gridarea':
-					this.GridArea(x);
-					break;
-				case 'gridautocolumns':
-					this.GridAutoColumns(x);
-					break;
-				case 'gridautoflow':
-					this.GridAutoFlow(x);
-					break;
-				case 'gridautorows':
-					this.GridAutoRows(x);
-					break;
-				case 'gridcolumn':
-					this.GridColumn(x);
-					break;
-				case 'gridcolumnend':
-					this.GridColumnEnd(x);
-					break;
-				case 'gridcolumngap':
-					this.GridColumnGap(x);
-					break;
-				case 'gridcolumnstart':
-					this.GridColumnStart(x);
-					break;
-				case 'gridgap':
-					this.GridGap(x);
-					break;
-				case 'gridrow':
-					this.GridRow(x);
-					break;
-				case 'gridrowend':
-					this.GridRowEnd(x);
-					break;
-				case 'gridrowgap':
-					this.GridRowGap(x);
-					break;
-				case 'gridrowstart':
-					this.GridRowStart(x);
-					break;
-				case 'gridtemplate':
-					this.GridTemplate(x);
-					break;
-				case 'gridtemplateareas':
-					this.GridTemplateAreas(x);
-					break;
-				case 'gridtemplatecolumns':
-					this.GridTemplateColumns(x);
-					break;
-				case 'gridtemplaterows':
-					this.GridTemplateRows(x);
-					break;
-
-				case 'height':
-					this.Height(x);
-					break;
-				case 'hyphens':
-					this.Hyphens(x);
-					break;
-
-				case 'imageorientation':
-					this.ImageOrientation(x);
-					break;
-				case 'imagerendering':
-					this.ImageRendering(x);
-					break;
-				case 'inherits':
-					this.Inherits(x);
-					break;
-				case 'initialvalue':
-					this.InitialValue(x);
-					break;
-				case 'inlinesize':
-					this.InlineSize(x);
-					break;
-				case 'inset':
-					this.Inset(x);
-					break;
-				case 'insetblock':
-					this.InsetBlock(x);
-					break;
-				case 'insetblockend':
-					this.InsetBlockEnd(x);
-					break;
-				case 'insetblockstart':
-					this.InsetBlockStart(x);
-					break;
-				case 'insetinline':
-					this.InsetInline(x);
-					break;
-				case 'insetinlineend':
-					this.InsetInlineEnd(x);
-					break;
-				case 'insetinlinestart':
-					this.InsetInlineStart(x);
-					break;
-				case 'isolation':
-					this.Isolation(x);
-					break;
-				case 'justifycontent':
-					this.JustifyContent(x);
-					break;
-				case 'justifyitems':
-					this.JustifyItems(x);
-					break;
-				case 'justifyself':
-					this.JustifySelf(x);
-					break;
-				case 'left':
-					this.Left(x);
-					break;
-				case 'letterspacing':
-					this.LetterSpacing(x);
-					break;
-				case 'lightingcolor':
-					this.LightingColor(x);
-					break;
-				case 'linebreak':
-					this.LineBreak(x);
-					break;
-				case 'linegapoverride':
-					this.LineGapOverride(x);
-					break;
-				case 'lineheight':
-					this.LineHeight(x);
-					break;
-				case 'liststyle':
-					this.ListStyle(x);
-					break;
-				case 'liststyleimage':
-					this.ListStyleImage(x);
-					break;
-				case 'liststyleposition':
-					this.ListStylePosition(x);
-					break;
-				case 'liststyletype':
-					this.ListStyleTYpe(x);
-					break;
-
-				case 'margin':
-					this.Margin(x);
-					break;
-				case 'marginblock':
-					this.MarginBlock(x);
-					break;
-				case 'marginblockend':
-					this.MarginBlockEnd(x);
-					break;
-				case 'marginblockstart':
-					this.MarginBlockStart(x);
-					break;
-				case 'marginbottom':
-					this.MarginBottom(x);
-					break;
-				case 'margininline':
-					this.MarginInline(x);
-					break;
-				case 'margininlinestart':
-					this.MarginInlineStart(x);
-					break;
-				case 'margininlineend':
-					this.MarginInlineEnd(x);
-					break;
-				case 'marginright':
-					this.MarginRight(x);
-					break;
-				case 'margintop':
-					this.MarginTop(x);
-					break;
-				case 'marker':
-					this.Marker(x);
-					break;
-				case 'markerend':
-					this.MarkerEnd(x);
-					break;
-				case 'markermid':
-					this.MarkerMid(x);
-					break;
-				case 'markerstart':
-					this.MarkerStart(x);
-					break;
-				case 'mask':
-					this.Mask(x);
-					break;
-				case 'masktype':
-					this.MaskType(x);
-					break;
-				case 'maxblocksize':
-					this.MaxBlockSize(x);
-					break;
-				case 'maxheight':
-					this.MaxHeight(x);
-					break;
-				case 'maxinlinesize':
-					this.MaxInlineSize(x);
-					break;
-				case 'maxwidth':
-					this.MaxWidth(x);
-					break;
-				case 'maxzoom':
-					this.MaxZoom(x);
-					break;
-				case 'minblocksize':
-					this.MinBlockSize(x);
-					break;
-				case 'minheight':
-					this.MinHeight(x);
-					break;
-				case 'mininlinesize':
-					this.MinInlineSize(x);
-					break;
-				case 'minwidth':
-					this.MinWidth(x);
-					break;
-				case 'minzoom':
-					this.MinZoom(x);
-					break;
-				case 'minblocksize':
-					this.MinBlockSize(x);
-					break;
-				case 'minheight':
-					this.MinHeight(x);
-					break;
-				case 'mixblendmode':
-					this.MixBlendMode(x);
-					break;
-
-				case 'objectfit':
-					this.ObjectFit(x);
-					break;
-				case 'objectposition':
-					this.ObjectPosition(x);
-					break;
-				case 'offset':
-					this.Offset(x);
-					break;
-				case 'offsetdistance':
-					this.OffsetDistance(x);
-					break;
-				case 'offsetpath':
-					this.OffsetPath(x);
-					break;
-				case 'offsetrotate':
-					this.OffsetRotate(x);
-					break;
-				case 'opacity':
-					this.Opacity(x);
-					break;
-				case 'order':
-					this.Order(x);
-					break;
-				case 'orientation':
-					this.Orientation(x);
-					break;
-				case 'orphans':
-					this.Orphans(x);
-					break;
-				case 'outline':
-					this.Outline(x);
-					break;
-				case 'outlinecolor':
-					this.OutlineColor(x);
-					break;
-				case 'outlineoffset':
-					this.OutlineOffset(x);
-					break;
-				case 'outlinestyle':
-					this.OutlineStyle(x);
-					break;
-				case 'outlinewidth':
-					this.OutlineWidth(x);
-					break;
-				case 'overflow':
-					this.Overflow(x);
-					break;
-				case 'overflowanchor':
-					this.OverflowAnchor(x);
-					break;
-				case 'overflowclipmargin':
-					this.OverflowClipMargin(x);
-					break;
-				case 'overflowwrap':
-					this.OverflowWrap(x);
-					break;
-				case 'overflowx':
-					this.OverflowX(x);
-					break;
-				case 'overflowy':
-					this.OverflowY(x);
-					break;
-				case 'overscrollbehavior':
-					this.OverscrollBehavior(x);
-					break;
-				case 'overscrollbehaviorblock':
-					this.OverscrollBehaviorBlock(x);
-					break;
-				case 'overscrollbehaviorinline':
-					this.OverscrollBehaviorInline(x);
-					break;
-				case 'overscrollbehaviorx':
-					this.OverscrollBehaviorX(x);
-					break;
-				case 'overscrollbehaviory':
-					this.OverscrollBehaviorY(x);
-					break;
-
-				case 'padding':
-					this.Padding(x);
-					break;
-				case 'paddingblock':
-					this.PaddingBlock(x);
-					break;
-				case 'paddingblockend':
-					this.PaddingBlockEnd(x);
-					break;
-				case 'paddingblockstart':
-					this.PaddingBlockStart(x);
-					break;
-				case 'paddingbottom':
-					this.PaddingBottom(x);
-					break;
-				case 'paddinginline':
-					this.PaddingInline(x);
-					break;
-				case 'paddinginlineend':
-					this.PaddingInlineEnd(x);
-					break;
-				case 'paddinginlinestart':
-					this.PaddingInlineStart(x);
-					break;
-				case 'paddingleft':
-					this.PaddingLeft(x);
-					break;
-				case 'paddingright':
-					this.PaddingRight(x);
-					break;
-				case 'paddingtop':
-					this.PaddingTop(x);
-					break;
-				case 'page':
-					this.Page(x);
-					break;
-				case 'pagebreakafter':
-					this.PageBreakAfter(x);
-					break;
-				case 'pagebreakbefore':
-					this.PageBreakBefore(x);
-					break;
-				case 'pagebreakinside':
-					this.PageBreakInside(x);
-					break;
-				case 'pageorientation':
-					this.PageOrientation(x);
-					break;
-				case 'paintorder':
-					this.PaintOrder(x);
-					break;
-				case 'perspective':
-					this.Perspective(x);
-					break;
-				case 'perspectiveorigin':
-					this.PerspectiveOrigin(x);
-					break;
-				case 'placecontent':
-					this.PlaceContent(x);
-					break;
-				case 'placeitems':
-					this.PlaceItems(x);
-					break;
-				case 'placeself':
-					this.PlaceSelf(x);
-					break;
-				case 'pointerevents':
-					this.PointerEvents(x);
-					break;
-				case 'position':
-					this.Position(x);
-					break;
-
-				case 'quotes':
-					this.Quotes(x);
-					break;
-
-				case 'r':
-					this.R(x);
-					break;
-				case 'resize':
-					this.Resize(x);
-					break;
-				case 'right':
-					this.Right(x);
-					break;
-				case 'rowgap':
-					this.RowGap(x);
-					break;
-				case 'rubyposition':
-					this.RubyPosition(x);
-					break;
-				case 'rx':
-					this.Rx(x);
-					break;
-				case 'ry':
-					this.Ry(x);
-					break;
-
-				case 'scrollbehavior':
-					this.ScrollBehavior(x);
-					break;
-				case 'scrollmargin':
-					this.ScrollMargin(x);
-					break;
-				case 'scrollmarginblock':
-					this.ScrollMarginBlock(x);
-					break;
-				case 'scrollmarginblockend':
-					this.ScrollMarginBlockEnd(x);
-					break;
-				case 'scrollmarginblockstart':
-					this.ScrollMarginBlockStart(x);
-					break;
-				case 'scrollmarginbottom':
-					this.ScrollMarginBottom(x);
-					break;
-				case 'scrollmargininline':
-					this.ScrollMarginInline(x);
-					break;
-				case 'scrollmargininlineend':
-					this.ScrollMarginInlineEnd(x);
-					break;
-				case 'scrollmargininlinestart':
-					this.ScrollMarginInlineStart(x);
-					break;
-				case 'scrollmarginleft':
-					this.ScrollMarginLeft(x);
-					break;
-				case 'scrollmarginright':
-					this.ScrollMarginRight(x);
-					break;
-				case 'scrollmargintop':
-					this.ScrollMarginTop(x);
-					break;
-				case 'scrollpadding':
-					this.ScrollPadding(x);
-					break;
-				case 'scrollpaddingblock':
-					this.ScrollPaddingBlock(x);
-					break;
-				case 'scrollpaddingblockend':
-					this.ScrollPaddingBlockEnd(x);
-					break;
-				case 'scrollpaddingblockstart':
-					this.ScrollPaddingBlockStart(x);
-					break;
-				case 'scrollpaddingbottom':
-					this.ScrollPaddingBottom(x);
-					break;
-				case 'scrollpaddinginline':
-					this.ScrollPaddingInline(x);
-					break;
-				case 'scrollpaddinginlineend':
-					this.ScrollPaddingInlineEnd(x);
-					break;
-				case 'scrollpaddinginlinestart':
-					this.ScrollPaddingInlineStart(x);
-					break;
-				case 'scrollpaddingleft':
-					this.ScrollPaddingLeft(x);
-					break;
-				case 'scrollpaddingright':
-					this.ScrollPaddingRight(x);
-					break;
-				case 'scrollpaddingtop':
-					this.ScrollPaddingTop(x);
-					break;
-				case 'scrollsnapalign':
-					this.ScrollSnapAlign(x);
-					break;
-				case 'scrollsnapstop':
-					this.ScrollSnapStop(x);
-					break;
-				case 'scrollsnaptype':
-					this.ScrollSnapType(x);
-					break;
-				case 'shapeimagethreshold':
-					this.ShapeImageThreshold(x);
-					break;
-				case 'shapemargin':
-					this.ShapeMargin(x);
-					break;
-				case 'shapeoutside':
-					this.ShapeOutside(x);
-					break;
-				case 'shaperendering':
-					this.ShapeRendering(x);
-					break;
-				case 'size':
-					this.Size(x);
-					break;
-				case 'speak':
-					this.Speak(x);
-					break;
-				case 'src':
-					this.Src(x);
-					break;
-				case 'stopcolor':
-					this.StopColor(x);
-					break;
-				case 'stopopacity':
-					this.StopOpacity(x);
-					break;
-				case 'stroke':
-					this.Stroke(x);
-					break;
-				case 'strokedasharray':
-					this.StrokeDasharray(x);
-					break;
-				case 'strokedashoffset':
-					this.StrokeDashoffset(x);
-					break;
-				case 'strokelinecap':
-					this.StrokeLinecap(x);
-					break;
-				case 'strokelinejoin':
-					this.StrokeLinejoin(x);
-					break;
-				case 'strokemiterlimit':
-					this.StrokeMiterlimit(x);
-					break;
-				case 'strokeopacity':
-					this.StrokeOpacity(x);
-					break;
-				case 'strokewidth':
-					this.StrokeWidth(x);
-					break;
-				case 'syntax':
-					this.Syntax(x);
-					break;
-
-				case 'tabsize':
-					this.TabSize(x);
-					break;
-				case 'tablelayout':
-					this.TableLayout(x);
-					break;
-				case 'textalign':
-					this.TextAlign(x);
-					break;
-				case 'textalignlast':
-					this.TextAlignLast(x);
-					break;
-				case 'textanchor':
-					this.TextAnchor(x);
-					break;
-				case 'textcombinedupright':
-					this.TextCombinedUpright(x);
-					break;
-				case 'textdecoration':
-					this.TextDecoration(x);
-					break;
-				case 'textdecorationcolor':
-					this.TextDecorationColor(x);
-					break;
-				case 'textdecorationline':
-					this.TextDecorationLine(x);
-					break;
-				case 'textdecorationskipink':
-					this.TextDecorationSkipInk(x);
-					break;
-				case 'textdecorationstyle':
-					this.TextDecorationStyle(x);
-					break;
-				case 'textdecorationthickness':
-					this.TextDecorationThickness(x);
-					break;
-				case 'textindent':
-					this.TextIndent(x);
-					break;
-				case 'textorientation':
-					this.TextOrientation(x);
-					break;
-				case 'textoverflow':
-					this.TextOverflow(x);
-					break;
-				case 'textrendering':
-					this.TextRendering(x);
-					break;
-				case 'textshadow':
-					this.TextShadow(x);
-					break;
-				case 'textsizeadjust':
-					this.TextSizeAdjust(x);
-					break;
-				case 'texttransform':
-					this.TextTransform(x);
-					break;
-				case 'textunderlineoffset':
-					this.TextUnderlineOffset(x);
-					break;
-				case 'textunderlineposition':
-					this.TextUnderlinePosition(x);
-					break;
-				case 'top':
-					this.Top(x);
-					break;
-				case 'touchaction':
-					this.TouchAction(x);
-					break;
-				case 'transform':
-					this.Transform(x);
-					break;
-				case 'transformbox':
-					this.TransformBox(x);
-					break;
-				case 'transformorigin':
-					this.TransformOrigin(x);
-					break;
-				case 'transformstyle':
-					this.TransformStyle(x);
-					break;
-				case 'transition':
-					this.Transition(x);
-					break;
-				case 'transitiondelay':
-					this.TransitionDelay(x);
-					break;
-				case 'transitionduration':
-					this.TransitionDuration(x);
-					break;
-				case 'transitionproperty':
-					this.TransitionProperty(x);
-					break;
-				case 'transitiontimingfunction':
-					this.TransitionTimingFunction(x);
-					break;
-
-				case 'unicodebidi':
-					this.UnicodeBidi(x);
-					break;
-				case 'unicoderange':
-					this.UnicodeRange(x);
-					break;
-				case 'userselect':
-					this.UserSelect(x);
-					break;
-				case 'userzoom':
-					this.UserZoom(x);
-					break;
-
-				case 'vectoreffect':
-					this.VectorEffect(x);
-					break;
-				case 'verticalalign':
-					this.VerticalAlign(x);
-					break;
-				case 'visibility':
-					this.Visibility(x);
-					break;
-
-				case 'width':
-					this.Width(x);
-					break;
-				case 'widows':
-					this.Widows(x);
-					break;
-				case 'willchange':
-					this.WillChange(x);
-					break;
-				case 'wordbreak':
-					this.WordBreak(x);
-					break;
-				case 'wordspacing':
-					this.WordSpacing(x);
-					break;
-				case 'wordwrap':
-					this.WordWrap(x);
-					break;
-				case 'writingmode':
-					this.WritingMode(x);
-					break;
-
-				case 'x':
-					this.X(x);
-					break;
-				case 'y':
-					this.Y(x);
-					break;
-
-				case 'zoom':
-					this.Zoom(x);
-					break;
-				default:
-					this.Zindex(x);
-			}
-		}
-	}
-
-	GetElement = (element, method) => {
-		switch (method.toLowerCase()) {
-			case 'class':
-				return document.getElementsByClassName(element).valueOf()[0];
-				break;
-			case 'name':
-				return document.getElementsByName(element)[0];
-				break;
-			case 'tag':
-				return document.getElementsByTagName(element)[0];
-				break;
-			default:
-				return document.getElementById(element);
-		}
-	}
-
-	TypeWriter = (text, speed = 50, at = 0) => {
-		let e = this.e;
-
-		function Make() {
-			if (at < text.length) {
-				e.innerHTML += text.charAt(at);
-				at++;
-				setTimeout(Make, speed)
-			}
-		}
-		Make();
-	}
-
-	Draggable = () => {
-		let a = this.e,
-			b = this.s,
-			pos1 = 0,
-			pos2 = 0,
-			pos3 = 0,
-			pos4 = 0;
-
-		if (document.getElementById(a.id + "header")) document.getElementById(a.id + "header").onmousedown = MouseDown;
-		else a.onmousedown = MouseDown;
-
-		b.position = 'absolute';
-
-		function MouseDown(e) {
-			if (a.hasAttribute('draggable')) {
-				e = e || window.event;
-				e.preventDefault();
-				pos3 = e.clientX;
-				pos4 = e.clientY;
-				document.onmouseup = EndDrag;
-				document.onmousemove = StartDrag;
-			}
-		}
-
-		function StartDrag(e) {
-			e = e || window.event;
-			e.preventDefault();
-			pos1 = pos3 - e.clientX;
-			pos2 = pos4 - e.clientY;
-			pos3 = e.clientX;
-			pos4 = e.clientY;
-			b.top = (a.offsetTop - pos2) + "px";
-			b.left = (a.offsetLeft - pos1) + "px";
-		}
-
-		function EndDrag() {
-			document.onmouseup = null;
-			document.onmousemove = null;
-		}
-	}
-
-	CreateNode = (tag, content, attributes = []) => {
-		let element = document.createElement(tag),
-			i = 0;
-		element.innerHTML = content;
-
-		for (i; i < attributes.length; i++) {
-			let attr, attr_val;
-
-			if (attributes[i].attribute) attr = attributes[i].attribute;
-			else if (attributes[i].attr) attr = attributes[i].attr;
-			else if (attributes[i].name) attr = attributes[i].name;
-			else if (attributes[i].identifier) attr = attributes[i].identifier;
-			else if (attributes[i].i) attr = attributes[i].i;
-			else if (attributes[i].a) attr = attributes[i].a;
-			else if (attributes[i].style) attr = attributes[i].style;
-			else if (attributes[i].property) attr = attributes[i].property;
-
-			if (attributes[i].value) attr_val = attributes[i].value;
-			else if (attributes[i].attr_value) attr_val = attributes[i].attr_value;
-			else if (attributes[i].identifier_value) attr_val = attributes[i].identifier_value;
-			else if (attributes[i].j) attr_val = attributes[i].j;
-			else if (attributes[i].b) attr_val = attributes[i].b;
-			else if (attributes[i].def) attr_val = attributes[i].def
-			else if (attributes[i].content) attr_val = attributes[i].content;
-			else if (attributes[i].definition) attr_val = attributes[i].attr_value;
-			else if (attributes[i].property_value) attr_val = attributes[i].attr_value;
-
-			element.setAttribute(attr, attr_val);
-		}
-
-		this.e.appendChild(element);
-
-		return element;
-	}
-
-	Resizable = () => {
-		let original_width = 0,
-			original_height = 0,
-			original_x = 0,
-			original_y = 0,
-			original_mouse_x = 0,
-			original_mouse_y = 0,
-			element = this.e,
-			resizers_names = [
-				Algorithms.StringGenerator(),
-				Algorithms.StringGenerator(),
-				Algorithms.StringGenerator(),
-				Algorithms.StringGenerator(),
-			],
-			resizers_parent = document.createElement('div'),
-			styles = getComputedStyle(element),
-			max_width = (!styles.maxWidth) ? parseFloat(styles.maxWidth) : Client.ScreenWidth(),
-			max_height = (!styles.maxHeight) ? parseFloat(styles.maxHeight) : Client.ScreenHeight(),
-			min_width = (!styles.minWidth) ? parseFloat(styles.minWidth) : parseFloat(styles.width),
-			min_height = (!styles.minHeight) ? parseFloat(styles.minHeight) : parseFloat(styles.height),
-			i = 0,
-			j = 0,
-			draggable_band = false;
-
-		resizers_parent.id = Algorithms.StringGenerator();
-		element.appendChild(resizers_parent);
-
-		for (i; i < 4; i++) {
-			let container = document.createElement('div');
-			container.id = resizers_names[i];
-			element.appendChild(container);
-		}
-
-		let resizers_container = document.getElementById(resizers_parent.id),
-			resizers = [
-				document.getElementById(resizers_names[0]),
-				document.getElementById(resizers_names[1]),
-				document.getElementById(resizers_names[2]),
-				document.getElementById(resizers_names[3]),
-			];
-
-		element.style.position = 'absolute';
-		resizers_container.style.width = '100%';
-		resizers_container.style.height = '100%';
-		resizers_container.style.boxSizing = 'border-box';
-		resizers_container.appendChild(resizers[0]);
-		resizers_container.appendChild(resizers[1]);
-		resizers_container.appendChild(resizers[2]);
-		resizers_container.appendChild(resizers[3]);
-
-		resizers[2].style.bottom = '-5px';
-		resizers[2].style.left = '-5px';
-		resizers[2].style.cursor = 'nesw-resize';
-		resizers[3].style.bottom = '-5px';
-		resizers[3].style.right = '-5px';
-		resizers[3].style.cursor = 'nwse-resize';
-		resizers[1].style.top = '-5px';
-		resizers[1].style.right = '-5px';
-		resizers[1].style.cursor = 'nesw-resize';
-		resizers[0].style.top = '-5px';
-		resizers[0].style.left = '-5px'
-		resizers[0].style.cursor = 'nwse-resize';
-
-		for (j; j < 4; j++) {
-			let current_resizer = resizers[j];
-
-			current_resizer.style.width = '10px';
-			current_resizer.style.height = '10px';
-			current_resizer.style.position = 'absolute';
-
-			current_resizer.addEventListener('mousedown', function(e) {
-				if (element.hasAttribute('draggable')) element.removeAttribute('draggable'), draggable_band = true;
-
-				e.preventDefault()
-				original_width = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
-				original_height = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
-				original_x = element.getBoundingClientRect().left;
-				original_y = element.getBoundingClientRect().top;
-				original_mouse_x = e.pageX;
-				original_mouse_y = e.pageY;
-				window.addEventListener('mousemove', resize)
-				window.addEventListener('mouseup', stopResize)
-			})
-
-			function resize(e) {
-				let width, height;
-
-				switch (current_resizer.id) {
-					case resizers[3].id:
-						width = original_width + (e.pageX - original_mouse_x);
-						height = original_height + (e.pageY - original_mouse_y);
-						if (width > min_width && width < max_width) element.style.width = width + 'px';
-						if (height > min_height && height < max_height) element.style.height = height + 'px';
-						break;
-					case resizers[2].id:
-						height = original_height + (e.pageY - original_mouse_y);
-						width = original_width - (e.pageX - original_mouse_x);
-						if (height > min_height && height < max_height) element.style.height = height + 'px';
-						if (width > min_width && width < max_width) element.style.width = width + 'px', element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-						break;
-					case resizers[1].id:
-						width = original_width + (e.pageX - original_mouse_x);
-						height = original_height - (e.pageY - original_mouse_y);
-						if (width > min_width && width < max_width) element.style.width = width + 'px';
-						if (height > min_height && height < max_height) element.style.height = height + 'px', element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-						break;
-
-					default:
-						width = original_width - (e.pageX - original_mouse_x);
-						height = original_height - (e.pageY - original_mouse_y);
-						if (width > min_width && width < max_width) element.style.width = width + 'px', element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-						if (height > min_height && height < max_height) element.style.height = height + 'px', element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+		return List;
+	},
+
+	BubbleSort: (List) => {
+		let Break;
+		do{
+			Break = false;
+			for(let Iterator = 0; Iterator < List.length; Iterator++)
+				if(List[Iterator] > List[Iterator + 1]){
+					let Buffer = List[Iterator];
+					List[Iterator] = List[Iterator + 1];
+					List[Iterator + 1] = Buffer;
+					Break = true;
 				}
+		}while(Break);
+		return List;
+	},
+};
 
+const SnakeDatetime = {
+	GetDate: () => new Date(),
+	GetCurrentDay: () => new Date().getDay(),
+	GetCurrentYear: () => new Date().getFullYear(),
+	GetCurrentMonth: () => new Date().getMonth(),
+	GetCurrentHour: () => new Date().getHours(),
+	GetCurrentMinutes: () => new Date().getMinutes(),
+	GetCurrentSeconds: () => new Date().getSeconds()
+};
+
+const SnakeServer = {
+    GetProtocol: () => location.protocol,
+    GetPort: () => location.port,
+    GetOrigin: () => location.origin,
+    GetHostname: () => location.hostname,
+    GetHost: () => location.host,
+    GetLocation: () => location.href,
+    GetDomain: () => document.domain
+};
+
+const SnakeDOM = {
+	OnReadyStateChange: (Action) => document.onreadystatechange = Action,
+	OnResizeEvent: (Action) => window.addEventListener('resize', Action),
+	OnUnloadEvent: (Action) => window.addEventListener('unloadevent', Action),
+	OnDomAttrModified: (Action) => document.addEventListener('domattrmodified', Action),
+	OnDomContentLoaded: (Action) => document.addEventListener('domcontentloaded', Action),
+	OnTouchStart: (Action) => document.addEventListener('touchstart', Action),
+	OnTouchMove: (Action) => document.addEventListener('touchmove', Action),
+	OnTouchEnd: (Action) => document.addEventListener('touchend', Action),
+	OnTouchCancel: (Action) => document.addEventListener('touchcancel', Action),
+	OnCopy: (Action) => document.addEventListener('copy', Action),
+	OnCut: (Action) => document.addEventListener('cut', Action),
+	OnPaste: (Action) => document.addEventListener('paste', Action),
+	OnBeforeScriptExecute: (Action) => document.addEventListener('beforescriptexecute', Action),
+	OnAfterScriptExecute: (Action) => document.addEventListener('afterscriptexecute', Action),
+	OnLoadedData: (Action) => document.addEventListener('loadeddata', Action),
+	OnLoadedMetaData: (Action) => document.addEventListener('loadedmetadata', Action),
+	OnLoadStart: (Action) => document.addEventListener('loadstart', Action),
+	OnRateChange: (Action) => document.addEventListener('ratechange', Action),
+	OnVolumeChange: (Action) => document.addEventListener('volumechange', Action),
+	OnWaiting: (Action) => document.addEventListener('waiting', Action),
+	OnMozFullScreenChange: (Action) => document.addEventListener('mozfullscreenchange', Action),
+	OnMozFullScreenError: (Action) => document.addEventListener('mozfullscreenerror', Action),
+	OnMozPointerLockChange: (Action) => document.addEventListener('mozpointerlockchange', Action),
+	OnMozPointerLockError: (Action) => document.addEventListener('mozpointerlockerror', Action),
+	OnError: (Action) => document.addEventListener('error', Action),
+	OnScroll: (Action) => document.addEventListener('scroll', Action),
+
+	SetTimeout: (Action, Time = 1000) => window.setTimeout(Action, Time),
+	SetInterval: (Action, Time = 1000) => window.setInterval(Action, Time),
+	GetCurrentActiveElement: () => document.activeElement,
+	GetBaseURI: () => document.baseURI,
+	GetTitle: () => document.title,
+	GetDocumentDoctype: () => document.doctype,
+	GetHTMLNode: () => document.documentElement,
+	GetHeadNode: () => document.head,
+	GetImagesNodes: () => document.images,
+	GetLinksNodes: () => document.links,
+	GetScriptNodes: () => document.scripts,
+	GetAnchorsNodes: () => document.anchors,
+	PrintPage: () => window.print(),
+	SetTitle: (Title) => document.title = Title,
+	GetBodyNode: () => document.body,
+	GetElementsByClass: (ClassName) => document.getElementsByClassName(ClassName),
+	GetElementsByTagName: (TagName) => document.GetElementsByTagName(TagName),
+	GetElementById: (x) => document.GetElementById(x),
+	Write: (HTMLCode) => document.write(HTMLCode),
+	GetURL: () => document.URL(),
+	GetCharacterSet: () => document.characterSet(),
+	GetContentType: () => document.contentType(),
+	AddHTML: (HTMLCode) => document.writeln(HTMLCode),
+	GetFormsNodes: () => document.forms,
+	CreateElement: (Tag, Options = []) => document.createElement(Tag, Options),
+	CreateComment: (Comment) => document.createComment(Comment),
+	CreateTextNode: (Properties) => document.createTextNode(Properties),
+	QuerySelector: (Nodes) => document.querySelector(Nodes),
+	AddText: (Node, Content) => Node.textContent = Content,
+	AddEventListener: (Listen, Action) => document.addEventListener(Listen, Action),
+	AddWindowEventListener: (Listen, Action) => window.addEventListener(Listen, Action),
+	QuerySelectorAll: (Nodes) => document.querySelectorAll(Nodes),
+
+	ReplaceDeveloperTools: (Action = function(){}) => {
+		document.addEventListener('contextmenu', event => {
+			event.preventDefault();
+			Action();
+		});
+
+		document.onkeydown = function(Event){
+			if(Event.keyCode == 123)
+				return false;
+			if( (Event.ctrlKey) && (Event.shiftKey) && (Event.keyCode == 'I'.charCodeAt(0)) ){
+				Action();
+				return false;
 			}
-
-			function stopResize() {
-				window.removeEventListener('mousemove', resize);
-				if (draggable_band) element.setAttribute('draggable', '');
+			if( (Event.ctrlKey) && (Event.shiftKey) && (Event.keyCode == 'C'.charCodeAt(0)) ){
+				Action();
+				return false;
+			}
+			if( (Event.ctrlKey) && (Event.shiftKey) && (Event.keyCode == 'J'.charCodeAt(0)) ){
+				Action();
+				return false;
+			}
+			if( (Event.ctrlKey) && (Event.keyCode == 'U'.charCodeAt(0)) ){
+				Action();
+				return false;
 			}
 		}
-	}
+	},
 
-}
+	ClearContent: () => {
+		document.write('');
+		document.close();
+	},
 
-$ = (element, mode = 'id') => new Node(element, mode);
+	SetDesignMode: (Mode) => {
+		if(Mode.toLowerCase() == 'on')
+			document.designMode = 'on';
+		else
+			document.designMode = 'off';
+	},
 
-class ClientHandler {
-	NetworkType = () => clientInformation.connection
-	BrowserName = () => navigator.appCodeName;
-	BrowserVersion = () => navigator.appVersion;
-	CookiesStatus = () => navigator.cookieEnabled;
-	CurrenPath = () => window.location.pathname
-	OnAudioProcess = (action) => document.addEventListener('audioprocess', action);
-	OnBeforePrint = (action) => document.addEventListener('beforeprint', action);
-	GoBack = () => window.history.back();
-	GetHash = () => location.hash;
-	SetHash = (new_hash) => location.hash = new_hash;
-	AddHash = (hash) => location.hash += hash;
-	CloseWindow = () => window.close();
-	CurrentPath = () => location.pathname;
-	Language = () => navigator.language;
-	IsOnline = () => navigator.onLine;
-	Platform = () => navigator.platform;
-	Engine = () => navigator.product;
-	UserAgent = () => navigator.userAgent;
-	ScreenAvailHeight = () => screen.availHeight;
-	ScreenAvailWidth = () => screen.availWidth;
-	ScreenPixelDepth = () => screen.pixelDepth;
-	ScreenColorDepth = () => screen.colorDepth;
-	Redirect = (new_url) => location.replace(new_url);
-	Reload = () => location.reload();
-	ScreenHeight = () => window.innerHeight;
-	ScreenWidth = () => window.innerWidth;
-	Alert = (x) => alert(x);
-	ConfirmAlert = (x) => window.x(message);
-	PromptBox = (x, default_answer) => window.prompt(x, default_answer);
-	FullScreenStatus = () => document.fullscreenEnabled || document.webkitFullscreenEnabled || document.msFullscreenEnabled
-	DocumentCookies = () => document.cookie;
-	OpenPage = (url) => window.open(url);
-	LoadStatus = () => document.readyState;
-	ClearConsole = () => console.clear();
-	Offline = (a) => window.addEventListener('offline', a);
-	Online = (a) => window.addEventListener('online', a);
-	DeleteCookie = (name) => this.UpdateCookie(name, '', {
-		'max-age': -1,
-	});
-	Location = () => (navigator.geolocation) ? navigator.geolocation.getCurrentPosition((position) => position) : raise('Geolocation is not supported by this browser.');
-
-	ChangePath = (path) => {
-		if (window.location.pathname != '/') history.replaceState({}, '', document.location.origin)
-		history.pushState({}, '', path);
-	}
-
-	ActionByViewport = (client_vp, action) => {
-		let viewport = window.matchMedia(client_vp);
-
-		function execute() {
-			if (viewport.matches) return action()
-			return action();
+	CheckNodeID: (Node) => {
+		if(!Node.id){
+			const RandomID = SnakeAlgorithms.StringGenerator(8);
+			Node.setAttribute('id', RandomID);
+			return RandomID;
 		}
-		execute();
-		viewport.addListener(execute);
-	}
+		return Node.id;
+	},
 
-	OpenTab = (new_tab_content) => {
-		let tab = window.open();
-		tab.document.open();
-		tab.document.write(new_tab_content);
-		tab.document.close();
+	RemoveNodes: (QueryMode = 'All', Identifier) => {
+		if(QueryMode.toLowerCase() == 'normal')
+			SnakeDom.QuerySelector(Identifier).remove();
+		else
+			SnakeDOM.QuerySelectorAll(Identifier).remove();
 	}
+};
 
-	SetCookie = ({
-		name, value, priority = '', path = '', domain = window.location.hostname, max_age = '', secure = true, sameparty = false, samesite = false
+const SnakeUtilities = {
+	HandleHTTPRequest: ({
+		URL, Token = '', Method = 'GET', Headers = {}, 
+		Debug = false, OnFetch = function(){}, OnConnect = function(){}, 
+		OnError = function(){}
 	}) => {
-		let cookie = `${name}=${value};path=${path};max-age=${max_age};priority=${priority};domain=${domain}`;
-		if (secure) cookie += `;secure`;
-		if (samesite != '') cookie += `;samesite=${samesite}`;
-		if (sameparty != '') cookie += `;sameparty=${sameparty}`;
-		document.cookie = cookie;
-	}
+		Headers = SnakeAlgorithms.MergeObject({
+			'Authorization': `${Token}`
+		}, Headers);
 
-	GetCookie = (name) => {
-		let matches = document.cookie.match(
-				new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)")
+		OnConnect();
+
+		const Connection = new Request(URL, {
+			method: Method,
+			headers: Headers,
+			mode: 'cors',
+			cache: 'default'
+		});
+		
+		if(Debug)
+			console.warn(`Connection made to [${URL}] using method [${Method}].`);
+		
+		fetch(Connection)
+			.then((Response) => Response.json())
+			.then((Data) => OnFetch(Data))
+			.catch((Data) => {
+				OnError(Data);
+				console.error(`[Error]: (Fetch ${URL}[${Method}]) [Error: ${Data}]`);
+			});
+	}
+};
+
+const SnakeClient = {
+	GetNetworkType: () => clientInformation.connection,
+	GetBrowserName: () => navigator.appCodeName,
+	GetBrowserVersion: () => navigator.appVersion,
+	GetCookiesStatus: () => navigator.cookieEnabled,
+	GetCurrentPath: () => window.location.pathname,
+	OnBeforePrint: (Action) => window.addEventListener('beforeprint', Action),
+	GoBack: () => window.history.back(),
+	GetHash: () => location.hash,
+	SetHash: (Hash) => location.hash = Hash,
+	AddHash: (Hash) => location.hash += Hash,
+	CloseWindow: () => open(location, '_self').close(),
+	GetLanguage: () => navigator.language,
+	IsOnLine: () => navigator.onLine,
+	GetPlatform: () => navigator.platform,
+	GetEngine: () => navigator.product,
+	GetUserAgent: () => navigator.userAgent,
+	GetScreenAvailableHeight: () => screen.availHeight,
+	GetScreenAvailableWidth: () => screen.availWidth,
+	GetScreenPixelDepth: () => screen.pixelDepth,
+	GetScreenColorDepth: () => screen.colorDepth,
+	Redirect: (URL) => location.replace(URL),
+	Reload: () => location.reload(),
+	GetScreenHeight: () => window.innerHeight,
+	GetScreenWidth: () => window.innerWidth,
+	Alert: (Message) => alert(Message),
+	PromptBox: (Message, DefaultAnswer) => window.prompt(Message, DefaultAnswer),
+	GetFullScreenStatus: () => document.fullscreenEnabled || document.webkitFullscreenEnabled || document.msFullscreenEnabled,
+	GetDocumentCookies: () => document.cookie,
+	OpenPage: (URL) => window.open(URL),
+	LoadStatus: () => document.readyState,
+	OnOffLine: (Action) => window.addEventListener('offline', Action),
+    OnOnLine: (Action) => window.addEventListener('online', Action),
+    GetLocation: (Action) => (navigator.geolocation) ? navigator.geolocation.getCurrentPosition((Position) => Action(Position)) : console.log('Geolocation is not supported by this browser.'),
+
+	DeleteCookie: (CookieName) => SnakeClient.UpdateCookie(CookieName, '', {
+		'max-age': -1,
+	}),
+	
+	SetPath: (Path) => {
+		if (window.location.pathname != '/') history.replaceState({}, '', document.location.origin)
+		history.pushState({}, '', Path);
+	},
+
+	OpenTab: (NewTabContent = '') => {
+		const Tab = window.open();
+		Tab.document.open();
+		Tab.document.write(NewTabContent);
+        return Tab;
+	},
+
+	SetCookie: ({
+		Name, Value, Priority = '', Path = '', Domain = window.location.hostname, 
+        MaxAge = '', Secure = true, SameParty = false, SameSite = false
+	}) => {
+		let Cookie = `${Name}=${Value};path=${Path};max-age=${MaxAge};priority=${Priority};domain=${Domain}`;
+		if(Secure)
+            Cookie += `;secure`;
+        if(SameSite != '')
+            Cookie += `;samesite=${samesite}`;
+        if(SameParty != '')
+            cookie += `;sameparty=${sameparty}`;
+		document.cookie = Cookie;
+	},
+
+	GetCookie: (Name) => {
+		const Matches = document.cookie.match(
+				new RegExp("(?:^|; )" + Name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)")
 			),
-			cookie = matches ? decodeURIComponent(matches[1]) : undefined;
-		if (cookie == undefined) return false;
-		return cookie;
-	}
+			Cookie = Matches ? decodeURIComponent(Matches[1]) : undefined;
+		if(Cookie == undefined) 
+            return false;
+		return Cookie;
+	},
 
-	UpdateCookie = (name, value, options = {}) => {
-		options = {...options,
-		};
-		if (options.expires instanceof Date) options.expires = options.expires.toUTCString();
-		let UpdatedCookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
-		for (let OptionKey in options) {
+	UpdateCookie: (Name, Value, Options = {}) => {
+        if(Options.expires instanceof Date)
+            Options.expires = Options.expires.toUTCString();
+		let UpdatedCookie = encodeURIComponent(Name) + '=' + encodeURIComponent(Value);
+		for(let OptionKey in Options){
 			UpdatedCookie += ';' + OptionKey;
-			let OptionValue = options[OptionKey];
-			if (OptionValue !== true) UpdatedCookie += '=' + OptionValue;
+			let OptionValue = Options[OptionKey];
+            if(OptionValue !== true)
+                UpdatedCookie += '=' + OptionValue;
 		}
 		document.cookie = UpdatedCookie;
 	}
-}
+};
 
-const Client = new ClientHandler();
+/*
+	? ZendaJS Z8 Implementation
+	? https://github.com/codewithrodi/ZendaJS/
 
-class DomHandler {
-	OnReadyStateChange = (a) => document.onreadystatechange = a;
-	OnResizeEvent = (a) => window.addEventListener('resize', a);
-	OnUnloadEvent = (a) => window.addEventListener('unloadevent', a);
-	OnDomAttrModified = (a) => document.addEventListener('domattrmodified', a);
-	OnDomContentLoaded = (a) => document.addEventListener('domcontentloaded', a);
-	OnTouchStart = (a) => document.addEventListener('touchstart', a);
-	OnTouchMove = (a) => document.addEventListener('touchmove', a);
-	OnTouchEnd = (a) => document.addEventListener('touchend', a);
-	OnTouchCancel = (a) => document.addEventListener('touchcancel', a);
-	OnCopy = (a) => document.addEventListener('copy', a);
-	OnCut = (a) => document.addEventListener('cut', a);
-	OnPaste = (a) => document.addEventListener('paste', a);
-	OnBeforeScriptExecute = (a) => document.addEventListener('beforescriptexecute', a);
-	OnAfterScriptExecute = (a) => document.addEventListener('afterscriptexecute', a);
-	OnLoadedData = (a) => document.addEventListener('loadeddata', a);
-	OnLoadedMetaData = (a) => document.addEventListener('loadedmetadata', a);
-	OnLoadStart = (a) => document.addEventListener('loadstart', a);
-	OnRateChange = (a) => document.addEventListener('ratechange', a);
-	OnVolumeChange = (a) => document.addEventListener('volumechange', a);
-	OnWaiting = (a) => document.addEventListener('waiting', a);
-	OnMozFullScreenChange = (a) => document.addEventListener('mozfullscreenchange', a);
-	OnMozFullScreenError = (a) => document.addEventListener('mozfullscreenerror', a);
-	OnMozPointerLockChange = (a) => document.addEventListener('mozpointerlockchange', a);
-	OnMozPointerLockError = (a) => document.addEventListener('mozpointerlockerror', a);
-	OnError = (a) => document.addEventListener('error', a);
-	OnScroll = (a) => document.addEventListener('scroll', a);
+	* The Z8 is an extension of objects already defined 
+	* in javascript by the V8 engine in C++, what Z8 offers 
+	* are new functionality such as search methods, ordering 
+	* methods, new mathematical algorithms and new 
+	* functionalities for strings, explore!
+*/
+Object.defineProperties(Math.__proto__, {
+	'Factorial': {
+		value: function(PositiveNumber){
+			return SnakeAlgorithms.Factorial(PositiveNumber);
+		},
+		writable: false
+	},
 
-	SetTimeout = (a, time = 1000) => window.setTimeout(a, time);
-	SetInterval = (a, time = 1000) => window.setInterval(a, time);
-	CurrentActiveElement = () => document.activeElement;
-	BaseURI = () => document.baseURI;
-	GetTitle = () => document.title;
-	DocumentDoctype = () => document.doctype;
-	HTMLNode = () => document.documentElement;
-	HeadNode = () => document.head;
-	ImagesNodes = () => document.images;
-	LinksNodes = () => document.links;
-	ScriptNodes = () => document.scripts;
-	AnchorsNodes = () => document.anchors;
-	PrintPage = () => window.print();
-	SetTitle = (x) => document.title = x;
-	BodyNode = () => document.body;
-	GetElementsByClass = (class_name) => document.getElementsByClassName(class_name);
-	GetElementsByTagName = (tag_name) => document.GetElementsByTagName(tag_name);
-	GetElementById = (x) => document.GetElementById(x);
-	Write = (x) => document.write(x);
-	URL = () => document.URL();
-	CharacterSet = () => document.characterSet();
-	ContentType = () => document.contentType();
-	AddHTML = (x) => document.writeln(x);
-	FormsNodes = () => document.forms;
-	CreateElement = (tag, options = []) => document.createElement(tag, options)
-	CreateComment = (x) => document.createComment(x)
-	CreateTextNode = (x) => document.createTextNode(x)
-	QuerySelector = (x) => document.QuerySelector(x)
-	AddText = (element, content) => element.textContent = content;
-	AddEventListener = (listen, action) => document.addEventListener(listen, action);
-	AddWindowEventListener = (listen, action) => window.addEventListener(listen, action);
-	QuerySelectorAll = (x) => document.querySelectorAll(x)
+	'Fibonacci': {
+		value: function(MaxIteration){
+			return SnakeAlgorithms.Fibonacci(MaxIteration);
+		},
+		writable: false
+	},
 
-	DisableDevTools = (action = function() {}) => {
-		document.addEventListener('contextmenu', event => {
-			event.preventDefault();
-			action();
+	'PrimeFactors': {
+		value: function(Integer){
+			return SnakeAlgorithms.PrimeFactors(Integer);
+		},
+		writable: false
+	},
+
+	'IsPrime': {
+		value: function(Integer){
+			return SnakeAlgorithms.IsPrime(Integer);
+		},
+		writable: false
+	},
+
+	'RandomInteger': {
+		value: function(MinimumValue, MaximumValue){
+			return SnakeAlgorithms.RandomInteger(MinimumValue, MaximumValue);
+		},
+		writable: false
+	},
+
+	'RandomNumber': {
+		value: function(MaximumValue, MinimumValue){
+			return SnakeAlgorithms.RandomNumber(MaximumValue, MinimumValue);
+		},
+		writable: false
+	}
+});
+
+Object.defineProperties(String.prototype, {
+	'SubStringCount': {
+		value: function(SubString){
+			return SnakeAlgorithms.SubStringCount(this, SubString);
+		},
+		writable: false
+	},
+
+	'HammingDistance': {
+		value: function(StringToCompare){
+			return SnakeAlgorithms.HammingDistance(this, StringToCompare);
+		},
+		writable: false
+	},
+
+	'RandomFill': {
+		value: function(Length = 8, Characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'){
+			return SnakeAlgorithms.StringGenerator(Length, Characters);
+		},
+		writable: false
+	}
+});
+
+Object.defineProperties(Array.prototype, {
+	'LinearSearch': {
+		value: function(Value){
+			return SnakeAlgorithms.LinearSearch(Value, this);
+		},
+		writable: false
+	},
+
+	'InterpolationSearch': {
+		value: function(Value){
+			return SnakeAlgorithms.InterpolationSearch(Value, this);
+		},
+		writable: false
+	},
+
+	'BinarySearch': {
+		value: function(Value){
+			return SnakeAlgorithms.BinarySearch(Value, this);
+		},
+		writable: false
+	},
+
+	'Average': {
+		value: function(){
+			return SnakeAlgorithms.Average(this);
+		},
+		writable: false
+	},
+
+	'MaximumValue': {
+		value: function(){
+			return SnakeAlgorithms.MaximumValue(this);
+		},
+		writable: false
+	},
+
+	'MinimumValue': {
+		value: function(){
+			return SnakeAlgorithms.MinimumValue(this);
+		},
+		writable: false
+	},
+
+	'InsertionSort': {
+		value: function(){
+			return SnakeAlgorithms.InsertionSort(this);
+		},
+		writable: false
+	},
+
+	'SelectionSort': {
+		value: function(){
+			return SnakeAlgorithms.SelectionSort(this);
+		},
+		writable: false
+	},
+
+	'BubbleSort': {
+		value: function(){
+			return SnakeAlgorithms.BubbleSort(this);
+		},
+		writable: false
+	},
+
+	'Shuffle': {
+		value: function(){
+			return SnakeAlgorithms.Shuffle(this);
+		},
+		writable: false
+	}
+});
+
+class SnakeNode{
+    constructor(Node, GetMethod = 'id'){
+        this.Node = this.GetElement(Node, GetMethod);
+        this.Style = this.Node.style;
+        if(this.Node == undefined)
+            console.log(`The element [<${dom_element}> required using <${method.toUpperCase()}>] was not found in the DOM.`);
+    }
+
+    OnInput = (Action) => this.Node.addEventListener('input', Action);
+    OnInvalid = (Action) => this.Node.addEventListener('invalid', Action);
+    OnSubmit = (Action) => this.Node.addEventListener('submit', Action);
+	OnClick = (Action) => this.Node.addEventListener('click', Action);
+	OnMouseOver = (Action) => this.Node.addEventListener('mouseover', Action);
+	OnMouseOut = (Action) => this.Node.addEventListener('mouseout', Action);
+	OnMouseMove = (Action) => this.Node.addEventListener('mousemove', Action);
+	OnMouseLeave = (Action) => this.Node.addEventListener('mouseleave', Action);
+	OnMouseEnter = (Action) => this.Node.addEventListener('mouseenter', Action);
+	OnMouseWheel = (Action) => this.Node.addEventListener('mousewheel', Action);
+	OnMouseUp = (Action) => this.Node.addEventListener('mouseup', Action);
+	OnBlur = (Action) => this.Node.addEventListener('blur', Action);
+	OnContextMenu = (Action) => this.Node.addEventListener('blur', Action);
+	OnChange = (Action) => this.Node.addEventListener('change', Action);
+	OnDoubleClick = (Action) => this.Node.addEventListener('dblclick', Action);
+	OnFocus = (Action) => this.Node.addEventListener('focus', Action);
+	OnKeyDown = (Action) => this.Node.addEventListener('keydown', Action);
+	OnKeyPress = (Action) => this.Node.addEventListener('keypress', Action);
+	OnKeyUp = (Action) => this.Node.addEventListener('keyup', Action);
+	OnLoad = (Action) => this.Node.addEventListener('load', Action);
+	OnMouseDown = (Action) => this.Node.addEventListener('mousedown', Action);
+	OnReset = (Action) => this.Node.addEventListener('reset', Action);
+	OnSelect = (Action) => this.Node.addEventListener('select', Action);
+	OnAnimationEnd = (Action) => this.Node.addEventListener('animationend', Action);
+	OnAnimationIteration = (Action) => this.Node.addEventListener('animationiteration', Action);
+	OnAnimationStart = (Action) => this.Node.addEventListener('animationstart', Action);
+	OnDrag = (Action) => this.Node.addEventListener('drag', Action);
+	OnDragEnd = (Action) => this.Node.addEventListener('dragend', Action);
+	OnDragLeave = (Action) => this.Node.addEventListener('dragleave', Action);
+	OnDragOver = (Action) => this.Node.addEventListener('dragover', Action);
+	OnDragStart = (Action) => this.Node.addEventListener('dragstart', Action);
+	OnDrop = (Action) => this.Node.addEventListener('drop', Action);
+	OnDragEnter = (Action) => this.Node.addEventListener('dragenter', Action);
+	OnTouchStart = (Action) => this.Node.addEventListener('touchstart', Action);
+	OnTouchMove = (Action) => this.Node.addEventListener('touchmove', Action);
+	OnTouchEnd = (Action) => this.Node.addEventListener('touchend', Action);
+	OnTouchCancel = (Action) => this.Node.addEventListener('touchcancel', Action);
+	OnReadyStateChange = (Action) => this.Node.addEventListener('readystatechange', Action);
+	OnCopy = (Action) => this.Node.addEventListener('copy', Action);
+	OnCut = (Action) => this.Node.addEventListener('cut', Action);
+	OnPaste = (Action) => this.Node.addEventListener('paste', Action);
+	OnBeforeScriptExecute = (Action) => this.Node.addEventListener('beforescriptexecute', Action);
+	OnAfterScriptExecute = (Action) => this.Node.addEventListener('afterscriptexecute', Action);
+	OnCanPlay = (Action) => this.Node.addEventListener('canplay', Action);
+	OnCanPlayThrough = (Action) => this.Node.addEventListener('canplaythrough', Action);
+	OnDurationChange = (Action) => this.Node.addEventListener('durationchange', Action);
+	OnEmptied = (Action) => this.Node.addEventListener('emptied', Action);
+	OnLoadedData = (Action) => this.Node.addEventListener('loadeddata', Action);
+	OnLoadedMetaData = (Action) => this.Node.addEventListener('loadedmetadata', Action);
+	OnLoadStart = (Action) => this.Node.addEventListener('loadstart', Action);
+	OnPause = (Action) => this.Node.addEventListener('pause', Action);
+	OnPlay = (Action) => this.Node.addEventListener('play', Action);
+	OnPlaying = (Action) => this.Node.addEventListener('playing', Action);
+	OnProgress = (Action) => this.Node.addEventListener('progress', Action);
+	OnRateChange = (Action) => this.Node.addEventListener('ratechange', Action);
+	OnSeeked = (Action) => this.Node.addEventListener('seeked', Action);
+	OnSeeking = (Action) => this.Node.addEventListener('seeking', Action);
+	OnShow = (Action) => this.Node.addEventListener('show', Action);
+	OnStalled = (Action) => this.Node.addEventListener('stalled', Action);
+	OnSuspend = (Action) => this.Node.addEventListener('suspend', Action);
+	OnTimeUpdate = (Action) => this.Node.addEventListener('timeupdate', Action);
+	OnVolumeChange = (Action) => this.Node.addEventListener('volumechange', Action);
+	OnError = (Action) => this.Node.addEventListener('error', Action);
+	OnScroll = (Action) => this.Node.addEventListener('scroll', Action);
+
+	AlignContent = (Value) => this.Style.alignContent = Value;
+	AlignItems = (Value) => this.Style.alignItems = Value;
+	AlignmentBaseLine = (Value) => this.Style.alignmentBaseLine = Value;
+	All = (Value) => this.Style.all = Value;
+	Animation = (Value) => this.Style.animation = Value;
+	AnimationDelay = (Value) => this.Style.animationDelay = Value;
+	AnimationDirection = (Value) => this.Style.animationDirection = Value;
+	AnimationFillMode = (Value) => this.Style.animatonFillMode = Value;
+	AnimationIterationCount = (Value) => this.Style.animationIterationCount = Value;
+	AnimationName = (Value) => this.Style.animationName = Value;
+	AnimationPlayState = (Value) => this.Style.animationPlayState = Value;
+	AnimationTimingFunction = (Value) => this.Style.animationTimingFunction = Value;
+	Appearance = (Value) => this.Style.appearance = Value;
+	AscentOverride = (Value) => this.Style.ascentOverride = Value;
+	AspectRatio = (Value) => this.Style.aspectRatio = Value;
+
+	BackdropFilter = (Value) => this.Style.backdropFilter = Value;
+	BackfaceVisibility = (Value) => this.Style.backfaceVisibility = Value;
+	Background = (Value) => this.Style.background = Value;
+	BackgroundAttachment = (Value) => this.Style.backgroundAttachment = Value;
+	BackgroundBlendMode = (Value) => this.Style.backgroundBlendMode = Value;
+	BackgroundClip = (Value) => this.Style.backgroundClip = Value;
+	BackgroundColor = (Value) => this.Style.backgroundColor = Value;
+	BackgroundImage = (Value) => this.Style.backgroundImage = Value;
+	BackgroundOrigin = (Value) => this.Style.backgroundOrigin = Value;
+	BackgroundPosition = (Value) => this.Style.backgroundPosition = Value;
+	BackgroundPositionX = (Value) => this.Style.backgroundPositionX = Value;
+	BackgroundPositionY = (Value) => this.Style.backgroundPositionY = Value;
+	BackgroundRepeat = (Value) => this.Style.backgroundRepeat = Value;
+	BackgroundRepeatX = (Value) => this.Style.backgroundRepeatX = Value;
+	BackgroundRepeatY = (Value) => this.Style.backgroundRepeatY = Value;
+	BackgroundSize = (Value) => this.Style.backgroundSize = Value;
+	BaselineShift = (Value) => this.Style.baselineShift = Value;
+	BlockSize = (Value) => this.Style.blockSize = Value;
+	Border = (Value) => this.Style.border = Value;
+	BorderBlock = (Value) => this.Style.borderBlock = Value;
+	BorderBlockColor = (Value) => this.Style.borderBlockColor = Value;
+	BorderBlockEnd = (Value) => this.Style.borderBlockEnd = Value;
+	BorderBlockEndColor = (Value) => this.Style.borderBlockEndColor = Value;
+	BorderBlockEndWidth = (Value) => this.Style.borderBlockEndWidth = Value;
+	BorderBlockStart = (Value) => this.Style.borderBlockStart = Value;
+	BorderBlockStartColor = (Value) => this.Style.borderBlockStartColor = Value;
+	BorderBlockStartStyle = (Value) => this.Style.borderBlockStartStyle = Value;
+	BorderBlockStartWidth = (Value) => this.Style.borderBlockStartWidth = Value;
+	BorderBlockStyle = (Value) => this.Style.borderBlockStyle = Value;
+	BorderBlockWidth = (Value) => this.Style.borderBlockWidth = Value;
+	BorderBottom = (Value) => this.Style.borderBottom = Value;
+	BorderBottomColor = (Value) => this.Style.borderBottomColor = Value;
+	BorderBottomLeftRadius = (Value) => this.Style.borderBottomLeftRadius = Value;
+	BorderBottomRightRadius = (Value) => this.Style.borderBottomRightRadius = Value;
+	BorderBottomStyle = (Value) => this.Style.borderBottomStyle = Value;
+	BorderBottomWidth = (Value) => this.Style.borderBottomWidth = Value;
+	BorderCollapse = (Value) => this.Style.borderCollapse = Value;
+	BorderColor = (Value) => this.Style.borderColor = Value;
+	BorderEndEndRadius = (Value) => this.Style.borderEndEndRadius = Value;
+	BorderEndStartRadius = (Value) => this.Style.borderEndStartRadius = Value;
+	BorderImage = (Value) => this.Style.borderImage = Value;
+	BorderImageOutset = (Value) => this.Style.borderImageOutset = Value;
+	BorderImageRepeat = (Value) => this.Style.borderImageRepeat = Value;
+	BorderImageSource = (Value) => this.Style.borderImageSource = Value;
+	BorderImageWidth = (Value) => this.Style.borderImageWidth = Value;
+	BorderInline = (Value) => this.Style.borderInline = Value;
+	BorderInlineColor = (Value) => this.Style.borderInlineColor = Value;
+	BorderInlineEnd = (Value) => this.Style.borderInlineEnd = Value;
+	BorderInlineEndColor = (Value) => this.Style.borderInlineEndColor = Value;
+	BorderInlineEndStyle = (Value) => this.Style.borderInlineEndStyle = Value;
+	BorderInlineWidth = (Value) => this.Style.borderInlineWidth = Value;
+	BorderInlineStart = (Value) => this.Style.borderInlineStart = Value;
+	BorderInlineStartColor = (Value) => this.Style.borderInlineStartColor = Value;
+	BorderInlineStartStyle = (Value) => this.Style.borderInlineStartStyle = Value;
+	BorderInlineStartWidth = (Value) => this.Style.borderInlineStartWidth = Value;
+	BorderInlineStyle = (Value) => this.Style.borderInlineStyle = Value;
+	BorderInlineWidth = (Value) => this.Style.borderInlineWidth = Value;
+	BorderLeft = (Value) => this.Style.borderLeft = Value;
+	BorderLeftColor = (Value) => this.Style.borderLeftColor = Value;
+	BorderLeftStyle = (Value) => this.Style.borderLeftStyle = Value;
+	BorderLeftWidth = (Value) => this.Style.borderLeftWidth = Value;
+	BorderRadius = (Value) => this.Style.borderRadius = Value;
+	BorderRight = (Value) => this.Style.borderRight = Value;
+	BorderRightColor = (Value) => this.Style.borderRightColor = Value;
+	BorderRightStyle = (Value) => this.Style.borderRightStyle = Value;
+	BorderRightWidth = (Value) => this.Style.borderRightWidth = Value;
+	BorderSpacing = (Value) => this.Style.borderSpacing = Value;
+	BorderStartEndRadius = (Value) => this.Style.borderStartEndRadius = Value;
+	BorderStartStartRadius = (Value) => this.Style.borderStartStartRadius = Value;
+	BorderStyle = (Value) => this.Style.borderStyle = Value;
+	BorderTop = (Value) => this.Style.borderTop = Value;
+	BorderTopColor = (Value) => this.Style.borderTopColor = Value;
+	BorderTopLeftRadius = (Value) => this.Style.borderTopLeftRadius = Value;
+	BorderTopRightRadius = (Value) => this.Style.borderTopRightRadius = Value;
+	BorderTopStyle = (Value) => this.Style.borderTopStyle = Value;
+	BorderTopWidth = (Value) => this.Style.borderTopWidth = Value;
+	BorderWidth = (Value) => this.Style.borderWidth = Value;
+	BoxShadow = (Value) => this.Style.boxShadow = Value;
+	BoxSizing = (Value) => this.Style.boxSizing = Value;
+	BreakAfter = (Value) => this.Style.breakAfter = Value;
+	BreakBefore = (Value) => this.Style.breakBefore = Value;
+	BreakInside = (Value) => this.Style.breakInside = Value;
+	BufferedRendering = (Value) => this.Style.bufferedRendering = Value;
+	Bottom = (Value) => this.Style.bottom = Value;
+
+	CaptionSide = (Value) => this.Style.captionSide = Value;
+	CaretColor = (Value) => this.Style.caretColor = Value;
+	Clear = (Value) => this.Style.clear = Value;
+	Clip = (Value) => this.Style.clip = Value;
+	ClipPath = (Value) => this.Style.clipPath = Value;
+	ClipRule = (Value) => this.Style.clipRule = Value;
+	Color = (Value) => this.Style.color = Value;
+	ColorInterpolation = (Value) => this.Style.colorInterpolation = Value;
+	ColorInterpolationFilters = (Value) => this.Style.colorInterpolationFilters = Value;
+	ColorRendering = (Value) => this.Style.colorRendering = Value;
+	ColorScheme = (Value) => this.Style.colorScheme = Value;
+	ColumnCount = (Value) => this.Style.columnCount = Value;
+	ColumnFill = (Value) => this.Style.columnFill = Value;
+	ColumnGap = (Value) => this.Style.columnGap = Value;
+	ColumnRule = (Value) => this.Style.columnRule = Value;
+	ColumnRuleColor = (Value) => this.Style.columnRuleColor = Value;
+	ColumnRuleStyle = (Value) => this.Style.columnRuleStyle = Value;
+	ColumnRuleWidth = (Value) => this.Style.columnRuleWidth = Value;
+	ColumnSpan = (Value) => this.Style.columnSpan = Value;
+	ColumnWidth = (Value) => this.Style.columnWidth = Value;
+	Columns = (Value) => this.Style.columns = Value;
+	Contain = (Value) => this.Style.contain = Value;
+	ContainIntrinsicSize = (Value) => this.Style.containIntrinsicSize = Value;
+	Content = (Value) => this.Style.content = Value;
+	CounterIncrement = (Value) => this.Style.counterIncrement = Value;
+	ContentVisibility = (Value) => this.Style.contentVisibility = Value;
+	CounterReset = (Value) => this.Style.counterReset = Value;
+	CounterSet = (Value) => this.Style.counterSet = Value;
+	Cursor = (Value) => this.Style.cursor = Value;
+	Cx = (Value) => this.Style.cx = Value;
+	Cy = (Value) => this.Style.cy = Value;
+
+	D = (Value) => this.Style.d = Value;
+	DescentOverride = (Value) => this.Style.descentOverride = Value;
+	Direction = (Value) => this.Style.direction = Value;
+	Display = (Value) => this.Style.display = Value;
+	DominantBaseline = (Value) => this.Style.dominantBaseline = Value;
+
+	EmptyCells = (Value) => this.Style.emptyCells = Value;
+	EpubCaptionSide = (Value) => this.Style.epubCaptionSide = Value;
+	EpubTextCombine = (Value) => this.Style.epubTextCombine = Value;
+	EpubTextEmphasis = (Value) => this.Style.epubTextEmphasis = Value;
+	EpubTextEmphasisColor = (Value) => this.Style.epubTextEmphasisColor = Value;
+	EpubTextOrientation = (Value) => this.Style.epubTextOrientation = Value;
+	EpubTextTransform = (Value) => this.Style.epubTextTransform = Value;
+	EpubWordBreak = (Value) => this.Style.epubWordBreak = Value;
+	EpubWritingMode = (Value) => this.Style.epubWritingMode = Value;
+
+	Fill = (Value) => this.Style.fill = Value;
+	FillOpacity = (Value) => this.Style.fillOpacity = Value;
+	FillRule = (Value) => this.Style.fillRule = Value;
+	Filter = (Value) => this.Style.filter = Value;
+	Flex = (Value) => this.Style.flex = Value;
+	FlexBasis = (Value) => this.Style.flexBasis = Value;
+	FlexDirection = (Value) => this.Style.flexDirection = Value;
+	FlexFlow = (Value) => this.Style.flexFlow = Value;
+	FlexGrow = (Value) => this.Style.flexGrow = Value;
+	FlexWrap = (Value) => this.Style.flexWrap = Value;
+	Float = (Value) => this.Style.float = Value;
+	FloodColor = (Value) => this.Style.floodColor = Value;
+	FloodOpacity = (Value) => this.Style.floodOpacity = Value;
+	Font = (Value) => this.Style.font = Value;
+	FontDisplay = (Value) => this.Style.fontDisplay = Value;
+	FontFamily = (Value) => this.Style.fontFamily = Value;
+	FontFeatureSettings = (Value) => this.Style.fontFeatureSettings = Value;
+	FontKerning = (Value) => this.Style.fontKerning = Value;
+	FontOpticalSizing = (Value) => this.Style.fontOpticalSizing = Value;
+	FontSize = (Value) => this.Style.fontSize = Value;
+	FontStretch = (Value) => this.Style.fontStretch = Value;
+	FontStyle = (Value) => this.Style.fontStyle = Value;
+	FontVariant = (Value) => this.Style.fontVariant = Value;
+	FontVariantCaps = (Value) => this.Style.fontVariantCaps = Value;
+	FontVariantEastAsian = (Value) => this.Style.fontVariantEastAsian = Value;
+	FontVariantLigatures = (Value) => this.Style.fontVariantLigatures = Value;
+	FontVariantNumeric = (Value) => this.Style.fontVariantNumeric = Value;
+	FontVariationSetting = (Value) => this.Style.fontVariationSetting = Value;
+	FontWeight = (Value) => this.Style.fontWeight = Value;
+	ForcedColorAdjust = (Value) => this.Style.forcedColorAdjust = Value;
+
+	Gap = (Value) => this.Style.gap = Value;
+	Grid = (Value) => this.Style.grid = Value;
+	GridArea = (Value) => this.Style.gridArea = Value;
+	GridAutoColumns = (Value) => this.Style.gridAutoColumns = Value;
+	GridAutoFlow = (Value) => this.Style.gridAutoFlow = Value;
+	GridAutoRows = (Value) => this.Style.gridAutoRows = Value;
+	GridColumn = (Value) => this.Style.gridColumn = Value;
+	GridColumnEnd = (Value) => this.Style.gridColumnEnd = Value;
+	GridColumnGap = (Value) => this.Style.gridColumnGap = Value;
+	GridColumnStart = (Value) => this.Style.gridColumnStart = Value;
+	GridGap = (Value) => this.Style.gridGap = Value;
+	GridRow = (Value) => this.Style.gridRow = Value;
+	GridRowEnd = (Value) => this.Style.gridRowEnd = Value;
+	GridRowGap = (Value) => this.Style.gridRowGap = Value;
+	GridRowStart = (Value) => this.Style.gridRowStart = Value;
+	GridTemplate = (Value) => this.Style.gridTemplate = Value;
+	GridTemplateAreas = (Value) => this.Style.gridTemplateAreas = Value;
+	GridTemplateColumns = (Value) => this.Style.gridTemplateColumns = Value;
+	GridTemplateRows = (Value) => this.Style.gridTemplateRows = Value;
+
+	Height = (Value) => this.Style.height = Value;
+	Hyphens = (Value) => this.Style.hyphens = Value;
+
+	ImageOrientation = (Value) => this.Style.imageOrientation = Value;
+	ImageRendering = (Value) => this.Style.imageRendering = Value;
+	Inherits = (Value) => this.Style.inherits = Value;
+	InitialValue = (Value) => this.Style.initialValue = Value;
+	InlineSize = (Value) => this.Style.inlineSize = Value;
+	Inset = (Value) => this.Style.inset = Value;
+	InsetBlock = (Value) => this.Style.insetBlock = Value;
+	InsetBlockEnd = (Value) => this.Style.insetBlockEnd = Value;
+	InsetBlockStart = (Value) => this.Style.insetBlockStart = Value;
+	InsetInline = (Value) => this.Style.insetInline = Value;
+	InsetInlineEnd = (Value) => this.Style.insetInlineEnd = Value;
+	InsetInlineStart = (Value) => this.Style.insetInlineStart = Value;
+	Isolation = (Value) => this.Style.isolation = Value;
+
+	JustifyContent = (Value) => this.Style.justifyContent = Value;
+	JustifyItems = (Value) => this.Style.justifyItems = Value;
+	JustifySelf = (Value) => this.Style.justifySelf = Value;
+
+	Left = (Value) => this.Style.left = Value;
+	LetterSpacing = (Value) => this.Style.letterSpacing = Value;
+	LightingColor = (Value) => this.Style.lightingColor = Value;
+	LineBreak = (Value) => this.Style.lineBreak = Value;
+	LineGapOverride = (Value) => this.Style.lineGapOverride = Value;
+	LineHeight = (Value) => this.Style.lineHeight = Value;
+	ListStyle = (Value) => this.Style.listStyle = Value;
+	ListStyleImage = (Value) => this.Style.listStyleImage = Value;
+	ListStylePosition = (Value) => this.Style.listStylePosition = Value;
+	ListStyleType = (Value) => this.Style.listStyleType = Value;
+
+	Margin = (Value) => this.Style.margin = Value;
+	MarginBlock = (Value) => this.Style.marginBlock = Value;
+	MarginBlockEnd = (Value) => this.Style.marginBlockEnd = Value;
+	MarginBlockStart = (Value) => this.Style.marginBlockStart = Value;
+	MarginBottom = (Value) => this.Style.marginBottom = Value;
+	MarginInline = (Value) => this.Style.marginInline = Value;
+	MarginInlineEnd = (Value) => this.Style.marginInlineEnd = Value;
+	MarginInlineStart = (Value) => this.Style.marginInlineStart = Value;
+	MarginLeft = (Value) => this.Style.marginLeft = Value;
+	MarginRight = (Value) => this.Style.marginRight = Value;
+	MarginTop = (Value) => this.Style.marginTop = Value;
+	Marker = (Value) => this.Style.marker = Value;
+	MarkerEnd = (Value) => this.Style.markerEnd = Value;
+	MarkerMid = (Value) => this.Style.markerMid = Value;
+	MarkerStart = (Value) => this.Style.markerStart = Value;
+	Mask = (Value) => this.Style.mask = Value;
+	MaskType = (Value) => this.Style.maskType = Value;
+	MaxBlockSize = (Value) => this.Style.maxBlockSize = Value;
+	MaxHeight = (Value) => this.Style.maxHeight = Value;
+	MaxInlineSize = (Value) => this.Style.maxInlineSize = Value;
+	MaxWidth = (Value) => this.Style.maxWidth = Value;
+	MaxZoom = (Value) => this.Style.maxZoom = Value;
+	MinBlockSize = (Value) => this.Style.minBlockSize = Value;
+	MinHeight = (Value) => this.Style.minHeight = Value;
+	MinInlineSize = (Value) => this.Style.minInlineSize = Value;
+	MinWidth = (Value) => this.Style.minWidth = Value;
+	MinZoom = (Value) => this.Style.minZoom = Value;
+	MixBlendMode = (Value) => this.Style.mixBlendMode = Value;
+
+	ObjectFit = (Value) => this.Style.objectFit = Value;
+	ObjectPosition = (Value) => this.Style.objectPosition = Value;
+	Offset = (Value) => this.Style.offset = Value;
+	OffsetDistance = (Value) => this.Style.offsetDistance = Value;
+	OffsetPath = (Value) => this.Style.offsetPath = Value;
+	OffsetRotate = (Value) => this.Style.offsetRotate = Value;
+	Opacity = (Value) => this.Style.opacity = Value;
+	Order = (Value) => this.Style.order = Value;
+	Orientation = (Value) => this.Style.orientation = Value;
+	Orphans = (Value) => this.Style.orphans = Value;
+	Outline = (Value) => this.Style.outline = Value;
+	OutlineColor = (Value) => this.Style.outlineColor = Value;
+	OutlineOffset = (Value) => this.Style.outlineOffset = Value;
+	OutlineStyle = (Value) => this.Style.outlineStyle = Value;
+	OutlineWidth = (Value) => this.Style.outlineWidth = Value;
+	Overflow = (Value) => this.Style.overflow = Value;
+	OverflowAnchor = (Value) => this.Style.overflowAncho = Value;
+	OverflowClipMargin = (Value) => this.Style.overflowClipMargin = Value;
+	OverflowWrap = (Value) => this.Style.overflowWrap = Value;
+	OverflowX = (Value) => this.Style.overflowX = Value;
+	OverflowY = (Value) => this.Style.overflowY = Value;
+	OverscrollBehavior = (Value) => this.Style.overscrollBehavior = Value;
+	OverscrollBehaviorBlock = (Value) => this.Style.overscrollBehaviorBlock = Value;
+	OverscrollBehaviorInline = (Value) => this.Style.overscrollBehaviorInline = Value;
+	OverscrollBehaviorX = (Value) => this.Style.overscrollBehaviorX = Value;
+	OverscrollBehaviorY = (Value) => this.Style.overscrollBehaviorY = Value;
+
+	Padding = (Value) => this.Style.padding = Value;
+	PaddingBlock = (Value) => this.Style.paddingBlock = Value;
+	PaddingBlockEnd = (Value) => this.Style.paddingBlockEnd = Value;
+	PaddingBlockStart = (Value) => this.Style.paddingBlockStart = Value;
+	PaddingBottom = (Value) => this.Style.paddingBottom = Value;
+	PaddingInline = (Value) => this.Style.paddingInline = Value;
+	PaddingInlineEnd = (Value) => this.Style.paddingInlineEnd = Value;
+	PaddingInlineStart = (Value) => this.Style.paddingInlineStart = Value;
+	PaddingLeft = (Value) => this.Style.paddingLeft = Value;
+	PaddingRight = (Value) => this.Style.paddingRight = Value;
+	PaddingTop = (Value) => this.Style.paddingTop = Value;
+	Page = (Value) => this.Style.page = Value;
+	PageBreakAfter = (Value) => this.Style.pageBreakAfter = Value;
+	PageBreakBefore = (Value) => this.Style.pageBreakBefore = Value;
+	PageBreakInside = (Value) => this.Style.pageBreakInside = Value;
+	PageOrientation = (Value) => this.Style.pageOrientation = Value;
+	PaintOrder = (Value) => this.Style.paintOrder = Value;
+	Perspective = (Value) => this.Style.perspective = Value;
+	PerspectiveOrigin = (Value) => this.Style.perspectiveOrigin = Value;
+	PlaceContent = (Value) => this.Style.placeContent = Value;
+	PlaceItems = (Value) => this.Style.placeItems = Value;
+	PlaceSelf = (Value) => this.Style.placeSelf = Value;
+	PointerEvents = (Value) => this.Style.pointerEvents = Value;
+	Position = (Value) => this.Style.position = Value;
+	Quotes = (Value) => this.Style.quotes = Value;
+
+	R = (Value) => this.Style.r = Value;
+	Resize = (Value) => this.Style.resize = Value;
+	Right = (Value) => this.Style.right = Value;
+	RowGap = (Value) => this.Style.rowGap = Value;
+	RubyPosition = (Value) => this.Style.rubyPosition = Value;
+	Rx = (Value) => this.Style.rx = Value;
+	Ry = (Value) => this.Style.ry = Value;
+
+	ScrollBehavior = (Value) => this.Style.scrollBehavior = Value;
+	ScrollMargin = (Value) => this.Style.scrollMargin = Value;
+	ScrollMarginBlock = (Value) => this.Style.scrollMarginBlock = Value;
+	ScrollMarginBlockEnd = (Value) => this.Style.scrollMarginBlockEnd = Value;
+	ScrollMarginBlockStart = (Value) => this.Style.scrollMarginBlockstart = Value;
+	ScrollMarginBottom = (Value) => this.Style.scrollMarginBottom = Value;
+	ScrollMarginInline = (Value) => this.Style.scrollMarginInline = Value;
+	ScrollMarginInlineEnd = (Value) => this.Style.scrollMarginInlineEnd = Value;
+	ScrollMarginInlineStart = (Value) => this.Style.scrollmarginInlineStart = Value;
+	ScrollMarginLeft = (Value) => this.Style.scrollMarginLeft = Value;
+	ScrollMarginRight = (Value) => this.Style.scrollMarginRight = Value;
+	ScrollMarginTop = (Value) => this.Style.scrollMarginTop = Value;
+	ScrollPadding = (Value) => this.Style.scrollPadding = Value;
+	ScrollPaddingBlock = (Value) => this.Style.scrollPaddingBlock = Value;
+	ScrollPaddingBlockEnd = (Value) => this.Style.scrollPaddingBlockEnd = Value;
+	ScrollPaddingBlockStart = (Value) => this.Style.scrollPaddingBlockStart = Value;
+	ScrollPaddingBottom = (Value) => this.Style.scrollPaddingBottom = Value;
+	ScrollPaddingInline = (Value) => this.Style.scrollPaddingInline = Value;
+	ScrollPaddingInlineEnd = (Value) => this.Style.scrollPaddingInlineEnd = Value;
+	ScrollPaddingInlineStart = (Value) => this.Style.scrollPaddingInlineStart = Value;
+	ScrollPaddingLeft = (Value) => this.Style.scrollPaddingLeft = Value;
+	ScrollPaddingRight = (Value) => this.Style.scrollPaddingRight = Value;
+	ScrollPaddingTop = (Value) => this.Style.scrollPaddingTop = Value;
+	ScrollSnapAlign = (Value) => this.Style.scrollSnapAlign = Value;
+	ScrollSnapStop = (Value) => this.Style.scrollSnapStop = Value;
+	ScrollSnapType = (Value) => this.Style.scrollSnapType = Value;
+	ShapeImageThreshold = (Value) => this.Style.shapeImaheThreshold = Value;
+	ShapeMargin = (Value) => this.Style.shapeMargin = Value;
+	ShapeOutside = (Value) => this.Style.shapeOutside = Value;
+	ShapeRendering = (Value) => this.Style.shapeRendering = Value;
+	Size = (Value) => this.Style.size = Value;
+	Speak = (Value) => this.Style.speak = Value;
+	Src = (Value) => this.Style.src = Value;
+	StopColor = (Value) => this.Style.stopColor = Value;
+	StopOpacity = (Value) => this.Style.stopOpacity = Value;
+	Stroke = (Value) => this.Style.stroke = Value;
+	StrokeDasharray = (Value) => this.Style.strokeDasharray = Value;
+	StrokeDashoffset = (Value) => this.Style.strokeDashoffset = Value;
+	StrokeLinecap = (Value) => this.Style.strokeLinecap = Value;
+	StrokeLinejoin = (Value) => this.Style.strokeLinejoin = Value;
+	StrokeMiterlimit = (Value) => this.Style.strokeMiterlimit = Value;
+	StrokeOpacity = (Value) => this.Style.strokeOpacity = Value;
+	StrokeWidth = (Value) => this.Style.strokeWidth = Value;
+	Syntax = (Value) => this.Style.syntax = Value;
+
+	TabSize = (Value) => this.Style.tabSize = Value;
+	TableLayout = (Value) => this.Style.tableLayout = Value;
+	TextAlign = (Value) => this.Style.textAlign = Value;
+	TextAlignLast = (Value) => this.Style.textAlignLast = Value;
+	TextAnchor = (Value) => this.Style.textAnchor = Value;
+	TextCombinedUpright = (Value) => this.Style.textCombinedUpright = Value;
+	TextDecoration = (Value) => this.Style.textDecoration = Value;
+	TextDecorationColor = (Value) => this.Style.textDecorationColor = Value;
+	TextDecorationLine = (Value) => this.Style.textDecorationLine = Value;
+	TextDecorationSkipInk = (Value) => this.Style.textDecorationSkipInk = Value;
+	TextDecorationStyle = (Value) => this.Style.textDecorationStyle = Value;
+	TextDecorationThickness = (Value) => this.Style.textDecorationThickness = Value;
+	TextIndent = (Value) => this.Style.textIndent = Value;
+	TextOrientation = (Value) => this.Style.textOrientation = Value;
+	TextOverflow = (Value) => this.Style.textOverflow = Value;
+	TextRendering = (Value) => this.Style.textRendering = Value;
+	TextShadow = (Value) => this.Style.textShadow = Value;
+	TextSizeAdjust = (Value) => this.Style.textSizeAdjust = Value;
+	TextTransform = (Value) => this.Style.textTransform = Value;
+	TextUnderlineOffset = (Value) => this.Style.textUnderlineOffset = Value;
+	TextUnderlinePosition = (Value) => this.Style.textUnderlinePosition = Value;
+	Top = (Value) => this.Style.top = Value;
+	TouchAction = (Value) => this.Style.touchAction = Value;
+	Transform = (Value) => this.Style.transform = Value;
+	TransformBox = (Value) => this.Style.transformBox = Value;
+	TransformOrigin = (Value) => this.Style.transformOrigin = Value;
+	TransformStyle = (Value) => this.Style.trasnformStyle = Value;
+	Transition = (Value) => this.Style.transition = Value;
+	TransitionDelay = (Value) => this.Style.transitionDelay = Value;
+	TransitionDuration = (Value) => this.Style.transitionDuration = Value;
+	TransitionProperty = (Value) => this.Style.transitionProperty = Value;
+	TransitionTimingFunction = (Value) => this.Style.transitionTimingFunction = Value;
+
+	UnicodeBidi = (Value) => this.Style.unicodeBidi = Value;
+	UnicodeRange = (Value) => this.Style.unicodeRange = Value;
+	UserSelect = (Value) => this.Style.userSelect = Value;
+	UserZoom = (Value) => this.Style.userZoom = Value;
+
+	VectorEffect = (Value) => this.Style.vectorEffect = Value;
+	VerticalAlign = (Value) => this.Style.verticalAlign = Value;
+	Visibility = (Value) => this.Style.visibility = Value;
+
+	Width = (Value) => this.Style.width = Value;
+	Widows = (Value) => this.Style.widows = Value;
+	WillChange = (Value) => this.Style.willChange = Value;
+	WordBreak = (Value) => this.Style.wordBreak = Value;
+	WordSpacing = (Value) => this.Style.wordSpacing = Value;
+	WordWrap = (Value) => this.Style.wordWrap = Value;
+	WritingMode = (Value) => this.Style.writingMode = Value;
+
+	X = (Value) => this.Style.x = Value;
+
+	Y = (Value) => this.Style.y = Value;
+
+	Zindex = (Value) => this.Style.zIndex = Value;
+	Zoom = (Value) => this.Style.zoom = Value;
+
+	AddClass = (ClassName) => this.Node.classList.add(ClassName);
+	RemoveClass = (ClassName) => this.Node.classList.remove(ClassName);
+	ContainClass = (ClassName) => this.Node.classList.contains(ClassName);
+	SetHTML = (HTMLCode) => this.Node.innerHTML = HTMLCode;
+	AddHTML = (HTMLCode) => this.Node.innerHTML += HTMLCode;
+	GetNodes = () => this.Node.childNodes;
+	HasAttribute = (Attribute) => this.Node.hasAttribute(Attribute);
+	SetAttribute = (Attribute, Value = '') => this.Node.setAttribute(Attribute, Value);
+	GetAttribute = (Attribute) => this.Node.getAttribute(Attribute);
+	HasAttributes = () => this.Node.hasAttributes();
+	GetAttributes = () => this.Node.getAttributeNames();
+	RemoveAttribute = (Attribute) => this.Node.removeAttribute(Attribute);
+	AddElement = (Node) => this.Node.appendChild(Node);
+	InsertAdjacentElement = (Option, Element) => this.Node.insertAdjacentElement(Option.toLowerCase(), Element);
+	InsertAdjacentHTML = (Option, HTML) => this.Node.insertAdjacentHTML(Option.toLowerCase(), HTML);
+	InsertAdjacentText = (Option, Text) => this.Node.insertAdjacentText(Option.toLowerCase(), Text);
+	InsertBefore = (NewNode, Node) => this.Node.insertBefore(Node, NewNode);
+	RemoveChild = (Node) => this.Node.removeChild(Node);
+	ReplaceChild = (NewNode, OldNode) => this.Node.replaceChild(NewNode, OldNode);
+	CloneElement = (CloneChildrens = true) => this.Node.cloneNode(CloneChildrens);
+	GetID = () => this.Node.id;
+	AddClassList = (ClassList) => this.Node.className = ClassList;
+	RemoveAllClass = () => this.Node.className = '';
+	GetClasses = () => this.Node.className.split(' ');
+	GetInlineStyles = () => this.Style;
+	AddClassToggle = (ClassName) => this.Node.classList.toggle(ClassName);
+	AddClassByExpresion = (ClassName, Expresion) => this.Node.classList.toggle(ClassName, Expresion);
+	ReplaceClass = (OldClass, NewClass) => this.Node.classList.replace(OldClass, NewClass);
+	GetInstance = () => this.Node;
+	AddText = (Text) => this.Node.textContent = Text;
+	AddEventListener = (Listen, Action) => this.Node.addEventListener(Listen, Action);
+	GetText = () => this.Node.textContent;
+	GetContent = () => this.Node.innerHTML;
+	OuterHTML = () => this.Node.outerHTML;
+	GetChildren = () => this.Node.children;
+	GetParent = () => this.Node.parentElement;
+	FirstChildren = () => this.Node.firstElementChild;
+	LastChildren = () => this.Node.lastElementChild;
+	PreviousNode = () => this.Node.previousSibling();
+	NextNode = () => this.Node.nextSibling;
+	Remove = () => this.Node.remove();
+	GetStyles = (StyleProperty = false) => (StyleProperty) ? getComputedStyle(this.Node)[StyleProperty] : getComputedStyle(this.Node);
+	GetStyleInstance = () => this.Style;
+	NodeName = () => this.Node.nodeName;
+	GetType = () => this.Node.type;
+	SetTimeout = (Action, Time = 1000) => setTimeout(Action(), Time);
+	SetInterval = (Action, Time = 1000) => setInterval(Action(), Time);
+	IsDraggable = () => this.Node.draggable;
+	IsEditable = () => this.Node.isContentEditable;
+
+    Enable = () => this.Node.disabled = true;
+    Disable = () => this.Node.disabled = false;
+
+	ClearContent = () => this.Node.innerHTML = ''
+
+    HideInput = () => this.Node.setAttribute('hidden', '');
+
+    UnHideInput = () => {
+        if(this.Node.hasAttribute('hidden'))
+            this.Node.removeAttribute('hidden');
+    }
+
+    Reset = () => this.Node.value = '';
+    CheckCheckbox = () => this.Node.setAttribute('checked', '');
+
+    UnCheckCheckbox = () => {
+        if(this.Node.hasAttribute('checked'))
+            this.Node.removeAttribute('checked');
+    }
+    
+    SetValue = (Value) => this.Node.Value = Value;
+
+    SetRequired = () => {
+        if(!this.Node.hasAttribute('required'))
+            this.Node.setAttribute('required', '');
+    }
+
+    Submit = () => this.Node.submit();
+    GetAction = () => this.Node.action;
+    GetEncType = () => this.Node.enctype;
+    GetMethod = () => this.Node.method;
+    GetTarget = () => this.Node.target;
+    GetName = () => this.Node.name;
+    SetType = (Type) => this.Node.setAttribute('type', Type);
+    SetMaximumLength = (MaximumLength) => this.Node.setAttribute('maxlength', MaximumLength);
+    SetMinimumLength = (MinimumLength) => this.Node.setAttribute('minlength', MinimumLength);
+    SetMaximumRange = (MaximumRange) => this.Node.setAttribute('max', MaximumRange);
+    SetMinimumRange = (MinimumRange) => this.Node.setAttribute('min', MinimumRange);
+    SetPlaceholder = (Placeholder) => this.Node.setAttribute('placeholder', Placeholder);
+    GetType = () => this.Node.getAttribute('type');
+    GetPlaceholder = () => this.Node.getAttribute('placeholder');
+    GetMaximumRange = () => this.Node.getAttribute('max');
+    GetMinimumRange = () => this.Node.getAttribute('min');
+    MultipleSelect = () => this.Node.multiple = true;
+    UniqueSelect = () => this.Node.multiple = false;
+    RemoveSelectedElement = () => this.Node.remove(this.Node.selectedIndex);
+    GetMaximumLength = () => this.Node.getAttribute('maxlength');
+    GetMinimumLength = () => this.Node.getAttribute('minlength');
+    IsRequired = () => this.Node.hasAttribute('required');
+
+	/*
+		? The following method definition is 
+		? the one that makes it possible to declare 
+		? methods using objects for a specific node, the 
+		? cool thing about this is that the name of the style 
+		? can be written as you please, for example if you 
+		? want to assign it to a node a background color and color
+
+		Node.Styles({
+			BackgroundColor: '#FF0000',
+			Color: '#000000'
 		});
-		document.onkeydown = function(e) {
-			if (event.keyCode == 123) return false;
-			if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-				action();
-				return false;
-			}
-			if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-				action();
-				return false;
-			}
-			if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-				action();
-				return false;
-			}
-			if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-				action();
-				return false;
+
+		* Or
+
+		Node.Styles({
+			backgroundColor: '#FF0000',
+			color: '#000000'
+		});
+
+		* Or
+
+		Node.Styles({
+			bACKgrounDcoLoR: '#FF0000',
+			cOlOR: '#000000'
+		});
+
+		* You can write the name of the key 
+		* as it appears, since this will be parsed, the 
+		* key will be taken and it will be transformed 
+		* to lowercase, in the end it will not matter 
+		* how you write it, by the way you can declare 
+		* the styles that you want, here just declare 
+		* two for example.
+	*/
+	Styles = (Properties) => {
+		let Keys = Object.keys(Properties);
+		for (let Iterator = 0; Iterator < Keys.length; Iterator++) {
+			let Value = Properties[Keys[Iterator]];
+			switch (Keys[Iterator].toLowerCase()){
+				case 'aligncontent':
+					this.AlignContent(Value);
+					break;
+				case 'alignitems':
+					this.AlignItems(Value);
+					break;
+				case 'alignmentbaseline':
+					this.AlignmentBaseLine(Value);
+					break;
+				case 'all':
+					this.All(Value);
+					break;
+				case 'animation':
+					this.Animation(Value);
+					break;
+				case 'animationdelay':
+					this.AnimationDelay(Value);
+					break;
+				case 'animationdirection':
+					this.AnimationDirection(Value);
+					break;
+				case 'animationfillmode':
+					this.AnimationFillMode(Value);
+					break;
+				case 'animationiterationcount':
+					this.AnimationIterationCount(Value);
+					break;
+				case 'animationame':
+					this.AnimationName(Value);
+					break;
+				case 'animationplaystate':
+					this.AnimationPlayState(Value);
+					break;
+				case 'animationtimingfunction':
+					this.AnimationTimingFunction(Value);
+					break;
+				case 'appearance':
+					this.Appearance(Value);
+					break;
+				case 'ascentoverride':
+					this.AscentOverride(Value);
+					break;
+				case 'aspectratio':
+					this.AspectRatio(Value);
+					break;
+
+				case 'backdropfilter':
+					this.BackdropFilter(Value);
+					break;
+				case 'backfacevisibility':
+					this.BackfaceVisibility(Value);
+					break;
+				case 'background':
+					this.Background(Value);
+					break;
+				case 'backgroundattachment':
+					this.BackgroundAttachment(Value);
+					break;
+				case 'backgroundblendmode':
+					this.BackgroundBlendMode(Value);
+					break;
+				case 'backgroundclip':
+					this.BackgroundClip(Value);
+					break;
+				case 'backgroundcolor':
+					this.BackgroundColor(Value);
+					break;
+				case 'backgroundimage':
+					this.BackgroundImage(Value);
+					break;
+				case 'backgroundorigin':
+					this.BackgroundOrigin(Value);
+					break;
+				case 'backgroundposition':
+					this.BackgroundPosition(Value);
+					break;
+				case 'backgroundpositiony':
+					this.BackgroundPositionX(Value);
+					break;
+				case 'backgroundpositiony':
+					this.BackgroundPositionY(Value);
+					break;
+				case 'backgroundrepeat':
+					this.BackgroundRepeat(Value);
+					break;
+				case 'backgroundrepeatx':
+					this.BackgroundRepeatX(Value);
+					break;
+				case 'backgroundrepeaty':
+					this.BackgroundRepeatY(Value);
+					break;
+				case 'backgroundsize':
+					this.BackgroundSize(Value);
+					break;
+				case 'baselineshift':
+					this.BaselineShift(Value);
+					break;
+				case 'blocksize':
+					this.BlockSize(Value);
+					break;
+				case 'border':
+					this.Border(Value);
+					break;
+				case 'borderblock':
+					this.BorderBlock(Value);
+					break;
+				case 'borderblockcolor':
+					this.BorderBlockColor(Value);
+					break;
+				case 'borderblockend':
+					this.BorderBlockEnd(Value);
+					break;
+				case 'borderblockendcolor':
+					this.BorderBlockEndColor(Value);
+					break;
+				case 'borderblockendwidth':
+					this.BorderBlockEndWidth(Value);
+					break;
+				case 'borderblockstart':
+					this.BorderBlockStart(Value);
+					break;
+				case 'borderblockstartcolor':
+					this.BorderBlockStartColor(Value);
+					break;
+				case 'borderblockstartstyle':
+					this.BorderBlockStartStyle(Value);
+					break;
+				case 'bottom':
+					this.Bottom(Value);
+					break;
+				case 'borderblockstartwidth':
+					this.BorderBlockStartWidth(Value);
+					break;
+				case 'borderblockstyle':
+					this.BorderBlockStyle(Value);
+					break;
+				case 'borderblockwidth':
+					this.BorderBlockWidth(Value);
+					break;
+				case 'borderbottom':
+					this.BorderBottom(Value);
+					break;
+				case 'borderbottomcolor':
+					this.BorderBottomColor(Value);
+					break;
+				case 'borderbottomleftradius':
+					this.BorderBottomLeftRadius(Value);
+					break;
+				case 'borderbottomrightradius':
+					this.BorderBottomRightRadius(Value);
+					break;
+				case 'borderbottomstyle':
+					this.BorderBottomStyle(Value);
+					break;
+				case 'borderbottomwidth':
+					this.BorderBottomWidth(Value);
+					break;
+				case 'bordercollapse':
+					this.BorderCollapse(Value);
+					break;
+				case 'bordercolor':
+					this.BorderColor(Value);
+					break;
+				case 'borderendendradius':
+					this.BorderEndEndRadius(Value);
+					break;
+				case 'borderendstartradius':
+					this.BorderEndStartRadius(Value);
+					break;
+				case 'borderimage':
+					this.BorderImage(Value);
+					break;
+				case 'borderimageoutset':
+					this.BorderImageOutset(Value);
+					break;
+				case 'borderimagerepeat':
+					this.BorderImageRepeat(Value);
+					break;
+				case 'borderimagesource':
+					this.BorderImageSource(Value);
+					break;
+				case 'borderimagewidth':
+					this.BorderImageWidth(Value);
+					break;
+				case 'borderinline':
+					this.BorderInline(Value);
+					break;
+				case 'borderinlinecolor':
+					this.BorderInlineColor(Value);
+					break;
+				case 'borderinlineend':
+					this.BorderInlineEnd(Value);
+					break;
+				case 'borderinlineendcolor':
+					this.BorderInlineEndColor(Value);
+					break;
+				case 'borderinlineendstyle':
+					this.BorderInlineEndStyle(Value);
+					break;
+				case 'borderinlinewidth':
+					this.BorderInlineWidth(Value);
+					break;
+				case 'borderinlinestart':
+					this.BorderInlineStart(Value);
+					break;
+				case 'borderinlinestartcolor':
+					this.BorderInlineStartColor(Value);
+					break;
+				case 'borderinlinestartstyle':
+					this.BorderInlineStartStyle(Value);
+					break;
+				case 'borderinlinestartwidth':
+					this.BorderInlineStartWidth(Value);
+					break;
+				case 'borderinlinestyle':
+					this.BorderInline(Value);
+					break;
+				case 'borderinlinewidth':
+					this.BorderInlineWidth(Value);
+					break;
+				case 'borderleft':
+					this.BorderLeft(Value);
+					break;
+				case 'borderleftcolor':
+					this.BorderLeftColor(Value);
+					break;
+				case 'borderleftstyle':
+					this.BorderLeftStyle(Value);
+					break;
+				case 'borderleftwidth':
+					this.BorderLeftWidth(Value);
+					break;
+				case 'borderradius':
+					this.BorderRadius(Value);
+					break;
+				case 'borderright':
+					this.BorderRight(Value);
+					break;
+				case 'borderrightcolor':
+					this.BorderRightColor(Value);
+					break;
+				case 'borderrightstyle':
+					this.BorderRightStyle(Value);
+					break;
+				case 'borderrightwidth':
+					this.BorderRightWidth(Value);
+					break;
+				case 'borderspacing':
+					this.BorderSpacing(Value);
+					break;
+				case 'borderstartendradius':
+					this.BorderStartEndRadius(Value);
+					break;
+				case 'borderstartstartradius':
+					this.BorderStartStartRadius(Value);
+					break;
+				case 'borderstyle':
+					this.BorderStyle(Value);
+					break;
+				case 'bordertop':
+					this.BorderTop(Value);
+					break;
+				case 'bordertopcolor':
+					this.BorderTopColor(Value);
+					break;
+				case 'bordertopleftradius':
+					this.BorderTopLeftRadius(Value);
+					break;
+				case 'bordertoprightradius':
+					this.BorderTopRightRadius(Value);
+					break;
+				case 'bordertopstyle':
+					this.BorderTopStyle(Value);
+					break;
+				case 'bordertopwidth':
+					this.BorderTopWidth(Value);
+					break;
+				case 'borderwidth':
+					this.BorderWidth(Value);
+					break;
+				case 'borderbottom':
+					this.BorderBottom(Value);
+					break;
+				case 'boxshadow':
+					this.BoxShadow(Value);
+					break;
+				case 'boxsizing':
+					this.BoxSizing(Value);
+					break;
+				case 'breakafter':
+					this.BreakAfter(Value);
+					break;
+				case 'breakbefore':
+					this.BreakBefore(Value);
+					break;
+				case 'breakinside':
+					this.BreakInside(Value);
+					break;
+				case 'bufferedrendering':
+					this.BufferedRendering(Value);
+					break;
+
+				case 'captionside':
+					this.CaptionSide(Value);
+					break;
+				case 'caretcolor':
+					this.CaretColor(Value);
+					break;
+				case 'clear':
+					this.Clear(Value);
+					break;
+				case 'clip':
+					this.Clip(Value);
+					break;
+				case 'clippath':
+					this.ClipPath(Value);
+					break;
+				case 'cliprule':
+					this.ClipRule(Value);
+					break;
+				case 'color':
+					this.Color(Value);
+					break;
+				case 'colorinterpolation':
+					this.ColorInterpolation(Value);
+					break;
+				case 'colorinterpolationfilters':
+					this.ColorInterpolationFilters(Value);
+					break;
+				case 'colorrendering':
+					this.ColorRendering(Value);
+					break;
+				case 'colorscheme':
+					this.ColorScheme(Value);
+					break;
+				case 'columncount':
+					this.ColumnCount(Value);
+					break;
+				case 'columnfill':
+					this.ColumnFill(Value);
+					break;
+				case 'columngap':
+					this.ColumnGap(Value);
+					break;
+				case 'columnrule':
+					this.ColumnRule(Value);
+					break;
+				case 'columnrulecolor':
+					this.ColumnRuleColor(Value);
+					break;
+				case 'columnrulestyle':
+					this.ColumnRuleStyle(Value);
+					break;
+				case 'columnRuleWidth':
+					this.ColumnRuleWidth(Value);
+					break;
+				case 'columnspan':
+					this.ColumnSpan(Value);
+					break;
+				case 'columnwidth':
+					this.ColumnWidth(Value);
+					break;
+				case 'columns':
+					this.Columns(Value);
+					break;
+				case 'contain':
+					this.Contain(Value);
+					break;
+				case 'containintrinsicsize':
+					this.ContainIntrinsicSize(Value);
+					break;
+				case 'content':
+					this.Content(Value);
+					break;
+				case 'contentvisibility':
+					this.ContentVisibility(Value);
+					break;
+				case 'counterincrement':
+					this.CounterIncrement(Value);
+					break;
+				case 'counterreset':
+					this.CounterReset(Value);
+					break;
+				case 'counterset':
+					this.CounterSet(Value);
+					break;
+				case 'cursor':
+					this.Cursor(Value);
+					break;
+				case 'cx':
+					this.Cx(Value);
+					break;
+				case 'cy':
+					this.Cy(Value);
+					break;
+				case 'd':
+					this.D(Value);
+					break;
+
+				case 'descentoverride':
+					this.DescentOverride(Value);
+					break;
+				case 'direction':
+					this.Direction(Value);
+					break;
+				case 'display':
+					this.Display(Value);
+					break;
+				case 'dominanbaseline':
+					this.DominantBaseline(Value);
+					break;
+				case 'emptycells':
+					this.EmptyCells(Value);
+					break;
+
+				case 'epubcaptionside':
+					this.EpubCaptionSide(Value);
+					break;
+				case 'epubtextcombine':
+					this.EpubTextCombine(Value);
+					break;
+				case 'epubtextemphasis':
+					this.EpubTextEmphasis(Value);
+					break;
+				case 'epubtextemphasiscolor':
+					this.EpubTextEmphasisColor(Value);
+					break;
+				case 'epubtextorientation':
+					this.EpubTextOrientation(Value);
+					break;
+				case 'epubtexttransform':
+					this.EpubTextTransform(Value);
+					break;
+				case 'epubwordbreak':
+					this.EpubWordBreak(Value);
+					break;
+				case 'epubwritingmode':
+					this.EpubWritingMode(Value);
+					break;
+
+				case 'fill':
+					this.Fill(Value);
+					break;
+				case 'fillopacity':
+					this.FillOpacity(Value);
+					break;
+				case 'fillrule':
+					this.FillRule(Value);
+					break;
+				case 'filter':
+					this.Filter(Value);
+					break;
+				case 'flex':
+					this.Flex(Value);
+					break;
+				case 'flexbasis':
+					this.FlexBasis(Value);
+					break;
+				case 'flexdirection':
+					this.FlexDirection(Value);
+					break;
+				case 'flexflow':
+					this.FlexFlow(Value);
+					break;
+				case 'flexgrow':
+					this.FlexGrow(Value);
+					break;
+				case 'flexwrap':
+					this.FlexWrap(Value);
+					break;
+				case 'float':
+					this.Float(Value);
+					break;
+				case 'floodcolor':
+					this.FloodColor(Value);
+					break;
+				case 'floodopacity':
+					this.FloodOpacity(Value);
+					break;
+				case 'font':
+					this.Font(Value);
+					break;
+				case 'fontdisplay':
+					this.FontDisplay(Value);
+					break;
+				case 'fontfamily':
+					this.FontFamily(Value);
+					break;
+				case 'fontfeaturesettings':
+					this.FontFeatureSettings(Value);
+					break;
+				case 'fontkerning':
+					this.FontKerning(Value);
+					break;
+				case 'fontopticalsizing':
+					this.FontOpticalSizing(Value);
+					break;
+				case 'fontsize':
+					this.FontSize(Value);
+					break;
+				case 'fontstretch':
+					this.FontStretch(Value);
+					break;
+				case 'fontstyle':
+					this.FontStyle(Value);
+					break;
+				case 'fontvariant':
+					this.FontVariant(Value);
+					break;
+				case 'fontvariantcaps':
+					this.FontVariantCaps(Value);
+					break;
+				case 'fontvarianteastasian':
+					this.FontVariantEastAsian(Value);
+					break;
+				case 'fontvariantligatures':
+					this.FontVariantLigatures(Value);
+					break;
+				case 'fontvariantnumeric':
+					this.FontVariantNumeric(Value);
+					break;
+				case 'fontvariationsetting':
+					this.FontVariationSetting(Value);
+					break;
+				case 'fontweight':
+					this.FontWeight(Value);
+					break;
+				case 'forcedcoloradjust':
+					this.ForcedColorAdjust(Value);
+					break;
+
+				case 'gap':
+					this.Gap(Value);
+					break;
+				case 'grid':
+					this.Grid(Value);
+					break;
+				case 'gridarea':
+					this.GridArea(Value);
+					break;
+				case 'gridautocolumns':
+					this.GridAutoColumns(Value);
+					break;
+				case 'gridautoflow':
+					this.GridAutoFlow(Value);
+					break;
+				case 'gridautorows':
+					this.GridAutoRows(Value);
+					break;
+				case 'gridcolumn':
+					this.GridColumn(Value);
+					break;
+				case 'gridcolumnend':
+					this.GridColumnEnd(Value);
+					break;
+				case 'gridcolumngap':
+					this.GridColumnGap(Value);
+					break;
+				case 'gridcolumnstart':
+					this.GridColumnStart(Value);
+					break;
+				case 'gridgap':
+					this.GridGap(Value);
+					break;
+				case 'gridrow':
+					this.GridRow(Value);
+					break;
+				case 'gridrowend':
+					this.GridRowEnd(Value);
+					break;
+				case 'gridrowgap':
+					this.GridRowGap(Value);
+					break;
+				case 'gridrowstart':
+					this.GridRowStart(Value);
+					break;
+				case 'gridtemplate':
+					this.GridTemplate(Value);
+					break;
+				case 'gridtemplateareas':
+					this.GridTemplateAreas(Value);
+					break;
+				case 'gridtemplatecolumns':
+					this.GridTemplateColumns(Value);
+					break;
+				case 'gridtemplaterows':
+					this.GridTemplateRows(Value);
+					break;
+
+				case 'height':
+					this.Height(Value);
+					break;
+				case 'hyphens':
+					this.Hyphens(Value);
+					break;
+
+				case 'imageorientation':
+					this.ImageOrientation(Value);
+					break;
+				case 'imagerendering':
+					this.ImageRendering(Value);
+					break;
+				case 'inherits':
+					this.Inherits(Value);
+					break;
+				case 'initialvalue':
+					this.InitialValue(Value);
+					break;
+				case 'inlinesize':
+					this.InlineSize(Value);
+					break;
+				case 'inset':
+					this.Inset(Value);
+					break;
+				case 'insetblock':
+					this.InsetBlock(Value);
+					break;
+				case 'insetblockend':
+					this.InsetBlockEnd(Value);
+					break;
+				case 'insetblockstart':
+					this.InsetBlockStart(Value);
+					break;
+				case 'insetinline':
+					this.InsetInline(Value);
+					break;
+				case 'insetinlineend':
+					this.InsetInlineEnd(Value);
+					break;
+				case 'insetinlinestart':
+					this.InsetInlineStart(Value);
+					break;
+				case 'isolation':
+					this.Isolation(Value);
+					break;
+				case 'justifycontent':
+					this.JustifyContent(Value);
+					break;
+				case 'justifyitems':
+					this.JustifyItems(Value);
+					break;
+				case 'justifyself':
+					this.JustifySelf(Value);
+					break;
+				case 'left':
+					this.Left(Value);
+					break;
+				case 'letterspacing':
+					this.LetterSpacing(Value);
+					break;
+				case 'lightingcolor':
+					this.LightingColor(Value);
+					break;
+				case 'linebreak':
+					this.LineBreak(Value);
+					break;
+				case 'linegapoverride':
+					this.LineGapOverride(Value);
+					break;
+				case 'lineheight':
+					this.LineHeight(Value);
+					break;
+				case 'liststyle':
+					this.ListStyle(Value);
+					break;
+				case 'liststyleimage':
+					this.ListStyleImage(Value);
+					break;
+				case 'liststyleposition':
+					this.ListStylePosition(Value);
+					break;
+				case 'liststyletype':
+					this.ListStyleTYpe(Value);
+					break;
+
+				case 'margin':
+					this.Margin(Value);
+					break;
+				case 'marginblock':
+					this.MarginBlock(Value);
+					break;
+				case 'marginblockend':
+					this.MarginBlockEnd(Value);
+					break;
+				case 'marginblockstart':
+					this.MarginBlockStart(Value);
+					break;
+				case 'marginbottom':
+					this.MarginBottom(Value);
+					break;
+				case 'margininline':
+					this.MarginInline(Value);
+					break;
+				case 'margininlinestart':
+					this.MarginInlineStart(Value);
+					break;
+				case 'margininlineend':
+					this.MarginInlineEnd(Value);
+					break;
+				case 'marginright':
+					this.MarginRight(Value);
+					break;
+				case 'margintop':
+					this.MarginTop(Value);
+					break;
+				case 'marker':
+					this.Marker(Value);
+					break;
+				case 'markerend':
+					this.MarkerEnd(Value);
+					break;
+				case 'markermid':
+					this.MarkerMid(Value);
+					break;
+				case 'markerstart':
+					this.MarkerStart(Value);
+					break;
+				case 'mask':
+					this.Mask(Value);
+					break;
+				case 'masktype':
+					this.MaskType(Value);
+					break;
+				case 'maxblocksize':
+					this.MaxBlockSize(Value);
+					break;
+				case 'maxheight':
+					this.MaxHeight(Value);
+					break;
+				case 'maxinlinesize':
+					this.MaxInlineSize(Value);
+					break;
+				case 'maxwidth':
+					this.MaxWidth(Value);
+					break;
+				case 'maxzoom':
+					this.MaxZoom(Value);
+					break;
+				case 'minblocksize':
+					this.MinBlockSize(Value);
+					break;
+				case 'minheight':
+					this.MinHeight(Value);
+					break;
+				case 'mininlinesize':
+					this.MinInlineSize(Value);
+					break;
+				case 'minwidth':
+					this.MinWidth(Value);
+					break;
+				case 'minzoom':
+					this.MinZoom(Value);
+					break;
+				case 'minblocksize':
+					this.MinBlockSize(Value);
+					break;
+				case 'minheight':
+					this.MinHeight(Value);
+					break;
+				case 'mixblendmode':
+					this.MixBlendMode(Value);
+					break;
+
+				case 'objectfit':
+					this.ObjectFit(Value);
+					break;
+				case 'objectposition':
+					this.ObjectPosition(Value);
+					break;
+				case 'offset':
+					this.Offset(Value);
+					break;
+				case 'offsetdistance':
+					this.OffsetDistance(Value);
+					break;
+				case 'offsetpath':
+					this.OffsetPath(Value);
+					break;
+				case 'offsetrotate':
+					this.OffsetRotate(Value);
+					break;
+				case 'opacity':
+					this.Opacity(Value);
+					break;
+				case 'order':
+					this.Order(Value);
+					break;
+				case 'orientation':
+					this.Orientation(Value);
+					break;
+				case 'orphans':
+					this.Orphans(Value);
+					break;
+				case 'outline':
+					this.Outline(Value);
+					break;
+				case 'outlinecolor':
+					this.OutlineColor(Value);
+					break;
+				case 'outlineoffset':
+					this.OutlineOffset(Value);
+					break;
+				case 'outlinestyle':
+					this.OutlineStyle(Value);
+					break;
+				case 'outlinewidth':
+					this.OutlineWidth(Value);
+					break;
+				case 'overflow':
+					this.Overflow(Value);
+					break;
+				case 'overflowanchor':
+					this.OverflowAnchor(Value);
+					break;
+				case 'overflowclipmargin':
+					this.OverflowClipMargin(Value);
+					break;
+				case 'overflowwrap':
+					this.OverflowWrap(Value);
+					break;
+				case 'overflowx':
+					this.OverflowX(Value);
+					break;
+				case 'overflowy':
+					this.OverflowY(Value);
+					break;
+				case 'overscrollbehavior':
+					this.OverscrollBehavior(Value);
+					break;
+				case 'overscrollbehaviorblock':
+					this.OverscrollBehaviorBlock(Value);
+					break;
+				case 'overscrollbehaviorinline':
+					this.OverscrollBehaviorInline(Value);
+					break;
+				case 'overscrollbehaviorx':
+					this.OverscrollBehaviorX(Value);
+					break;
+				case 'overscrollbehaviory':
+					this.OverscrollBehaviorY(Value);
+					break;
+
+				case 'padding':
+					this.Padding(Value);
+					break;
+				case 'paddingblock':
+					this.PaddingBlock(Value);
+					break;
+				case 'paddingblockend':
+					this.PaddingBlockEnd(Value);
+					break;
+				case 'paddingblockstart':
+					this.PaddingBlockStart(Value);
+					break;
+				case 'paddingbottom':
+					this.PaddingBottom(Value);
+					break;
+				case 'paddinginline':
+					this.PaddingInline(Value);
+					break;
+				case 'paddinginlineend':
+					this.PaddingInlineEnd(Value);
+					break;
+				case 'paddinginlinestart':
+					this.PaddingInlineStart(Value);
+					break;
+				case 'paddingleft':
+					this.PaddingLeft(Value);
+					break;
+				case 'paddingright':
+					this.PaddingRight(Value);
+					break;
+				case 'paddingtop':
+					this.PaddingTop(Value);
+					break;
+				case 'page':
+					this.Page(Value);
+					break;
+				case 'pagebreakafter':
+					this.PageBreakAfter(Value);
+					break;
+				case 'pagebreakbefore':
+					this.PageBreakBefore(Value);
+					break;
+				case 'pagebreakinside':
+					this.PageBreakInside(Value);
+					break;
+				case 'pageorientation':
+					this.PageOrientation(Value);
+					break;
+				case 'paintorder':
+					this.PaintOrder(Value);
+					break;
+				case 'perspective':
+					this.Perspective(Value);
+					break;
+				case 'perspectiveorigin':
+					this.PerspectiveOrigin(Value);
+					break;
+				case 'placecontent':
+					this.PlaceContent(Value);
+					break;
+				case 'placeitems':
+					this.PlaceItems(Value);
+					break;
+				case 'placeself':
+					this.PlaceSelf(Value);
+					break;
+				case 'pointerevents':
+					this.PointerEvents(Value);
+					break;
+				case 'position':
+					this.Position(Value);
+					break;
+
+				case 'quotes':
+					this.Quotes(Value);
+					break;
+
+				case 'r':
+					this.R(Value);
+					break;
+				case 'resize':
+					this.Resize(Value);
+					break;
+				case 'right':
+					this.Right(Value);
+					break;
+				case 'rowgap':
+					this.RowGap(Value);
+					break;
+				case 'rubyposition':
+					this.RubyPosition(Value);
+					break;
+				case 'rx':
+					this.Rx(Value);
+					break;
+				case 'ry':
+					this.Ry(Value);
+					break;
+
+				case 'scrollbehavior':
+					this.ScrollBehavior(Value);
+					break;
+				case 'scrollmargin':
+					this.ScrollMargin(Value);
+					break;
+				case 'scrollmarginblock':
+					this.ScrollMarginBlock(Value);
+					break;
+				case 'scrollmarginblockend':
+					this.ScrollMarginBlockEnd(Value);
+					break;
+				case 'scrollmarginblockstart':
+					this.ScrollMarginBlockStart(Value);
+					break;
+				case 'scrollmarginbottom':
+					this.ScrollMarginBottom(Value);
+					break;
+				case 'scrollmargininline':
+					this.ScrollMarginInline(Value);
+					break;
+				case 'scrollmargininlineend':
+					this.ScrollMarginInlineEnd(Value);
+					break;
+				case 'scrollmargininlinestart':
+					this.ScrollMarginInlineStart(Value);
+					break;
+				case 'scrollmarginleft':
+					this.ScrollMarginLeft(Value);
+					break;
+				case 'scrollmarginright':
+					this.ScrollMarginRight(Value);
+					break;
+				case 'scrollmargintop':
+					this.ScrollMarginTop(Value);
+					break;
+				case 'scrollpadding':
+					this.ScrollPadding(Value);
+					break;
+				case 'scrollpaddingblock':
+					this.ScrollPaddingBlock(Value);
+					break;
+				case 'scrollpaddingblockend':
+					this.ScrollPaddingBlockEnd(Value);
+					break;
+				case 'scrollpaddingblockstart':
+					this.ScrollPaddingBlockStart(Value);
+					break;
+				case 'scrollpaddingbottom':
+					this.ScrollPaddingBottom(Value);
+					break;
+				case 'scrollpaddinginline':
+					this.ScrollPaddingInline(Value);
+					break;
+				case 'scrollpaddinginlineend':
+					this.ScrollPaddingInlineEnd(Value);
+					break;
+				case 'scrollpaddinginlinestart':
+					this.ScrollPaddingInlineStart(Value);
+					break;
+				case 'scrollpaddingleft':
+					this.ScrollPaddingLeft(Value);
+					break;
+				case 'scrollpaddingright':
+					this.ScrollPaddingRight(Value);
+					break;
+				case 'scrollpaddingtop':
+					this.ScrollPaddingTop(Value);
+					break;
+				case 'scrollsnapalign':
+					this.ScrollSnapAlign(Value);
+					break;
+				case 'scrollsnapstop':
+					this.ScrollSnapStop(Value);
+					break;
+				case 'scrollsnaptype':
+					this.ScrollSnapType(Value);
+					break;
+				case 'shapeimagethreshold':
+					this.ShapeImageThreshold(Value);
+					break;
+				case 'shapemargin':
+					this.ShapeMargin(Value);
+					break;
+				case 'shapeoutside':
+					this.ShapeOutside(Value);
+					break;
+				case 'shaperendering':
+					this.ShapeRendering(Value);
+					break;
+				case 'size':
+					this.Size(Value);
+					break;
+				case 'speak':
+					this.Speak(Value);
+					break;
+				case 'src':
+					this.Src(Value);
+					break;
+				case 'stopcolor':
+					this.StopColor(Value);
+					break;
+				case 'stopopacity':
+					this.StopOpacity(Value);
+					break;
+				case 'stroke':
+					this.Stroke(Value);
+					break;
+				case 'strokedasharray':
+					this.StrokeDasharray(Value);
+					break;
+				case 'strokedashoffset':
+					this.StrokeDashoffset(Value);
+					break;
+				case 'strokelinecap':
+					this.StrokeLinecap(Value);
+					break;
+				case 'strokelinejoin':
+					this.StrokeLinejoin(Value);
+					break;
+				case 'strokemiterlimit':
+					this.StrokeMiterlimit(Value);
+					break;
+				case 'strokeopacity':
+					this.StrokeOpacity(Value);
+					break;
+				case 'strokewidth':
+					this.StrokeWidth(Value);
+					break;
+				case 'syntax':
+					this.Syntax(Value);
+					break;
+
+				case 'tabsize':
+					this.TabSize(Value);
+					break;
+				case 'tablelayout':
+					this.TableLayout(Value);
+					break;
+				case 'textalign':
+					this.TextAlign(Value);
+					break;
+				case 'textalignlast':
+					this.TextAlignLast(Value);
+					break;
+				case 'textanchor':
+					this.TextAnchor(Value);
+					break;
+				case 'textcombinedupright':
+					this.TextCombinedUpright(Value);
+					break;
+				case 'textdecoration':
+					this.TextDecoration(Value);
+					break;
+				case 'textdecorationcolor':
+					this.TextDecorationColor(Value);
+					break;
+				case 'textdecorationline':
+					this.TextDecorationLine(Value);
+					break;
+				case 'textdecorationskipink':
+					this.TextDecorationSkipInk(Value);
+					break;
+				case 'textdecorationstyle':
+					this.TextDecorationStyle(Value);
+					break;
+				case 'textdecorationthickness':
+					this.TextDecorationThickness(Value);
+					break;
+				case 'textindent':
+					this.TextIndent(Value);
+					break;
+				case 'textorientation':
+					this.TextOrientation(Value);
+					break;
+				case 'textoverflow':
+					this.TextOverflow(Value);
+					break;
+				case 'textrendering':
+					this.TextRendering(Value);
+					break;
+				case 'textshadow':
+					this.TextShadow(Value);
+					break;
+				case 'textsizeadjust':
+					this.TextSizeAdjust(Value);
+					break;
+				case 'texttransform':
+					this.TextTransform(Value);
+					break;
+				case 'textunderlineoffset':
+					this.TextUnderlineOffset(Value);
+					break;
+				case 'textunderlineposition':
+					this.TextUnderlinePosition(Value);
+					break;
+				case 'top':
+					this.Top(Value);
+					break;
+				case 'touchaction':
+					this.TouchAction(Value);
+					break;
+				case 'transform':
+					this.Transform(Value);
+					break;
+				case 'transformbox':
+					this.TransformBox(Value);
+					break;
+				case 'transformorigin':
+					this.TransformOrigin(Value);
+					break;
+				case 'transformstyle':
+					this.TransformStyle(Value);
+					break;
+				case 'transition':
+					this.Transition(Value);
+					break;
+				case 'transitiondelay':
+					this.TransitionDelay(Value);
+					break;
+				case 'transitionduration':
+					this.TransitionDuration(Value);
+					break;
+				case 'transitionproperty':
+					this.TransitionProperty(Value);
+					break;
+				case 'transitiontimingfunction':
+					this.TransitionTimingFunction(Value);
+					break;
+
+				case 'unicodebidi':
+					this.UnicodeBidi(Value);
+					break;
+				case 'unicoderange':
+					this.UnicodeRange(Value);
+					break;
+				case 'userselect':
+					this.UserSelect(Value);
+					break;
+				case 'userzoom':
+					this.UserZoom(Value);
+					break;
+
+				case 'vectoreffect':
+					this.VectorEffect(Value);
+					break;
+				case 'verticalalign':
+					this.VerticalAlign(Value);
+					break;
+				case 'visibility':
+					this.Visibility(Value);
+					break;
+
+				case 'width':
+					this.Width(Value);
+					break;
+				case 'widows':
+					this.Widows(Value);
+					break;
+				case 'willchange':
+					this.WillChange(Value);
+					break;
+				case 'wordbreak':
+					this.WordBreak(Value);
+					break;
+				case 'wordspacing':
+					this.WordSpacing(Value);
+					break;
+				case 'wordwrap':
+					this.WordWrap(Value);
+					break;
+				case 'writingmode':
+					this.WritingMode(Value);
+					break;
+
+				case 'x':
+					this.X(Value);
+					break;
+				case 'y':
+					this.Y(Value);
+					break;
+
+				case 'zoom':
+					this.Zoom(Value);
+					break;
+				default:
+					this.Zindex(Value);
 			}
 		}
-	}
-
-	ClearContent = () => {
-		document.write('');
-		document.close();
-	}
-
-	SetDesignMode = (mode) => {
-		switch (mode.toLowerCase()) {
-			case 'on':
-				document.designMode = 'on';
-				break;
-			default:
-				document.designMode = 'off';
-				break;
-		}
-	}
-
-	CheckNodeID = (node) => {
-		if (!node.id) {
-			let random_node_id = Algorithms.StringGenerator(8);
-			node.setAttribute('id', random_node_id);
-			return random_node_id;
-		}
-		return node.id;
-	}
-
-	RemoveNodes = (query_mode = 'all', identifier) => {
-		switch (query_mode.toLowerCase()) {
-			case 'all':
-				this.QuerySelectorAll(identifier).remove();
-				break;
-			case 'normal':
-				this.QuerySelector(identifier).remove();
-				break;
-			default:
-				this.QuerySelectorAll(identifier).remove();
-		}
-	}
-}
-
-const Dom = new DomHandler();
-
-class API {
-	constructor({
-		url, token, method = 'GET', headers = {}, debug = false
-	}) {
-		this.url = url;
-		this.method = method;
-		this.token = token;
-		this.debug = debug;
-		this.connection = undefined;
-
-		this.headers = Algorithms.MergeList({
-			'Authorization': `${this.token}`
-		}, headers);
-
-		this.Connect();
 	};
 
-	Connect = () => {
-		let HTTP = {
-			method: this.method,
-			headers: this.headers,
-			mode: 'cors',
-			cache: 'default',
+    GetElement = (Element, Method) => {
+		switch (Method.toLowerCase()) {
+			case 'class':
+				return document.getElementsByClassName(Element).valueOf()[0];
+			case 'name':
+				return document.getElementsByName(Element)[0];
+			case 'tag':
+				return document.getElementsByTagName(Element)[0];
+			default:
+				return document.getElementById(Element);
 		}
+	};
 
-		if (this.debug) raise(`Connection made to [${this.url}] using method [${this.method}].`, 'warn');
-		this.connection = new Request(this.url, HTTP);
-	}
+    CreateNode = (Tag, Content, Attributes = []) => {
+        const Node = document.createElement(Tag);
+        Node.innerHTML = Content;
+        for(let Iterator = 0; Iterator < Attributes.length; Iterator++)
+            // Attributes = [ ['MyAttribute', 'MyValue'] ]
+            Node.setAttribute(Attributes[Iterator][0], Attributes[Iterator][1]);
+        this.Node.appendChild(Node);
+        return Node;
+    };
 
-	Fetch = (action) => {
-		fetch(this.connection)
-			.then(response => response.json())
-			.then(data => action(data))
-			.catch(err => raise(`[Error]: (Fetch ${this.url}[${this.method}]) [Error: ${err}]`));
-	}
-}
+	InsertATag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('a', Content, Attributes)));
+	InsertAbbrTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('abbr', Content, Attributes)));
+	InsertAcronymTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('acronym', Content, Attributes)));
+	InsertAddressTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('address', Content, Attributes)));
+	InsertAppletTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('applet', Content, Attributes)));
+	InsertAreaTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('area', Content, Attributes)));
+	InsertArticleTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('article', Content, Attributes)));
+	InsertAsideTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('aside', Content, Attributes)));
+	InsertAudioTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('audio', Content, Attributes)));
 
-class RouterHandler {
-	Go = (path) => Client.ChangePath(path);
-	ClearPath = () => Client.ChangePath('/');
-	GetPath = () => Client.CurrenPath();
-	Redirect = (url) => Client.Redirect(url);
+	InsertBTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('b', Content, Attributes)));
+	InsertBaseTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('base', Content, Attributes)));
+	InsertBaseFontTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('basefont', Content, Attributes)));
+	InsertBbTag = (a, attribbutes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('bb', Content, Attributes)));
+	InsertBdoTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('bdo', Content, Attributes)));
+	InsertBigTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('big', Content, Attributes)));
+	InsertBlockQuoteTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('blockquote', Content, Attributes)));
+	InsertBodyTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('body', Content, Attributes)));
+	InsertBrTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('br', Content, Attributes)));
+	InsertButtonTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('button', Content, Attributes)));
 
-	SetDocumentContent = (x) => {
-		Dom.ClearContent();
-		Dom.AddHTML(x);
-	}
-}
+	InsertCanvasTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('canvas', Content, Attributes)));
+	InsertCaptionTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('caption', Content, Attributes)));
+	InsertCenterTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('center', Content, Attributes)));
+	InsertCiteTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('cite', Content, Attributes)));
+	InsertCodeTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('code', Content, Attributes)));
+	InsertColTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('col', Content, Attributes)));
+	InsertColGroupTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('colgroup', Content, Attributes)));
+	InsertCommandTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('command', Content, Attributes)));
 
-Router = new RouterHandler();
+	InsertDataGridTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('datagrid', Content, Attributes)));
+	InsertDataListTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('datalist', Content, Attributes)));
+	InsertDdTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('dd', Content, Attributes)));
+	InsertDelTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('del', Content, Attributes)));
+	InsertDetailsTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('details', Content, Attributes)));
+	InsertDfnTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('dfn', Content, Attributes)));
+	InsertDialogTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('dialog', Content, Attributes)));
+	InsertDirTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('dir', Content, Attributes)));
+	InsertDivTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('div', Content, Attributes)));
+	InsertDlTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('dl', Content, Attributes)));
+	InsertTdTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('dt', Content, Attributes)));
 
-Dom.OnReadyStateChange(() => {
-	Nodes = (prop) => Dom.QuerySelectorAll(`[${prop}]`);
+	InsertEmTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('em', Content, Attributes)));
+	InsertEmbedTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('embed', Content, Attributes)));
+	InsertEventSourceTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('eventsource', Content, Attributes)));
 
-	if (document.readyState == 'complete') {
-		Nodes('draggable').forEach((n) => $(Dom.CheckNodeID(n)).Draggable());
-		Nodes('resizable').forEach((n) => $(Dom.CheckNodeID(n)).Resizable());
-		Nodes('typewriter').forEach((n) => {
-			e = $(Dom.CheckNodeID(n));
-			if ((e.HasAttribute('tw-message')) || (e.GetContent().length >= 1)) {
-				let speed = 50,
-					start_at = 0,
-					message = '';
-				if (e.HasAttribute('tw-speed')) speed = e.GetAttribute('tw-speed');
-				if (e.HasAttribute('tw-start-at')) start_at = e.GetAttribute('tw-start-at');
-				if ((e.HasAttribute('tw-message') && (e.GetContent().length >= 1))) message = e.GetContent() + ' ' + e.GetAttribute('tw-message');
-				else if (e.HasAttribute('tw-message')) message = e.GetAttribute('tw-message');
-				else message = e.GetContent();
-				e.ClearContent();
-				e.TypeWriter(message, speed, start_at);
-			} else {
-				raise(`An error occurred when executing the TypeWriterfunction because thetw-message="message" attribute does not exist in the n.`);
-				raise(n);
-			};
-		});
+	InsertFieldsetTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('fieldset', Content, Attributes)));
+	InsertFigcaptionTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('figcaption', Content, Attributes)));
+	InsertFigureTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('figure', Content, Attributes)));
+	InsertFontTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('font', Content, Attributes)));
+	InsertFooterTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('footer', Content, Attributes)));
+	InsertFormTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('form', Content, Attributes)));
+	InsertFrameTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('frame', Content, Attributes)));
+	InsertFrameSetTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('frameset', Content, Attributes)));
 
-		L = (method, attribute) => {
-			Nodes(attribute).forEach((n) => {
-				e = $(Dom.CheckNodeID(n));
-				e[method](e.GetAttribute(attribute));
-				e.RemoveAttribute(attribute);
-			});
+	InsertH1Tag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('h1', Content, Attributes)));
+	InsertH2Tag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('h2', Content, Attributes)));
+	InsertH3Tag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('h3', Content, Attributes)));
+	InsertH4Tag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('h4', Content, Attributes)));
+	InsertH5Tag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('h5', Content, Attributes)));
+	InsertH6Tag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('h6', Content, Attributes)));
+	InsertHeadTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('head', Content, Attributes)));
+	InsertHeaderTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('header', Content, Attributes)));
+	InsertHgroupTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('hgroup', Content, Attributes)));
+	InsertHrTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('hr', Content, Attributes)));
+	InsertHtmlTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('html', Content, Attributes)));
+
+	InsertITag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('i', Content, Attributes)));
+	InsertIframeTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('iframe', Content, Attributes)));
+	InsertImgTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('img', Content, Attributes)));
+	InsertInputTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('input', Content, Attributes)));
+	InsertInsTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('ins', Content, Attributes)));
+	InsertIsIndexTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('isindex', Content, Attributes)));
+
+	InsertKbdTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('kbd', Content, Attributes)));
+	InsertKeygenTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('keygen', Content, Attributes)));
+
+	InsertLabelTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('label', Content, Attributes)));
+	InsertLegendTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('legend', Content, Attributes)));
+	InsertLiTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('li', Content, Attributes)));
+	InsertLinkTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('link', Content, Attributes)));
+
+	InsertMapTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('map', Content, Attributes)));
+	InsertMarkTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('mark', Content, Attributes)));
+	InsertMenuTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('menu', Content, Attributes)));
+	InsertMetaTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('meta', Content, Attributes)));
+	InsertMeterTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('meter', Content, Attributes)));
+
+	InsertNavTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('nav', Content, Attributes)));
+	InsertNoFramesTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('noframes', Content, Attributes)));
+	InsertNoScriptTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('noscript', Content, Attributes)));
+
+	InsertObjectTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('object', Content, Attributes)));
+	InsertOlTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('ol', Content, Attributes)));
+	InsertOptGroupTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('optgroup', Content, Attributes)));
+	InsertOptionTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('option', Content, Attributes)));
+	InsertOutputTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('output', Content, Attributes)));
+
+	InsertPTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('p', Content, Attributes)));
+	InsertParamTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('param', Content, Attributes)));
+	InsertPreTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('pre', Content, Attributes)));
+	InsertProgressTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('progress', Content, Attributes)));
+
+	InsertQTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('q', Content, Attributes)));
+
+	InsertRpTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('rp', Content, Attributes)));
+	InsertRtTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('rt', Content, Attributes)));
+	InsertRubyTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('ruby', Content, Attributes)));
+
+	InsertSTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('s', Content, Attributes)));
+	InsertSampTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('samp', Content, Attributes)));
+	InsertScriptTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('script', Content, Attributes)));
+	InsertSectionTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('section', Content, Attributes)));
+	InsertSelectTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('select', Content, Attributes)));
+	InsertSmallTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('small', Content, Attributes)));
+	InsertSourceTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('source', Content, Attributes)));
+	InsertSpanTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('span', Content, Attributes)));
+	InsertStrikeTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('strike', Content, Attributes)));
+	InsertStrongTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('strong', Content, Attributes)));
+	InsertStyleTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('style', Content, Attributes)));
+	InsertSubTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('sub', Content, Attributes)));
+	InsertSupTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('sup', Content, Attributes)));
+
+	InsertTableTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('table', Content, Attributes)));
+	InsertTbodyTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('tbody', Content, Attributes)));
+	InsertTdTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('td', Content, Attributes)));
+	InsertTextAreaTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('textarea', Content, Attributes)));
+	InsertTfootTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('tfoot', Content, Attributes)));
+	InsertThTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('th', Content, Attributes)));
+	InsertTheadTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('thead', Content, Attributes)));
+	InsertTimeTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('time', Content, Attributes)));
+	InsertTitleTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('title', Content, Attributes)));
+	InsertTrTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('tr', Content, Attributes)));
+	InsertTrackTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('track', Content, Attributes)));
+	InsertTtTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('tt', Content, Attributes)));
+
+	InsertUTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('u', Content, Attributes)));
+	InsertUlTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('ul', Content, Attributes)));
+
+	InsertVarTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('var', Content, Attributes)));
+	InsertVideoTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('video', Content, Attributes)));
+
+	InsertWbrTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('wbr', Content, Attributes)));
+
+	InsertMainTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('main', Content, Attributes)));
+	InsertMenuItemTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('menuitem', Content, Attributes)));
+
+	InsertDataTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('data', Content, Attributes)));
+
+	InsertRtcTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('rtc', Content, Attributes)));
+	InsertSummaryTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('summary', Content, Attributes)));
+	InsertTemplateTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('template', Content, Attributes)));
+	InsertVideoTag = (Content, Attributes = []) => $(SnakeDOM.CheckNodeID(this.CreateNode('video', Content, Attributes)));
+};
+
+SnakeDOM.OnReadyStateChange(() => {
+	Nodes = (Property) => SnakeDOM.QuerySelectorAll(`[${Property}]`);
+
+	if(document.readyState == 'complete'){
+		
+		L = (Method, Attribute) => {
+			Nodes(Attribute).forEach((Node) => {
+				Node = $(SnakeDOM.CheckNodeID(Node));
+				Node[Method](Node.GetAttribute(Attribute));
+				Node.RemoveAttribute(Attribute);
+			})
 		};
 
+		/* 
+			? OMG Rodii what is this fucking bitch fucking shit!!
+
+			* Relax, SnakeS allows you not only to declare styles using 
+			* the SnakeNode class node instance, 
+			* (Node.PropertyName(Value)) || (Node.Styles({PropertyName: Value})) 
+			* but also allows you to declare styles as tag properties.
+
+			? Example:
+			* <body background-color='red' color='black' font-family='sans-serif' ...>
+		*/
 		L('AlignContent', 'align-content');
 		L('AlignItems', 'align-items');
 		L('AlignmentBaseLine', 'alignment-base-line');
@@ -2790,6 +2806,7 @@ Dom.OnReadyStateChange(() => {
 		L('BreakBefore', 'break-before');
 		L('BreakInside', 'break-inside');
 		L('BufferedRendering', 'buffered-rendering');
+		L('Bottom', 'bottom');
 
 		L('CaptionSide', 'caption-side');
 		L('CaretColor', 'caret-color');
@@ -3113,3 +3130,13 @@ Dom.OnReadyStateChange(() => {
 		L('MaxZoom', 'zoom');
 	}
 });
+
+/*
+	? Shortcut to be able to instantiate 
+	? nodes quickly, like TrashQuery, sorry, JQuery.
+*/
+$ = (Element, GetMethod = 'id') => new SnakeNode(Element, GetMethod);
+
+/*
+ * Drink water!
+*/

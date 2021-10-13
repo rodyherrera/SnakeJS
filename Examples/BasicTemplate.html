@@ -1,0 +1,475 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+
+    <!--
+        ? Basic meta tags, this template was not designed 
+        ? to be used in production but rather a short template 
+        ? bringing together some functionality of the library 
+        ? to interact with the user and shape the site using JavaScript.
+    -->
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+    <meta name='author' content='Rodolfo Herrera Hernandez @codewithrodi' />
+
+    <!--
+        ? When loading the library, it is 
+        ? important that when you want to 
+        ? experiment with the sample files you 
+        ? do not change the name or location of 
+        ? the library since they all point to the 
+        ? same path in a relative way.
+    -->
+    <script src='../Snake.js' type='text/javascript'></script>
+
+    <!-- 
+        ? Configuration of styles that the template 
+        ? will have, they are general styles that at 
+        ? least based on my knowledge I would not know how 
+        ? to apply them correctly to JavaScript, that is why 
+        ? I declare them here, anyway if you are looking for that 
+        ? with SnakeJS you can build responsive pages 
+        ? without using CSS you are very wrong.
+    -->
+    <style>
+        *{
+            /*
+                * Declaration of general styles for 
+                * the template, here are a couple of 
+                * resets that are annoying when it comes 
+                * to correctly shaping the page.
+            */
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+            box-sizing: border-box;
+            text-decoration: none;
+            user-select: none;
+            list-style-type: none;
+        }
+
+        ::-webkit-scrollbar{
+            /*
+                * The scroll bar sucks, we don't want it here.
+            */
+            display: none;
+        }
+    </style>
+
+    <!--
+        ? Page title, Brand::AuxiliarText format
+    -->
+    <title>SnakeJS - Readable code, less code, more actions</title>
+</head>
+
+<!--
+    ? Initialization of the development of the body of the template.
+-->
+<body id='Body'>
+
+    <!-- 
+        * Developing the header of the page, whose 
+        * label has two parameters which the first 
+        * is the ID to be able to manipulate the 
+        * node from JavaScript using the library and then 
+        * it has a class that will allow it to give a certain 
+        * interaction when the user passes the cursor over 
+        * the surface of the node.
+    -->
+    <header id='Header' class='OnMouseOverOpacity'>
+
+        <!--
+            * As you can see, this is the first 
+            * child of two that the parent node 
+            * has, where the first is a box containing 
+            * the title of the site, and the second is a 
+            * node which will serve as a set of links to 
+            * navigate either internally. on site or 
+            * external, for now there is only a link to 
+            * the Github repository :)
+        -->
+        <article>
+            <h1>SnakeJS</h1>
+        </article>
+        
+        <nav>
+            <ul>
+                <li>
+
+                    <!--
+                        * In this template there are two 
+                        * links, both have the Link class that 
+                        * serves to interact with an alert from 
+                        * JavaScript, when the user clicks an 
+                        * alert will be triggered in the 
+                        * template, it will not close and a new 
+                        * tab will open in the client with the url 
+                        * that contains the href property.
+                    -->
+                    <a class='Link' target='_blank' href='https://github.com/codewithrodi/SnakeJS/'>
+                        <span>Github</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!--
+        * Declaration of the main content 
+        * of the site, basically what will 
+        * stand out from it will be here, haha 
+        * ​​it is simply a title and a subtitle but 
+        * you know you have to give it emotion 
+        * lalalala lelele lilili lololo lulululu
+    -->
+    <main id='Main'>
+        <section>
+            <article>
+                <h2>? (Black magic) || (Learn the fantastic world and power of code)</h2>
+                
+                <!--
+                    * The tag contains a margin-top 
+                    * property, properties that are not 
+                    * available in ordinary HTML, if you 
+                    * use the library you can use the same 
+                    * CSS styles and declare them in the 
+                    * tags, if you are a React Developer 
+                    * you will be familiar with this, the difference
+                    * is You do not have to declare the style property 
+                    * and create an object, although you can also do 
+                    * it from JavaScript as you will see later, well, the 
+                    * tag has a margin-top to separate it a bit 
+                    * from the title, it is ridiculous to put a 
+                    * line-height that it will affect the whole site
+                -->
+                <p margin-top='1rem'>It's just a matter of reading and understanding, just remember to drink water, bitch.</p>
+            </article>
+        </section>
+    </main>
+
+    <!--
+        * By creating a small container that will 
+        * serve to show alerts in the template, this 
+        * will be used later to make alerts such as 
+        * when the user loses the internet 
+        * connection, recovers it, clicks on a link 
+        * or tries to access the client menu using 
+        * the right click.
+    -->
+    <section id='Alert'>
+        <p id='AlertMessage'></p>
+    </section>
+
+    <!--
+        * Declaring the footer of the site, this 
+        * will be in the footer of the page as its 
+        * damn name says omg sorry well this only contains 
+        * a p tag that contains a little message mai lov <3
+    -->
+    <footer id='Footer' class='OnMouseOverOpacity'>
+        <p>Made with love, coffee and lots of mint by 
+            <a class='Link' target='_blank' href='https://github.com/codewithrodi/'>
+                <span>Rodolfo Herrera</span>
+            </a>
+        </p>
+    </footer>
+</body>
+
+<!--
+    ? Starting to use the library to
+    ? bring the template to life
+-->
+<script>
+
+    /*
+        * By declaring an object which will
+        * allow you to reuse code so as not 
+        * to rewrite the same values ​​in the 
+        * styles of the template nodes
+         
+        * For example, if there are two or more 
+        * containers that are going to use 
+        * flexbox, you can here make an object 
+        * so as not to have to write the same 
+        * configuration for each style of the 
+        * node, if not simply make an inheritance 
+        * of the generic object found here.
+    */
+    const DefaultStyles = {
+        BasicFlex: {
+            Display: 'Flex',
+            FlexWrap: 'Wrap',
+            AlignItems: 'Center'
+        },
+        
+        GenericPadding: '1rem'
+    };
+
+    /*
+        * Declaring the SnakeDOM instances to 
+        * use the template nodes, but having damn 
+        * fucked up stupid rodi why you declare as 
+        * constants post look their value will 
+        * never change AAAAAAAAAAAAAAAAAAAAAAAAAA
+    */
+    const 
+        Body = $('Body'),
+        Header = $('Header'),
+        Main = $('Main'),
+        Alert = $('Alert'),
+        Footer = $('Footer');
+
+    /*
+        * Starting the declaration of styles 
+        * using the instances that we have 
+        * previously declared, for this we use 
+        * its .Styles method which receives an
+        * object, it can be called several 
+        * times without altering the properties 
+        * of the node, this unless you modify them 
+        * in the objects that it receives. you go 
+        * to the method later.
+    */
+    Body.Styles({
+        FontFamily: 'Ubuntu, sans-serif',
+        BackgroundColor: 'rgba(244, 244, 244, .3)',
+        LineHeight: '1.7rem'
+    });
+
+    Header.Styles({
+        /* 
+            * As previously I reminded you, we 
+            * created an object which would help 
+            * us to reuse code, here we do inheritance
+            * to save us from writing a couple of 
+            * lines to declare some properties of flexbox
+        */
+        ...DefaultStyles.BasicFlex,
+
+        /*
+            * Other configurations, remember 
+            * that the name of the property can be 
+            * written as you want, for example:
+                -> PropertyName
+                -> propertyName
+                -> pROPerTYNamE
+            
+            * All keys will be valid because they 
+            * are transformed in the library to lowercase :)
+        */
+        JustifyContent: 'Space-Between',
+        BackgroundColor: '#FFFFFF',
+        Padding: DefaultStyles.GenericPadding,
+        BoxShadow: 'rgb(0 0 0 / 20%) -12px -20px 0px 0px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px'
+    });
+
+    Main.Styles({
+        ...DefaultStyles.BasicFlex,
+        FlexDirection: 'Row',
+        Padding: DefaultStyles.GenericPadding,
+        JustifyContent: 'Center',
+        TextAlign: 'Center',
+        Width: '100%',
+        Height: '80%'
+    });
+
+    Alert.Styles({
+        Display: 'None',
+        BackgroundColor: '#D6D6D6',
+        Width: '25rem',
+        TextAlign: 'Center',
+        BorderRadius: '.2rem',
+        Padding: DefaultStyles.GenericPadding,
+        Position: 'Absolute',
+        Bottom: '5rem',
+        Left: '2rem'
+    });
+
+    Footer.Styles({
+        BackgroundColor: '#FFFFFF',
+        Padding: DefaultStyles.GenericPadding,
+        Position: 'Absolute',
+        Bottom: '0',
+        Width: '100%',
+        TextAlign: 'center',
+        BoxShadow: 'rgb(0 0 0 / 20%) 0px 0px 8px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px'
+    });
+
+    /*
+        * By declaring a function 
+        * that will help us to show 
+        * alerts, as you remember earlier 
+        * in the HTML we declare a container 
+        * with a message that would allow us 
+        * to show messages in the template
+    */
+    function OnAlert(Message, BorderColor = undefined){
+        
+        /*
+            * Originally we have set the 
+            * container a display none, whose 
+            * value will make the container not 
+            * be shown on the page, it is 
+            * hidden, when this function is called 
+            * we will assign a display block so that
+            * it is not hidden.
+        */
+        Alert.Display('Block');
+        
+        /*
+            * We check if the value of
+            * BorderColor is true, undefined is 
+            * not true, if the user enters 
+            * something, this value will be true and 
+            * will be assigned as a color value in 
+            * the Border of the container.
+        */
+        if(BorderColor)
+            /*
+                * Heyyyyyyyyyy you are very silly 
+                * for what reason or circumstance 
+                * you are not wearing braces, calm 
+                * down, it is only an instruction, you
+                * don't need to use that shit when you 
+                * only have one instruction, sorry, I 
+                * make things up only in my head xdxd D:
+            */
+            Alert.Border(`2px solid ${BorderColor}`);
+        
+        /* 
+            * We establish in the p tag that is 
+            * inside the container that we have 
+            * previously created the message that has 
+            * reached us as a parameter and that is 
+            * supposed to be what we should alert the client
+        */
+        $('AlertMessage').SetHTML(Message);
+        
+        /*
+            * After showing the message we will 
+            * make a setTimeout which will execute 
+            * instructions after 3 seconds, this 
+            * referring to the fact that the alert
+            * will only last 3 seconds in the template.
+        */
+        SnakeDOM.SetTimeout(() =>
+            /*
+                * After the 3 seconds pass, we set 
+                * the container again with its CSS 
+                * display property value in none 
+                * so that it is hidden and we reset 
+                * the border regardless of whether 
+                * the user entered a custom color or 
+                * not, it will not affect the 
+                * execution, as you do. You will 
+                * notice again I do not use ';' nor
+                * '{}' because it is just an instruction.
+            */
+            Alert.Styles({
+                Border: 'None',
+                Display: 'None'
+            })
+        , 3000);
+    }
+
+    /* 
+        * Previously to the links we have established 
+        * classes and that these classes were going to 
+        * help us to show a certain alert when the 
+        * client clicked on one of them
+        
+        * Basically what happens here is something 
+        * like, hey damn ugly browser, bring me 
+        * all the nodes that have the link class, after 
+        * you have them send them to me in an array, then 
+        * for each node that has the ugly array I want you 
+        * to grab the node and check if it has or it does not 
+        * have an ID, in case it does not have one, you generate 
+        * one for the damn ugly node, then I want you to put a 
+        * click listener to the node and when the event is 
+        * detected I want you to call the alert function sending 
+        * it to open the link in a new tab.
+    */ 
+    SnakeDOM.QuerySelectorAll('.Link').forEach((Node) => 
+        $(SnakeDOM.CheckNodeID(Node)).OnClick(() => 
+            OnAlert('Opening in a new tab...'))
+    );
+
+    /*
+        * Like the previous one, something like 
+        * this happens here, hey browser again I 
+        * want you to select all the nodes that 
+        * have this class, then you return an array 
+        * with all of them, then for each node that 
+        * has said array I want you to verify if the node
+        * it has or does not have ID to instantiate it 
+        * as a SnakeDOM class, then I want that when 
+        * you detect that the stupid client puts its 
+        * ugly cursor in the node you put an opacity
+        * to it of '.7', then I want that when it 
+        * removes its ugly cursor from the node you 
+        * reset the opacity to normal '1'.
+    */
+    SnakeDOM.QuerySelectorAll('.OnMouseOverOpacity').forEach((Node) => {
+        Node = $(SnakeDOM.CheckNodeID(Node));
+        Node.OnMouseOver(() => Node.Opacity('.7'));
+        Node.OnMouseLeave(() => Node.Opacity('1'));
+    });
+
+    /*
+        * With the help of a listener we verify when 
+        * the user is without an internet 
+        * connection, when he is without an internet 
+        * connection we are going to execute a series 
+        * of instructions, it is simply one that is why 
+        * it does not carry ';' Nor '{}' which said 
+        * instruction consists of calling the OnAlert 
+        * function which will say hey asshole you ran out 
+        * of internet, but with better words :)
+        
+        * As you can see, we also pass a 
+        * hexadecimal code as a second parameter 
+        * which refers to a color, that color should 
+        * be the border of the alert container 
+        * when the user runs out of internet.
+    */
+    SnakeClient.OnOffLine(() => OnAlert('You have lost your internet connection.', '#B8463D'));
+
+    /*
+        * Exactly the same as the 
+        * previous instruction with 
+        * the difference that this will 
+        * execute the instruction when 
+        * the user recovers the internet connection.
+    */
+    SnakeClient.OnOnLine(() => OnAlert('Network connection was restored', '#4DC546'));
+
+    /* 
+        * We make that when the user tries to open 
+        * the devtools it shows an alert, in this 
+        * way we prevent them from seeing our source code haha ​​xd
+    */
+    SnakeDOM.ReplaceDeveloperTools(() => {
+        OnAlert(`\For more information visit 
+            <a target='_blank' href="https://github.com/codewithrodi/SnakeJS/">
+                    <span>the repository</span>
+            </a>`);
+    });
+</script>
+
+</html>

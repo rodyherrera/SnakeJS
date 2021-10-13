@@ -1,0 +1,100 @@
+<!-- ***
+# * Copyright (C) Rodolfo Herrera Hernandez. All rights reserved.
+# * Licensed under the MIT license. See LICENSE file in the project root 
+# * for full license information.
+# *
+# * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+# *
+# * For related information - https://github.com/codewithrodi/SnakeJS/
+# *
+# * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+****/ -->
+
+<!DOCTYPE html />
+<html lang='en' />
+
+<head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+
+    <!--
+        ? The title of the template 
+        ? will be in the format <LibraryName - FunctioName>
+    -->
+    <title>SnakeJS - UpdateCookie</title>
+
+    <!--
+        ? Performing the integration of the library 
+        ? together with the styles to have a nice 
+        ? view with the example template.
+
+        * The import may vary depending on where the 
+        * file is being called, it is important 
+        * that you do not touch these lines.
+     -->
+    <script src='../../../Snake.js' type='text/javascript'></script>
+    <link rel='stylesheet' type='text/css' href='../../../Examples/TemplateStyles.css' />
+</head>
+
+<body>
+
+    <!--
+        ? Inside the body tag, the main tag 
+        ? will be declared, which will 
+        ? make the example you want to know work.
+    -->
+    <main>
+        <section>
+            <h1>UpdateCookie:</h1>
+            <p id='Container'></p>
+        </section>
+    </main>
+
+</body>
+
+<!--
+    ? Beginning of the development 
+    ? of the JavaScript code that 
+    ? will interact with the library.
+-->
+<script type='text/javascript'>
+
+    // * Selecting the label to be able to manipulate it later.
+    const Container = $('Container');
+
+    // * We create the cookie, remember that this 
+    // * function can receive more parameters indicating 
+    // * its options, such as its maximum age, if it is 
+    // * only for HTTPS, etc., see the library for more information.
+    SnakeClient.CreateCookie('TestCookie', 'Hello-World');
+
+    // * Once we have created the cookie we will update its 
+    // * content, like the previous one, it can receive more 
+    // * parameters in which it can be modified if it is only 
+    // * for HTTPS, its Path, its maximum life, etc., but we will 
+    // * only modify its value As the first parameter we indicate 
+    // * the name of the cookie and as the second we indicate its new value.
+    SnakeClient.UpdateCookie('TestCookie', 'Bye-Bye-World');
+    
+    // * We keep the content of the cookie in 
+    // * a constant, its value will never change.
+    const Information = SnakeClient.GetCookie('TestCookie');
+
+    // * Through an if we will see if the cookie exists 
+    // * or not, since when obtaining the value of the 
+    // * cookie and if it does not exist the return value 
+    // * will be a false, it is likely that this happens 
+    // * when you are executing this as .html and opening 
+    // * it in The browser is not bad, but cookies work only 
+    // * on web servers, in case you are testing it on web servers 
+    // * there will be no problem and the value of the cookie will 
+    // * have been modified since it will have been created.
+    if(Information)
+        Container.SetHTML('The new cookie value is: ' + Information);
+    else
+        Container.SetHTML('An error has been ocurred while trying get the cookie.');
+
+</script>
+
+</html>

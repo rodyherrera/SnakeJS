@@ -23,7 +23,7 @@ SnakeJS includes ZendaJS Z8, JavaScript implementation that has new functionalit
 To install and use the library in your projects you only need to clone the repository and simply the only .js whose name is Snake to your .html haha, nothing to write home about, just be careful if you want to see the example files because they do a Import relative to the library, make a copy of it and put it in your project in case you want to analyze the sample files.
 
 ```bash
-git clone https//github.com/codewithrodi/SnakeJS/ # Clone SnakeJS repository
+git clone https://github.com/codewithrodi/SnakeJS/ # Clone SnakeJS repository
 cd SnakeJS # Enter the directory
 ```
 ## Contributing

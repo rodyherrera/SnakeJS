@@ -5,7 +5,7 @@
  *
  * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
  *
- * For related information - https://github.com/codewithrodi/SnakeJS/
+ * For related information - https://github.com/rodyherrera/SnakeJS/
  * 
  * SnakeJS -> A new way to write HTML and JavaScript, write 
  * less and do more, leaving the standard of the initial 
@@ -492,7 +492,7 @@ const SnakeClient = {
 
 /*
 	? ZendaJS Z8 Implementation
-	? https://github.com/codewithrodi/ZendaJS/
+	? https://github.com/rodyherrera/ZendaJS/
 
 	* The Z8 is an extension of objects already defined 
 	* in javascript by the V8 engine in C++, what Z8 offers 
